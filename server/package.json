@@ -1,0 +1,19 @@
+{
+  "name": "ooolink-server",
+  "version": "1.0.0",
+  "description": "ooolink server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rube",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "~1.2.0",
+    "koa-body": "~1.4.0",
+    "koa-request": "^1.0.0",
+    "koa-router": "~5.4.0",
+    "request": "^2.69.0"
+  },
+  "devDependencies": {}
+}
