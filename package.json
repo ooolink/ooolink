@@ -1,0 +1,35 @@
+{
+  "name": "ooolink",
+  "version": "1.0.0",
+  "description": "Feel the power of information",
+  "main": "index.js",
+  "dependencies": {
+    "gulp-nodemon": "^2.0.6"
+  },
+  "devDependencies": {
+    "babel-preset-nodejs-lts": "^1.2.1",
+    "gulp": "~3.9.1",
+    "gulp-babel": "~6.1.2",
+    "gulp-changed": "~1.3.0",
+    "gulp-nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ooolink/ooolink.git"
+  },
+  "keywords": [
+    "ooolink",
+    "information",
+    "read",
+    "Rube"
+  ],
+  "author": "Rube",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/ooolink/ooolink/issues"
+  },
+  "homepage": "https://github.com/ooolink/ooolink#readme"
+}

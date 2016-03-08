@@ -1,0 +1,3 @@
+rootProject.name = 'ooolink'
+
+include ':app'
