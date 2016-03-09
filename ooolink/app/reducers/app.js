@@ -10,7 +10,8 @@ import * as types from '../constants/actionTypes'
 
 const initialState = {
     currentSite: 'cnode-bbs',
-    token: []
+    token: [],
+    siteInfo: {}
 };
 
 export default function(state = initialState, action) {
@@ -18,9 +19,9 @@ export default function(state = initialState, action) {
 
     switch (action.type) {
         case types.SET_CURRENT_SITE:
-            return {
+            return Object.assign({}, state, {
                 currentSite: action.site
-            };
+            });
         default:
             return state;
     }

@@ -28,7 +28,8 @@ class TitleBar extends Component {
     static propTypes = {
         onOpenProfile: PropTypes.func.isRequired,
         onOpenSetting: PropTypes.func.isRequired,
-        themeBlockHeight: PropTypes.number.isRequired
+        themeBlockHeight: PropTypes.number.isRequired,
+        themeSelected: PropTypes.string.isRequired
     };
 
     constructor(props) {
@@ -40,9 +41,13 @@ class TitleBar extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {themeBlockHeight} = nextProps;
+        const {themeBlockHeight, themeSelected} = nextProps;
         if (themeBlockHeight != this.state.themeBlockHeight) {
             this.setState({themeBlockHeight});
+        }
+
+        if (themeSelected != this.props.themeSelected) {
+            this.openBlock()
         }
     }
 
@@ -61,7 +66,7 @@ class TitleBar extends Component {
                 <View style={styles.bar}>
                     <Text style={styles.selectedItem}
                           onPress={this.openBlock.bind(this)}>
-                        首页&nbsp;
+                        {this.props.themeSelected}&nbsp;
                         <Image
                             style={styles.itemArrow}
                             source={this.state.arrowImage}

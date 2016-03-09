@@ -7,9 +7,23 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+import React,{
+    Dimensions,
+} from 'react-native';
 
+let {height, width} = Dimensions.get('window');
 
-export function computeThemeBlockHeight(themes){
+export function computeThemeBlockHeight(themes) {
     "use strict";
-    return 200;
+    let row = 1, widthLeft = width - 10;
+    themes.forEach(theme=> {
+        let l = (theme.length * 12 + 10);
+        if (widthLeft < l) {
+            row++;
+            widthLeft = width - 10 - l;
+        } else {
+            widthLeft -= l
+        }
+    });
+    return row * 20;
 }

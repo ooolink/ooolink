@@ -21,7 +21,7 @@ import React,{
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import {getThemes} from '../actions/home'
+import {selectTheme} from '../actions/home'
 
 class Themes extends Component {
 
@@ -33,7 +33,9 @@ class Themes extends Component {
                     function() {
                         return _this.props.themes && _this.props.themes.map((theme, idx)=> {
                                 return (
-                                    <Text style={styles.itemLang} key={idx}>{theme}</Text>
+                                    <Text style={styles.itemLang} key={idx}
+                                          onPress={_this.chooseTheme.bind(_this, theme)}
+                                    >{theme}</Text>
                                 )
                             })
                     }()
@@ -42,13 +44,9 @@ class Themes extends Component {
         )
     }
 
-    componentDidMount() {
-        this.getThemes();
-    }
-
-    getThemes() {
+    chooseTheme(theme) {
         const {dispatch} = this.props;
-        dispatch(getThemes());
+        dispatch(selectTheme(theme));
     }
 }
 
@@ -66,11 +64,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingLeft: 10,
-        paddingBottom: 10,
         backgroundColor: '#22b473'
     },
     itemLang: {
-        height:30,
+        fontSize: 12,
+        height: 20,
         marginRight: 10,
         color: '#fff'
     }

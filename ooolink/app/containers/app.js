@@ -20,21 +20,18 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TitleBar from '../components/titlebar';
 import LoadingBlock from '../common/components/loadingBlock';
 
-import {selectPage} from '../actions/home'
+import {selectPage,getThemes} from '../actions/home'
 
 class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            loaded: false
-        }
     }
 
     render() {
-        const {dispatch,pageSelected,themesBlockHeight} = this.props;
+        const {dispatch,pageSelected,themesBlockHeight,themeSelected} = this.props;
 
-        if (this.state.loaded) {
+        if (this.props.themes.length > 0) {
             return (
                 <ScrollableTabView
                     tabBarPosition="overlayBottom"
@@ -47,6 +44,7 @@ class App extends Component {
                     renderTabBar={()=>(<View></View>)}
                     style={styles.app}>
                     <TitleBar
+                        themeSelected={themeSelected}
                         themeBlockHeight={themesBlockHeight}
                         onOpenProfile={this.onOpenProfile.bind(this)}
                         onOpenSetting={this.onOpenSetting.bind(this)}/>
@@ -74,7 +72,8 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.setState({loaded: true})
+        const {dispatch} = this.props;
+        dispatch(getThemes());
     }
 }
 
@@ -85,12 +84,14 @@ const styles = StyleSheet.create({
     }
 });
 
-function app(state) {
+function home(state) {
     "use strict";
     return {
         themesBlockHeight: state.home.themesBlockHeight,
-        pageSelected: state.home.pageSelected
+        pageSelected: state.home.pageSelected,
+        themes: state.home.themes,
+        themeSelected: state.home.themeSelected
     }
 }
 
-export default connect(app)(App);
+export default connect(home)(App);
