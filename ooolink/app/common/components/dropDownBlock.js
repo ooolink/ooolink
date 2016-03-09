@@ -23,7 +23,7 @@ class DropDownBlock extends Component {
         startHeight: PropTypes.number,
         endHeight: PropTypes.number,
         duration: PropTypes.number,
-        openStatus: PropTypes.bool,
+        openStatus: PropTypes.bool.isRequired,
         overHeight: PropTypes.number
     };
 
@@ -43,6 +43,7 @@ class DropDownBlock extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
         this.setState({
             height: nextProps.endHeight - nextProps.startHeight,
             blockHeight: new Animated.Value(this.props.openStatus ? -nextProps.startHeight : -nextProps.endHeight)
@@ -50,6 +51,9 @@ class DropDownBlock extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (prevProps.openStatus === this.props.openStatus) {
+            return;
+        }
         Animated.timing(
             this.state.blockHeight,
             {

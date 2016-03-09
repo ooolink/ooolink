@@ -14,11 +14,22 @@ import React,{
     Animated,
     PropTypes,
     Dimensions,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import DropDownBlock from '../common/components/dropDownBlock';
 
+import Theme from '../containers/themes';
+
+let {height, width} = Dimensions.get('window');
+
 class TitleBar extends Component {
+
+    static propTypes = {
+        onOpenProfile: PropTypes.func.isRequired,
+        onOpenSetting: PropTypes.func.isRequired,
+        themeBlockHeight: PropTypes.number.isRequired
+    };
 
     constructor(props) {
         super(props);
@@ -28,17 +39,24 @@ class TitleBar extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {themeBlockHeight} = nextProps;
+        if (themeBlockHeight != this.state.themeBlockHeight) {
+            this.setState({themeBlockHeight});
+        }
+    }
+
     render() {
         return (
             <View>
                 <DropDownBlock
                     openStatus={this.state.openStatus}
                     style={styles.dropDownBlock}
-                    startHeight={0}
-                    endHeight={100}
-                    duration={200}
+                    endHeight={this.state.themeBlockHeight}
                 >
-                    <Text>gh</Text>
+                    <View style={styles.dropDownBlockContainer}>
+                        <Theme/>
+                    </View>
                 </DropDownBlock>
                 <View style={styles.bar}>
                     <Text style={styles.selectedItem}
@@ -49,9 +67,39 @@ class TitleBar extends Component {
                             source={this.state.arrowImage}
                         />
                     </Text>
+                    <TouchableOpacity
+                        style={[styles.itemIcon,{
+                            marginLeft: width-110
+                        }]}
+                        onPress={this.openProfile.bind(this)}
+                    >
+                        <Image
+                            style={styles.itemIcon}
+                            source={require('../images/home-profile.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.itemIcon,{
+                            marginLeft: 10
+                        }]}
+                        onPress={this.openSetting.bind(this)}
+                    >
+                        <Image
+                            style={styles.itemIcon}
+                            source={require('../images/home-setting.png')}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
+    }
+
+    openProfile() {
+        this.props.onOpenProfile();
+    }
+
+    openSetting() {
+        this.props.onOpenSetting();
     }
 
     openBlock() {
@@ -61,8 +109,6 @@ class TitleBar extends Component {
         });
     }
 }
-
-let {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -89,9 +135,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#22b473'
     },
+    dropDownBlockContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around"
+    },
     itemArrow: {
         width: 10,
         height: 10
+    },
+    itemIcon: {
+        width: 16,
+        height: 16
     }
 });
 

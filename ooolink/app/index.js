@@ -10,13 +10,21 @@
 import React,{
     Component
 } from 'react-native';
-import { Provider } from 'react-redux';
-import App from './layouts/app';
+import App from './containers/app';
+import {
+    Provider
+} from 'react-redux'
+
+import configureStore from './store';
+
+let store = configureStore();
 
 class OOOLINK extends Component {
     render() {
         return (
-            <App></App>
+            <Provider store={store}>
+                <App></App>
+            </Provider>
         );
     }
 }

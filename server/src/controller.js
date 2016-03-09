@@ -36,3 +36,8 @@ export function * getTheme() {
     let m = route.call(this);
     yield m.getTheme.call(this);
 }
+
+export function * getTopic(){
+    "use strict";
+
+}
