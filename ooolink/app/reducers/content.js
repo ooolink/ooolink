@@ -6,22 +6,22 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
+
 import * as types from '../constants/actionTypes'
 
+//0 view, 1 person, 2 setting
 const initialState = {
-    currentSite: 'cnode-bbs',
-    token: [],
-    siteInfo: {}
+    topics: {}
 };
 
 export default function(state = initialState, action) {
-    "use strict";
 
     switch (action.type) {
-        case types.SET_CURRENT_SITE:
-            return Object.assign({}, state, {
-                currentSite: action.site
-            });
+        case types.GET_TOPICS:
+            let {theme,page,topics} = action;
+            state.topics[theme] = state.topics[theme] || {};
+            state.topics[theme][page] = topics;
+            return Object.assign({}, state);
         default:
             return state;
     }

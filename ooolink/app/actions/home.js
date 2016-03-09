@@ -11,24 +11,39 @@ import * as ActionTypes from '../constants/actionTypes';
 import {SERVER_ADDRESS} from '../constants/config';
 import {computeThemeBlockHeight} from '../utils';
 
+import {getTopics} from './content';
+
 function getThemesFromServer(site) {
     "use strict";
     return dispatch => {
         return fetch(`${SERVER_ADDRESS}${site}/themes`)
             .then(response => response.json())
             .then(json => {
-                let themes = json.concat(json).concat(['时代', '阿萨德撒', '阿萨飒飒爱上时代2213ad', '12312332', 'hasdoowqe', 'asdqwe', '阿萨飒飒爱上时代2213ad', '阿萨飒飒爱上时代2213ad12assdads阿斯达']).concat(json).concat(['时代', '阿萨德撒', '阿萨飒飒爱上2213ad']);
+                let themes = json;
                 dispatch(setThemesBlockHeight(computeThemeBlockHeight(themes)));
                 dispatch({
                     type: ActionTypes.GET_THEMES,
                     themes
                 });
+                dispatch(selectTheme(themes[0]));
             });
     }
 }
 
 export function selectPage(page) {
+    "use strict";
     return {type: ActionTypes.CHANGE_PAGE, page}
+}
+
+export function selectTheme(theme) {
+    "use strict";
+    return (dispatch, getState)=> {
+        if (getState().home.themeSelected === theme) {
+            return;
+        }
+        dispatch({type: ActionTypes.CHANGE_THEME, theme});
+        return dispatch(getTopics(theme));
+    };
 }
 
 export function setThemesBlockHeight(height) {
@@ -39,7 +54,14 @@ export function setThemesBlockHeight(height) {
 export function getThemes() {
     "use strict";
     return (dispatch, getState) => {
-        let site = getState().app.currentSite;
+        let site = getState().app.currentSite, themes = getState().home.themes;
+        if (themes.length > 1) {
+            dispatch(selectTheme(themes[0]));
+            return dispatch({
+                type: ActionTypes.GET_THEMES,
+                themes
+            })
+        }
         return dispatch(getThemesFromServer(site))
     }
 }
