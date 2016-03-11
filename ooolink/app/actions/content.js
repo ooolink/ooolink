@@ -20,6 +20,7 @@ function getTopicsFromServer(site, theme, page, limit) {
                 dispatch({
                     type: ActionTypes.GET_TOPICS,
                     topics,
+                    theme,
                     page
                 });
             });
@@ -30,12 +31,13 @@ export function getTopics(theme, page = 0, limit = 10) {
     "use strict";
     return (dispatch, getState) => {
 
-        let site = getState().app.currentSite, themes = getState().content.topics[theme];
+        let site = getState().app.currentSite, topics = getState().content.topics[theme];
 
-        if (themes && themes[page].length > 1) {
+        if (topics && topics[page]) {
             return dispatch({
                 type: ActionTypes.GET_TOPICS,
-                topics: themes[page],
+                topics: topics[page],
+                theme,
                 page
             })
         }

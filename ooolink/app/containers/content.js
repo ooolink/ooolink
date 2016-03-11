@@ -36,8 +36,7 @@ class Content extends Component {
     }
 
     componentWillReceiveProps(nextPros) {
-        let rs = this.state.theme && this.state.theme != nextPros.theme;
-        this.setState({data: nextPros.data, loaded: !rs, theme: nextPros.theme});
+        this.setState({data: nextPros.data, loaded: nextPros.data.length > 0});
     }
 
     render() {
@@ -59,9 +58,9 @@ class Content extends Component {
 
 function content(state) {
     "use strict";
-    let len = state.content.topics.length, theme = state.home.themeSelected;
+    let theme = state.home.themeSelected, topics = state.content.topics[theme];
     return {
-        data: len ? state.content.topics[0].data : [],
+        data: topics ? topics[0].data : [],
         theme
     }
 }

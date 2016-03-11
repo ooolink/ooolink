@@ -37,9 +37,12 @@ export function selectPage(page) {
 
 export function selectTheme(theme) {
     "use strict";
-    return dispatch=> {
-        dispatch(getTopics(theme));
-        return dispatch({type: ActionTypes.CHANGE_THEME, theme})
+    return (dispatch, getState)=> {
+        if (getState().home.themeSelected === theme) {
+            return;
+        }
+        dispatch({type: ActionTypes.CHANGE_THEME, theme});
+        return dispatch(getTopics(theme));
     };
 }
 

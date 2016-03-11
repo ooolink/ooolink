@@ -11,14 +11,16 @@ import * as types from '../constants/actionTypes'
 
 //0 view, 1 person, 2 setting
 const initialState = {
-    topics: []
+    topics: {}
 };
 
 export default function(state = initialState, action) {
 
     switch (action.type) {
         case types.GET_TOPICS:
-            state.topics[action.page] = action.topics;
+            let {theme,page,topics} = action;
+            state.topics[theme] = state.topics[theme] || {};
+            state.topics[theme][page] = topics;
             return Object.assign({}, state);
         default:
             return state;
