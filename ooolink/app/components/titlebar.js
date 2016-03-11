@@ -29,7 +29,8 @@ class TitleBar extends Component {
         onOpenProfile: PropTypes.func.isRequired,
         onOpenSetting: PropTypes.func.isRequired,
         themeBlockHeight: PropTypes.number.isRequired,
-        themeSelected: PropTypes.string.isRequired
+        themeSelected: PropTypes.string.isRequired,
+        style: View.propTypes.style
     };
 
     constructor(props) {
@@ -47,13 +48,13 @@ class TitleBar extends Component {
         }
 
         if (themeSelected != this.props.themeSelected) {
-            this.openBlock()
+            this.openBlock();
         }
     }
 
     render() {
         return (
-            <View>
+            <View style={this.props.style}>
                 <DropDownBlock
                     openStatus={this.state.openStatus}
                     style={styles.dropDownBlock}
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
     },
     dropDownBlock: {
         flex: 1,
+        width,
         backgroundColor: '#22b473'
     },
     dropDownBlockContainer: {

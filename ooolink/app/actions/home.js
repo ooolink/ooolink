@@ -11,6 +11,8 @@ import * as ActionTypes from '../constants/actionTypes';
 import {SERVER_ADDRESS} from '../constants/config';
 import {computeThemeBlockHeight} from '../utils';
 
+import {getTopics} from './content';
+
 function getThemesFromServer(site) {
     "use strict";
     return dispatch => {
@@ -35,7 +37,10 @@ export function selectPage(page) {
 
 export function selectTheme(theme) {
     "use strict";
-    return {type: ActionTypes.CHANGE_THEME, theme}
+    return dispatch=> {
+        dispatch(getTopics(theme));
+        return dispatch({type: ActionTypes.CHANGE_THEME, theme})
+    };
 }
 
 export function setThemesBlockHeight(height) {

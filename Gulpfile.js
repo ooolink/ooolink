@@ -24,10 +24,12 @@ gulp.task('babel', ()=> {
 
 gulp.task('server', ['babel'], ()=> {
     nodemon({
+        watch: ['./'],
         script: 'server/dist/index.js',
-        ignore: 'server/dist/**/*.js',
+        ignore: ['server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'ooolink/app'],
         ext: '.js',
         env: {'NODE_ENV': 'dev'},
-        tasks: ['babel']
+        tasks: ['babel'],
+        cwd: __dirname
     });
 });

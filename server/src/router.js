@@ -63,9 +63,6 @@ export default (router)=> {
         yield _controller.getTheme.call(this);
     });
 
-    router.get('/:site/group/:id', function *(next) {
-
-    });
 
     router.get('/:site/topic/:id', function *(next) {
 
@@ -80,6 +77,18 @@ export default (router)=> {
     });
 
     router.post('/:site/topic/:id', methodAuth('put'), function *(next) {
+
+    });
+
+    router.post('/:site/comment', function *(next) {
+
+    });
+
+    router.post('/:site/comment/:id', methodAuth('delete'), function *(next) {
+
+    });
+
+    router.post('/:site/comment/:id', methodAuth('put'), function *(next) {
 
     });
 

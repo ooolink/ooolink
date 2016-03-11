@@ -9,10 +9,12 @@
 
 import home from './home';
 import app from './app';
+import content from './content';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
     home,
-    app
+    app,
+    content
 });
 
