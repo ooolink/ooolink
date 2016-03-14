@@ -74,7 +74,6 @@ export function getTopic(id) {
     return (dispatch, getState) => {
 
         let site = getState().app.currentSite;
-        dispatch(selectTopic(id));
         return dispatch(getTopicFromServer(site, id));
     }
 }

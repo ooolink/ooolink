@@ -45,7 +45,7 @@ class App extends Component {
     }
 
     configureScene(route, routeStack) {
-        return Navigator.SceneConfigs.FloatFromBottom;
+        return Navigator.SceneConfigs.FloatFromLeft;
     }
 
     renderScene(route, navigator) {

@@ -30,15 +30,26 @@ let {height, width} = Dimensions.get('window');
 
 class ContentBlock extends Component {
     render() {
+        let data = this.props.data,
+            avatar = UriDeal(data.author.avatar_url);
         return (
-            <View></View>
+            <View style={styles.contentBlock}>
+                <Text style={styles.contentTitle}>{data.title}</Text>
+                <Image
+                    style={styles.authorHead}
+                    source={{uri:avatar ? avatar : USER_DEFAULT_HEAD}}
+                />
+                <HtmlComponent
+                    content={data.content}
+                />
+            </View>
         );
     }
 }
 
 class CommentBlock extends Component {
     render() {
-        let data = this.props.data, avatar = data.author.avatar_url;
+        let data = this.props.data, avatar = UriDeal(data.author.avatar_url);
         return (
             <View style={styles.commentBlock}>
                 <Text style={styles.rowNumber}>{(parseInt(this.props.rowID) + 1) + '楼'}</Text>
@@ -60,7 +71,16 @@ class CommentBlock extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20
+        marginTop: 20,
+        backgroundColor: '#fff'
+    },
+    contentBlock: {
+        padding: 6,
+        borderBottomWidth: 10,
+        borderBottomColor: '#333'
+    },
+    contentTitle: {
+        fontWeight: '900'
     },
     commentBlock: {
         width,
@@ -119,26 +139,28 @@ class CommentsList extends Component {
     }
 
     render() {
+        let com;
         if (this.props.data) {
-            return (
-                <View style={styles.container}>
-                    <TopicBar onBack={this.onBack.bind(this)}/>
-                    <ListView
-                        style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
-                        dataSource={this.state.dataSource}
-                        renderHeader={this._renderHeader.bind(this)}
-                        renderRow={this._renderRow.bind(this)}
-                    />
-                </View>
-            );
+            com = <ListView
+                style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
+                dataSource={this.state.dataSource}
+                renderHeader={this._renderHeader.bind(this)}
+                renderRow={this._renderRow.bind(this)}
+            />;
         } else {
-            return <LoadingBlock/>
+            com = <LoadingBlock/>
         }
+        return (
+            <View style={styles.container}>
+                <TopicBar onBack={this.onBack.bind(this)}/>
+                {com}
+            </View>
+        );
     }
 
     _renderHeader() {
         if (!this.contentBlock) {
-            this.contentBlock = <ContentBlock data={this.props.data.comments}/>
+            this.contentBlock = <ContentBlock data={this.props.data}/>
         }
         return this.contentBlock;
     }

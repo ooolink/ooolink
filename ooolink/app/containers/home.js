@@ -20,7 +20,7 @@ import {connect} from 'react-redux';
 import TopicList from '../components/topicslist';
 import CommentsList from '../containers/commentslist';
 import TitleBar from '../components/titlebar';
-import {getTopic} from '../actions/content';
+import {getTopic, selectTopic} from '../actions/content';
 
 let {height, width} = Dimensions.get('window');
 
@@ -55,12 +55,15 @@ class Home extends Component {
     }
 
     onSelectTopic(topicId) {
-        this.props.dispatch(getTopic(topicId));
+        this.props.dispatch(selectTopic(topicId));
         this.props.navigator.push({
             name: 'commentsList',
             index: 1,
             component: CommentsList
         });
+        setTimeout(()=> {
+            this.props.dispatch(getTopic(topicId));
+        }, 200);
     }
 }
 
