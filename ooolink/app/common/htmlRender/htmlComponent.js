@@ -27,7 +27,7 @@ let {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
     img: {
         width: width - 20,
-        height: height
+        height: width
     }
 });
 
@@ -57,6 +57,7 @@ class HtmlComponent extends Component {
 
                 return (
                     <Image
+                        resizeMode="contain"
                         style={styles.img}
                         source={{uri}}/>
                 )
