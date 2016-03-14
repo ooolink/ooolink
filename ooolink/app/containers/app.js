@@ -45,7 +45,7 @@ class App extends Component {
     }
 
     configureScene(route, routeStack) {
-        return Navigator.SceneConfigs.VerticalUpSwipeJump;
+        return Navigator.SceneConfigs.FloatFromBottom;
     }
 
     renderScene(route, navigator) {

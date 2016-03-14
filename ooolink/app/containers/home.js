@@ -55,12 +55,12 @@ class Home extends Component {
     }
 
     onSelectTopic(topicId) {
+        this.props.dispatch(getTopic(topicId));
         this.props.navigator.push({
             name: 'commentsList',
             index: 1,
             component: CommentsList
         });
-        this.props.dispatch(getTopic(topicId));
     }
 }
 

@@ -61,12 +61,20 @@ export function getTopics(theme, page = 0, limit = 10) {
     }
 }
 
+export function selectTopic(id) {
+    "use strict";
+    return {
+        type: ActionTypes.SELECT_TOPIC,
+        id
+    }
+}
+
 export function getTopic(id) {
     "use strict";
     return (dispatch, getState) => {
 
         let site = getState().app.currentSite;
-
+        dispatch(selectTopic(id));
         return dispatch(getTopicFromServer(site, id));
     }
 }

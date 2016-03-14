@@ -21,6 +21,7 @@ import React,{
 } from 'react-native';
 import {connect} from 'react-redux';
 import LoadingBlock from '../common/components/loadingBlock';
+import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
@@ -57,6 +58,10 @@ class CommentBlock extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginTop: 20
+    },
     commentBlock: {
         width,
         backgroundColor: '#fff',
@@ -111,19 +116,20 @@ class CommentsList extends Component {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(nextProps.data ? nextProps.data.replies : [])
         });
-        console.log(nextProps);
     }
 
     render() {
-        console.log(this.props,'asd');
         if (this.props.data) {
             return (
-                <ListView
-                    style={[this.props.style, {backgroundColor:'#fff'}]}
-                    dataSource={this.state.dataSource}
-                    renderHeader={this._renderHeader.bind(this)}
-                    renderRow={this._renderRow.bind(this)}
-                />
+                <View style={styles.container}>
+                    <TopicBar onBack={this.onBack.bind(this)}/>
+                    <ListView
+                        style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
+                        dataSource={this.state.dataSource}
+                        renderHeader={this._renderHeader.bind(this)}
+                        renderRow={this._renderRow.bind(this)}
+                    />
+                </View>
             );
         } else {
             return <LoadingBlock/>
@@ -142,6 +148,10 @@ class CommentsList extends Component {
             <CommentBlock
                 data={rowData} rowID={rowID}/>
         )
+    }
+
+    onBack() {
+        this.props.navigator.pop();
     }
 }
 

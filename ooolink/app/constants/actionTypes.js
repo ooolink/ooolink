@@ -16,6 +16,7 @@ export const CHANGE_THEME = 'CHANGE_THEME';
 export const GET_TOPICS = 'GET_TOPICS';
 export const GET_TOPIC = 'GET_TOPIC';
 export const POST_TOPIC = 'PUT_TOPIC';
+export const SELECT_TOPIC = 'SELECT_TOPIC';
 
 /** COMMENT **/
 export const GET_COMMENTS = 'GET_COMMENTS';
