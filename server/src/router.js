@@ -65,7 +65,7 @@ export default (router)=> {
 
 
     router.get('/:site/topic/:id', function *(next) {
-
+        yield _controller.getTopic.call(this);
     });
 
     router.post('/:site/topic', function *(next) {

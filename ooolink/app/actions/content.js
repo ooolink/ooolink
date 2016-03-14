@@ -27,6 +27,22 @@ function getTopicsFromServer(site, theme, page, limit) {
     }
 }
 
+function getTopicFromServer(site, id) {
+    "use strict";
+    return dispatch => {
+        return fetch(`${SERVER_ADDRESS}${site}/topic/${id}`)
+            .then(response => response.json())
+            .then(json => {
+                let topic = json;
+                dispatch({
+                    type: ActionTypes.GET_TOPIC,
+                    topic,
+                    id
+                });
+            });
+    }
+}
+
 export function getTopics(theme, page = 0, limit = 10) {
     "use strict";
     return (dispatch, getState) => {
@@ -42,5 +58,15 @@ export function getTopics(theme, page = 0, limit = 10) {
             })
         }
         return dispatch(getTopicsFromServer(site, theme, page, limit));
+    }
+}
+
+export function getTopic(id) {
+    "use strict";
+    return (dispatch, getState) => {
+
+        let site = getState().app.currentSite;
+
+        return dispatch(getTopicFromServer(site, id));
     }
 }

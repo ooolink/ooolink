@@ -19,7 +19,9 @@ import React,{
 import {connect} from 'react-redux';
 
 import TopicsList from '../components/topicslist';
+import CommentsList from '../components/commentslist';
 import LoadingBlock from '../common/components/loadingBlock';
+import {getTopic} from '../actions/content';
 
 class Content extends Component {
 
@@ -36,7 +38,11 @@ class Content extends Component {
     }
 
     componentWillReceiveProps(nextPros) {
-        this.setState({data: nextPros.data, loaded: nextPros.data.length > 0});
+        this.setState({
+            data: nextPros.data,
+            loaded: this.state.theme != nextPros.theme ? false : nextPros.data.topics.length > 0 || nextPros.data.comments,
+            theme: nextPros.theme
+        });
     }
 
     render() {
@@ -44,23 +50,57 @@ class Content extends Component {
             <Navigator
                 initialRoute={{name: 'topics', index: 0, component: TopicsList}}
                 renderScene={this.renderScene.bind(this)}
+                configureScene={this.configureScene.bind(this)}
             />
         );
     }
 
+    configureScene(route, routeStack) {
+        return Navigator.SceneConfigs.VerticalUpSwipeJump;
+    }
+
     renderScene(route, navigator) {
-        return React.createElement(this.state.loaded ? TopicsList : LoadingBlock, Object.assign({}, route.props, this.props, {
+
+        this.navigator = navigator;
+        let component = this.state.loaded ? function() {
+            switch (route.name) {
+                case 'topics':
+                    return TopicsList;
+                case 'comments':
+                    return CommentsList;
+            }
+        }() : LoadingBlock;
+
+        return React.createElement(component, Object.assign({}, route.props, this.props, {
             navigator,
-            data: this.state.data
+            data: this.state.data,
+            onSelectTopic: this.onSelectTopic.bind(this)
         }));
+    }
+
+    onSelectTopic(topicId) {
+        this.setState({loaded: false});
+        this.navigator.push({
+            name: 'comments',
+            index: 1
+        });
+        this.props.dispatch(getTopic(topicId));
     }
 }
 
 function content(state) {
     "use strict";
-    let theme = state.home.themeSelected, topics = state.content.topics[theme];
+    let theme = state.home.themeSelected,
+        topic = state.content.topicSelected,
+        topics = state.content.topics[theme],
+        comments = state.content.comments[topic];
+
     return {
-        data: topics ? topics[0].data : [],
+        data: {
+            topics: topics ? topics[0].data : [],
+            comments: comments ? comments.data : null,
+            theme
+        },
         theme
     }
 }

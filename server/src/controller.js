@@ -10,6 +10,7 @@
 class Controller {
     getThemes;
     getTheme;
+    getTopic;
 }
 
 export default Controller;
@@ -37,7 +38,8 @@ export function * getTheme() {
     yield m.getTheme.call(this);
 }
 
-export function * getTopic(){
+export function * getTopic() {
     "use strict";
-
+    let m = route.call(this);
+    yield m.getTopic.call(this);
 }

@@ -11,7 +11,9 @@ import * as types from '../constants/actionTypes'
 
 //0 view, 1 person, 2 setting
 const initialState = {
-    topics: {}
+    topics: {},
+    comments: {},
+    topicSelected: null
 };
 
 export default function(state = initialState, action) {
@@ -21,6 +23,11 @@ export default function(state = initialState, action) {
             let {theme,page,topics} = action;
             state.topics[theme] = state.topics[theme] || {};
             state.topics[theme][page] = topics;
+            return Object.assign({}, state);
+        case types.GET_TOPIC:
+            let {id, topic} = action;
+            state.comments[id] = topic;
+            state.topicSelected = id;
             return Object.assign({}, state);
         default:
             return state;

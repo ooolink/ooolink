@@ -16,6 +16,7 @@ import React,{
     Image,
     Dimensions,
     View,
+    TouchableOpacity,
     PropTypes
 } from 'react-native';
 
@@ -28,27 +29,36 @@ class TopicBlock extends Component {
     render() {
         let data = this.props.data, avatar = UriDeal(data.author.avatar_url);
         return (
-            <View style={styles.topic}>
-                <Image
-                    style={styles.authorHead}
-                    source={{uri: avatar ? avatar : USER_DEFAULT_HEAD }}
-                />
-                <Text style={styles.username}>{data.author.loginname}</Text>
-                <Text
-                    style={styles.title}
-                >{WordLineDeal(data.title, width - 130, 13, 2)}</Text>
-                <View style={styles.countContainer}>
+            <TouchableOpacity
+                onPress={this._onSelectTopic.bind(this)}
+            >
+                <View
+                    style={styles.topic}>
                     <Image
-                        style={styles.commentIcon}
-                        source={require('../images/content-comment.png')}/>
-                    <Text style={styles.countText}>{data.reply_count}</Text>
-                    <Image
-                        style={styles.viewIcon}
-                        source={require('../images/content-view.png')}/>
-                    <Text style={styles.countText}>{data.visit_count}</Text>
+                        style={styles.authorHead}
+                        source={{uri: avatar ? avatar : USER_DEFAULT_HEAD }}
+                    />
+                    <Text style={styles.username}>{data.author.loginname}</Text>
+                    <Text
+                        style={styles.title}
+                    >{WordLineDeal(data.title, width - 130, 13, 2)}</Text>
+                    <View style={styles.countContainer}>
+                        <Image
+                            style={styles.commentIcon}
+                            source={require('../images/content-comment.png')}/>
+                        <Text style={styles.countText}>{data.reply_count}</Text>
+                        <Image
+                            style={styles.viewIcon}
+                            source={require('../images/content-view.png')}/>
+                        <Text style={styles.countText}>{data.visit_count}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
+    }
+
+    _onSelectTopic() {
+        this.props.onSelectTopic(this.props.data.id);
     }
 }
 
@@ -66,9 +76,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 80,
         width: 80,
-        textAlign:'center',
-        fontSize:10,
-        backgroundColor:0
+        textAlign: 'center',
+        fontSize: 10,
+        backgroundColor: 0
     },
     title: {
         position: 'absolute',
@@ -113,20 +123,21 @@ class TopicsList extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
-        navigator: PropTypes.object
+        navigator: PropTypes.object,
+        onSelectTopic: PropTypes.func.isRequired
     };
 
     constructor(props) {
         super(props);
         let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(this.props.data)
+            dataSource: dataSource.cloneWithRows(this.props.data.topics)
         }
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.data)
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.data.topics)
         })
     }
 
@@ -135,14 +146,16 @@ class TopicsList extends Component {
             <ListView
                 style={this.props.style}
                 dataSource={this.state.dataSource}
-                renderRow={this._renderRow}
+                renderRow={this._renderRow.bind(this)}
             />
         );
     }
 
     _renderRow(rowData, sectionID, rowID) {
         return (
-            <TopicBlock data={rowData}/>
+            <TopicBlock
+                onSelectTopic={this.props.onSelectTopic}
+                data={rowData}/>
         )
     }
 }

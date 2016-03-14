@@ -65,3 +65,30 @@ export function WordLineDeal(title, width, px, line) {
     }
     return title;
 }
+
+export function timeDeal(time, type) {
+    "use strict";
+
+    function ago(time) {
+        let t = new Date() - new Date(time), tm = [], tms = ['年', '个月', '天', '小时', '分钟', '秒'];
+        tm[0] = t / (365 * 24 * 3600 * 1000);
+        tm[1] = t / (30 * 24 * 3600 * 1000);
+        tm[2] = t / (24 * 3600 * 1000);
+        tm[3] = t / (3600 * 1000);
+        tm[4] = t / (60 * 1000);
+        tm[5] = t / 1000;
+        for (let i = 0, len = tm.length; i < len; i++) {
+            if (parseInt(tm[i]) != 0) {
+                return parseInt(tm[i]) + tms[i] + '前';
+            }
+        }
+        return t + '毫秒前';
+    }
+
+    switch (type) {
+        case 'ago':
+            return ago(time);
+        default:
+            return ago(time);
+    }
+}
