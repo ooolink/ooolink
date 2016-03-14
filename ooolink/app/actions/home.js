@@ -30,11 +30,6 @@ function getThemesFromServer(site) {
     }
 }
 
-export function selectPage(page) {
-    "use strict";
-    return {type: ActionTypes.CHANGE_PAGE, page}
-}
-
 export function selectTheme(theme) {
     "use strict";
     return (dispatch, getState)=> {

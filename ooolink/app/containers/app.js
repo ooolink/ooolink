@@ -13,17 +13,13 @@ import React,{
     ScrollView,
     Text,
     Dimensions,
+    Navigator,
     View
 } from 'react-native';
 import {connect} from 'react-redux';
-
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import Content from '../containers/content';
-import TitleBar from '../components/titlebar';
+import Home from '../containers/home';
 import LoadingBlock from '../common/components/loadingBlock';
-
-import {selectPage,getThemes} from '../actions/home'
-let {height, width} = Dimensions.get('window');
+import {getThemes} from '../actions/home';
 
 class App extends Component {
 
@@ -32,34 +28,14 @@ class App extends Component {
     }
 
     render() {
-        const {dispatch,pageSelected,themesBlockHeight,themeSelected} = this.props;
 
         if (this.props.themes.length > 0) {
             return (
-                <ScrollableTabView
-                    tabBarPosition="overlayBottom"
-                    tabBarUnderlineColor="#22b473"
-                    tabBarActiveTextColor="#22b473"
-                    page={pageSelected}
-                    onChangeTab={function(index){
-                    dispatch(selectPage(index-1))
-                }}
-                    renderTabBar={()=>(<View></View>)}
-                    style={styles.app}>
-                    <View style={styles.container}>
-                        <Content style={styles.content}/>
-                        <TitleBar
-                            style={styles.titleBar}
-                            themeSelected={themeSelected}
-                            themeBlockHeight={themesBlockHeight}
-                            onOpenProfile={this.onOpenProfile.bind(this)}
-                            onOpenSetting={this.onOpenSetting.bind(this)}/>
-                    </View>
-                    <ScrollView tabLabel="Person">
-                    </ScrollView>
-                    <ScrollView tabLabel="Setting">
-                    </ScrollView>
-                </ScrollableTabView>
+                <Navigator
+                    initialRoute={{name: 'home', index: 0, component: Home}}
+                    renderScene={this.renderScene.bind(this)}
+                    configureScene={this.configureScene.bind(this)}
+                />
             )
         } else {
             return (
@@ -68,14 +44,15 @@ class App extends Component {
         }
     }
 
-    onOpenProfile() {
-        const {dispatch} = this.props;
-        dispatch(selectPage(1));
+    configureScene(route, routeStack) {
+        return Navigator.SceneConfigs.VerticalUpSwipeJump;
     }
 
-    onOpenSetting() {
-        const {dispatch} = this.props;
-        dispatch(selectPage(2))
+    renderScene(route, navigator) {
+
+        return React.createElement(route.component, Object.assign({}, route.props, {
+            navigator
+        }));
     }
 
     componentDidMount() {
@@ -84,37 +61,12 @@ class App extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    app: {
-        flex: 1,
-        marginTop: 20
-    },
-    titleBar: {
-        flex: 1,
-        position: 'absolute',
-        top: 0
-    },
-    content: {
-        flex: 1,
-        position: 'absolute',
-        top: 40,
-        width,
-        height: height - 40,
-        backgroundColor: '#333'
-    }
-});
 
-function home(state) {
+function app(state) {
     "use strict";
     return {
-        themesBlockHeight: state.home.themesBlockHeight,
-        pageSelected: state.home.pageSelected,
-        themes: state.home.themes,
-        themeSelected: state.home.themeSelected
+        themes: state.home.themes
     }
 }
 
-export default connect(home)(App);
+export default connect(app)(App);

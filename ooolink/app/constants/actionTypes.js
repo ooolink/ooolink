@@ -8,7 +8,6 @@
  */
 
 /** HOME **/
-export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const SET_THEMES_BLOCK_HEIGHT = 'SET_THEMES_BLOCK_HEIGHT';
 export const GET_THEMES = 'GET_THEMES';
 export const CHANGE_THEME = 'CHANGE_THEME';

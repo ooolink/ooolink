@@ -19,7 +19,8 @@ import React,{
     TouchableOpacity,
     PropTypes
 } from 'react-native';
-
+import {connect} from 'react-redux';
+import LoadingBlock from '../common/components/loadingBlock';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
@@ -102,25 +103,31 @@ class CommentsList extends Component {
         super(props);
         let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(this.props.data.comments.replies)
+            dataSource: dataSource.cloneWithRows(this.props.data ? this.props.data.replies : [])
         }
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.data.comments.replies)
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.data ? nextProps.data.replies : [])
         });
+        console.log(nextProps);
     }
 
     render() {
-        return (
-            <ListView
-                style={[this.props.style, {backgroundColor:'#fff'}]}
-                dataSource={this.state.dataSource}
-                renderHeader={this._renderHeader.bind(this)}
-                renderRow={this._renderRow.bind(this)}
-            />
-        );
+        console.log(this.props,'asd');
+        if (this.props.data) {
+            return (
+                <ListView
+                    style={[this.props.style, {backgroundColor:'#fff'}]}
+                    dataSource={this.state.dataSource}
+                    renderHeader={this._renderHeader.bind(this)}
+                    renderRow={this._renderRow.bind(this)}
+                />
+            );
+        } else {
+            return <LoadingBlock/>
+        }
     }
 
     _renderHeader() {
@@ -138,4 +145,14 @@ class CommentsList extends Component {
     }
 }
 
-export default CommentsList;
+function commentsList(state) {
+    "use strict";
+    let topic = state.content.topicSelected,
+        comments = state.content.comments[topic];
+
+    return {
+        data: comments ? comments.data : null
+    }
+}
+
+export default connect(commentsList)(CommentsList);

@@ -19,7 +19,7 @@ import React,{
     TouchableOpacity,
     PropTypes
 } from 'react-native';
-
+import LoadingBlock from '../common/components/loadingBlock';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal} from '../utils';
 
@@ -123,7 +123,6 @@ class TopicsList extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
-        navigator: PropTypes.object,
         onSelectTopic: PropTypes.func.isRequired
     };
 
@@ -131,24 +130,28 @@ class TopicsList extends Component {
         super(props);
         let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(this.props.data.topics)
+            dataSource: dataSource.cloneWithRows(this.props.data)
         }
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.data.topics)
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.data)
         })
     }
 
     render() {
-        return (
-            <ListView
-                style={this.props.style}
-                dataSource={this.state.dataSource}
-                renderRow={this._renderRow.bind(this)}
-            />
-        );
+        if (this.props.data.length > 0) {
+            return (
+                <ListView
+                    style={this.props.style}
+                    dataSource={this.state.dataSource}
+                    renderRow={this._renderRow.bind(this)}
+                />
+            );
+        } else {
+            return <LoadingBlock/>
+        }
     }
 
     _renderRow(rowData, sectionID, rowID) {

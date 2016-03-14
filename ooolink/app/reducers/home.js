@@ -11,7 +11,6 @@ import * as types from '../constants/actionTypes'
 
 //0 view, 1 person, 2 setting
 const initialState = {
-    pageSelected: 0,
     themeSelected: '',
     themes: [],
     themesBlockHeight: 40
@@ -20,10 +19,6 @@ const initialState = {
 export default function(state = initialState, action) {
 
     switch (action.type) {
-        case types.CHANGE_PAGE:
-            return Object.assign({}, state, {
-                pageSelected: action.page
-            });
         case types.GET_THEMES:
             return Object.assign({}, state, {
                 themes: action.themes
