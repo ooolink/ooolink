@@ -62,7 +62,7 @@ class Home extends Component {
     }
 
     onChooseTheme(theme) {
-        this.props.dispatch(selectTheme(theme));
+        this.props.dispatch(selectTheme(this.props.site, theme));
     }
 
     onSelectTopic(topicId) {
@@ -88,7 +88,8 @@ function home(state) {
         themesBlockHeight: state.home.themesBlockHeight,
         themes: state.home.themes[site],
         themeSelected,
-        topics: topics ? topics[0].data : []
+        topics: topics ? topics[0].data : [],
+        site
     }
 }
 

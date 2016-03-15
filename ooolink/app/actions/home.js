@@ -26,19 +26,19 @@ function getThemesFromServer(site) {
                     themes,
                     site
                 });
-                dispatch(selectTheme(themes[0]));
+                dispatch(selectTheme(site, themes[0]));
             });
     }
 }
 
-export function selectTheme(theme) {
+export function selectTheme(site, theme) {
     "use strict";
     return (dispatch, getState)=> {
         if (getState().home.themeSelected === theme) {
             return;
         }
         dispatch({type: ActionTypes.CHANGE_THEME, theme});
-        return dispatch(getTopics(theme));
+        return dispatch(getTopics(site, theme));
     };
 }
 
@@ -47,16 +47,17 @@ export function setThemesBlockHeight(height) {
     return {type: ActionTypes.SET_THEMES_BLOCK_HEIGHT, height};
 }
 
-export function getThemes() {
+export function getThemes(site) {
     "use strict";
     return (dispatch, getState) => {
-        let site = getState().app.currentSite, themes = getState().home.themes[site] || [];
+        let themes = getState().home.themes[site] || [];
         if (themes.length > 1) {
-            dispatch(selectTheme(themes[0]));
-            return dispatch({
+            dispatch(selectTheme(site, themes[0]));
+            dispatch({
                 type: ActionTypes.GET_THEMES,
                 themes
-            })
+            });
+            return dispatch(setThemesBlockHeight(computeThemeBlockHeight(themes)));
         }
         return dispatch(getThemesFromServer(site))
     }

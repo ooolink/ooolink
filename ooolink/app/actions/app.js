@@ -23,7 +23,7 @@ export function changeSite(site) {
             type: ActionTypes.SET_CURRENT_SITE,
             site
         });
-        return dispatch(getThemes());
+        return dispatch(getThemes(site));
     }
 }
 

@@ -43,11 +43,11 @@ function getTopicFromServer(site, id) {
     }
 }
 
-export function getTopics(theme, page = 0, limit = 10) {
+export function getTopics(site, theme, page = 0, limit = 10) {
     "use strict";
     return (dispatch, getState) => {
 
-        let site = getState().app.currentSite, topics = getState().content.topics[theme];
+        let topics = getState().content.topics[theme];
 
         if (topics && topics[page]) {
             return dispatch({

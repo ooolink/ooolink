@@ -104,7 +104,9 @@ class Setting extends Component {
     }
 
     onSelectSite(value) {
-        this.props.dispatch(changeSite(value));
+        setTimeout(()=> {
+            this.props.dispatch(changeSite(value));
+        }, 200);
         this.props.navigator.popToTop();
     }
 }

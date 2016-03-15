@@ -64,8 +64,8 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const {dispatch} = this.props;
-        dispatch(getThemes());
+        const {dispatch, site} = this.props;
+        dispatch(getThemes(site));
     }
 }
 

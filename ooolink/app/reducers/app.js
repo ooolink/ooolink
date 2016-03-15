@@ -20,7 +20,6 @@ export default function(state = initialState, action) {
 
     switch (action.type) {
         case types.SET_CURRENT_SITE:
-            console.log(action.site);
             return Object.assign({}, state, {
                 currentSite: action.site
             });
