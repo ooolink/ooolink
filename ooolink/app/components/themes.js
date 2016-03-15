@@ -19,11 +19,12 @@ import React,{
     Image,
     TouchableOpacity
 } from 'react-native';
-import {connect} from 'react-redux';
-
-import {selectTheme} from '../actions/home'
 
 class Themes extends Component {
+
+    static propTypes = {
+        onChooseTheme: PropTypes.func.isRequired
+    };
 
     render() {
         let _this = this;
@@ -45,15 +46,7 @@ class Themes extends Component {
     }
 
     chooseTheme(theme) {
-        const {dispatch} = this.props;
-        dispatch(selectTheme(theme));
-    }
-}
-
-function themes(state) {
-    "use strict";
-    return {
-        themes: state.home.themes
+        this.props.onChooseTheme(theme);
     }
 }
 
@@ -74,4 +67,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(themes)(Themes);
+export default Themes;

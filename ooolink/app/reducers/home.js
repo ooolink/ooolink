@@ -12,7 +12,7 @@ import * as types from '../constants/actionTypes'
 //0 view, 1 person, 2 setting
 const initialState = {
     themeSelected: '',
-    themes: [],
+    themes: {},
     themesBlockHeight: 40
 };
 
@@ -20,8 +20,14 @@ export default function(state = initialState, action) {
 
     switch (action.type) {
         case types.GET_THEMES:
+            let themes = state.themes;
+            themes[action.site] = action.themes;
             return Object.assign({}, state, {
-                themes: action.themes
+                themes
+            });
+        case types.CLEAR_THEMES:
+            return Object.assign({}, state, {
+                themes: []
             });
         case types.SET_THEMES_BLOCK_HEIGHT:
             return Object.assign({}, state, {

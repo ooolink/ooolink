@@ -20,6 +20,8 @@ import {connect} from 'react-redux';
 import TopicList from '../components/topicslist';
 import CommentsList from '../containers/commentslist';
 import TitleBar from '../components/titlebar';
+import Setting from '../containers/setting';
+import {selectTheme} from '../actions/home';
 import {getTopic, selectTopic} from '../actions/content';
 
 let {height, width} = Dimensions.get('window');
@@ -38,6 +40,8 @@ class Home extends Component {
                     style={styles.content}/>
                 <TitleBar
                     style={styles.titleBar}
+                    themes={_this.props.themes}
+                    onChooseTheme={_this.onChooseTheme.bind(this)}
                     themeSelected={themeSelected}
                     themeBlockHeight={themesBlockHeight}
                     onOpenProfile={_this.onOpenProfile.bind(_this)}
@@ -47,11 +51,18 @@ class Home extends Component {
     }
 
     onOpenProfile() {
-
     }
 
     onOpenSetting() {
+        this.props.navigator.push({
+            name: 'setting',
+            index: 2,
+            component: Setting
+        });
+    }
 
+    onChooseTheme(theme) {
+        this.props.dispatch(selectTheme(theme));
     }
 
     onSelectTopic(topicId) {
@@ -70,11 +81,12 @@ class Home extends Component {
 function home(state) {
     "use strict";
     let themeSelected = state.home.themeSelected,
+        site = state.app.currentSite,
         topics = state.content.topics[themeSelected];
 
     return {
         themesBlockHeight: state.home.themesBlockHeight,
-        themes: state.home.themes,
+        themes: state.home.themes[site],
         themeSelected,
         topics: topics ? topics[0].data : []
     }

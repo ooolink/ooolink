@@ -10,6 +10,7 @@
 /** HOME **/
 export const SET_THEMES_BLOCK_HEIGHT = 'SET_THEMES_BLOCK_HEIGHT';
 export const GET_THEMES = 'GET_THEMES';
+export const CLEAR_THEMES = 'CLEAR_THEMES';
 export const CHANGE_THEME = 'CHANGE_THEME';
 
 /** TOPIC **/
@@ -25,3 +26,4 @@ export const POST_COMMENT = 'PUT_COMMENT';
 /** SITE **/
 export const GET_SITE_INFO = 'GET_SITE_INFO';
 export const SET_CURRENT_SITE = 'SET_CURRENT_SITE';
+

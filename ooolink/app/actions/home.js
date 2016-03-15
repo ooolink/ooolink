@@ -23,7 +23,8 @@ function getThemesFromServer(site) {
                 dispatch(setThemesBlockHeight(computeThemeBlockHeight(themes)));
                 dispatch({
                     type: ActionTypes.GET_THEMES,
-                    themes
+                    themes,
+                    site
                 });
                 dispatch(selectTheme(themes[0]));
             });
@@ -49,7 +50,7 @@ export function setThemesBlockHeight(height) {
 export function getThemes() {
     "use strict";
     return (dispatch, getState) => {
-        let site = getState().app.currentSite, themes = getState().home.themes;
+        let site = getState().app.currentSite, themes = getState().home.themes[site] || [];
         if (themes.length > 1) {
             dispatch(selectTheme(themes[0]));
             return dispatch({
@@ -58,5 +59,12 @@ export function getThemes() {
             })
         }
         return dispatch(getThemesFromServer(site))
+    }
+}
+
+export function clearThemes() {
+    "use strict";
+    return {
+        type: ActionTypes.CLEAR_THEMES
     }
 }

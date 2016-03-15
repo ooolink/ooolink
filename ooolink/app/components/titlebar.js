@@ -19,7 +19,7 @@ import React,{
 } from 'react-native';
 import DropDownBlock from '../common/components/dropDownBlock';
 
-import Theme from '../containers/themes';
+import Themes from '../components/themes';
 
 let {height, width} = Dimensions.get('window');
 
@@ -28,6 +28,7 @@ class TitleBar extends Component {
     static propTypes = {
         onOpenProfile: PropTypes.func.isRequired,
         onOpenSetting: PropTypes.func.isRequired,
+        onChooseTheme: PropTypes.func.isRequired,
         themeBlockHeight: PropTypes.number.isRequired,
         themeSelected: PropTypes.string.isRequired,
         style: View.propTypes.style
@@ -61,7 +62,10 @@ class TitleBar extends Component {
                     endHeight={this.state.themeBlockHeight}
                 >
                     <View style={styles.dropDownBlockContainer}>
-                        <Theme/>
+                        <Themes
+                            themes={this.props.themes}
+                            onChooseTheme={this.props.onChooseTheme.bind(this)}
+                        />
                     </View>
                 </DropDownBlock>
                 <View style={styles.bar}>

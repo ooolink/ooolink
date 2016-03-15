@@ -26,6 +26,12 @@ const route = function(cb) {
     }
 };
 
+export function * getSiteConf() {
+    "use strict";
+    let m = route.call(this);
+    yield m.getSiteConf.call(this);
+}
+
 export function * getThemes() {
     "use strict";
     let m = route.call(this);
@@ -43,3 +49,4 @@ export function * getTopic() {
     let m = route.call(this);
     yield m.getTopic.call(this);
 }
+

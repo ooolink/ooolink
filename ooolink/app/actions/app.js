@@ -8,6 +8,7 @@
  */
 
 import * as ActionTypes from '../constants/actionTypes';
+import {clearThemes, getThemes} from '../actions/home';
 import {SERVER_ADDRESS} from '../constants/config';
 
 function getSiteInfoFromServer(site) {
@@ -15,10 +16,23 @@ function getSiteInfoFromServer(site) {
 
 }
 
-export function getSiteInfo() {
+export function changeSite(site) {
     "use strict";
     return (dispatch, getState) => {
-        let site = getState().app.currentSite;
-        return dispatch(getSiteInfoFromServer(site))
+        dispatch({
+            type: ActionTypes.SET_CURRENT_SITE,
+            site
+        });
+        return dispatch(getThemes());
     }
+}
+
+export function searchSite(value = '', type = '', cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}search?type=${type}&name=${value}`)
+        .then(response => response.json())
+        .then(json => {
+            let sites = json;
+            cb && cb(sites);
+        });
 }

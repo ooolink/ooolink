@@ -25,11 +25,19 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            loaded: false,
+            themes: []
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({themes: nextProps.themes})
     }
 
     render() {
 
-        if (this.props.themes.length > 0) {
+        if (this.state.themes.length > 0) {
             return (
                 <Navigator
                     initialRoute={{name: 'home', index: 0, component: Home}}
@@ -64,8 +72,10 @@ class App extends Component {
 
 function app(state) {
     "use strict";
+    let site = state.app.currentSite;
     return {
-        themes: state.home.themes
+        themes: state.home.themes[site] || [],
+        site
     }
 }
 

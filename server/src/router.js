@@ -10,6 +10,7 @@
 import fs from 'fs';
 import path from 'path';
 import * as _controller from './controller';
+import * as searchService from './search';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
 
@@ -38,6 +39,18 @@ export default (router)=> {
         }
 
         yield next;
+    });
+
+    router.get('/search', function *(next) {
+        if (this.query.type) {
+            yield searchService.getSiteByType.call(this);
+        } else {
+            yield searchService.getFamous.call(this);
+        }
+    });
+
+    router.get('/:site/conf', function *(next) {
+        yield _controller.getSiteConf.call(this);
     });
 
     router.get('/:site/user/:name', function *(next) {
