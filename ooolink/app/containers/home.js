@@ -21,6 +21,7 @@ import TopicList from '../components/topicslist';
 import CommentsList from '../containers/commentslist';
 import TitleBar from '../components/titlebar';
 import Setting from '../containers/setting';
+import Profile from '../containers/profile';
 import {selectTheme} from '../actions/home';
 import {getTopic, selectTopic} from '../actions/content';
 
@@ -51,6 +52,11 @@ class Home extends Component {
     }
 
     onOpenProfile() {
+        this.props.navigator.push({
+            name: 'profile',
+            index: 3,
+            component: Profile
+        });
     }
 
     onOpenSetting() {
