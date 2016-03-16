@@ -39,6 +39,31 @@ class NamedController extends BaseController {
         });
     };
 
+    static getTopic = function *() {
+
+        let COMMENTS_URL = 'http://i.named.cn/rest/' + encodeURIComponent(this.params.id) + '/comments/list.comment..0',
+            TOPIC_URL = 'http://i.named.cn/rest/object/get.' + encodeURIComponent(this.params.id) + '.default';
+        var options = {
+            url: TOPIC_URL
+        };
+
+        yield new Promise((resolve, reject)=> {
+
+            request.get(options, (error, response, body) => {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
+        }).then((data)=> {
+            this.body = topicModelTransform(JSON.parse(data.substr(7, data.length - 9)));
+        }, (error)=> {
+            this.body = 'Origin Error';
+            this.status = 500;
+        });
+    };
+
     static themes = [
         'fibjs', '那么一起玩', '美丽秘密', '江南水乡', '我来818', '硬腿子'
     ]

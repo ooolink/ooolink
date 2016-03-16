@@ -39,9 +39,40 @@ export function topicsModelTransform(data) {
 
 export function topicModelTransform(data) {
     "use strict";
+    let dd = data.message;
+    dd.message.user.user.icon = dd.message.user.user.icon || 'f9bafc1e9eab04863fb7d42fa3a3f457.t80x80.fc.s0x-2xdddddd';
+    let resultData = {
+        id: dd.message.id,
+        author_id: dd.message.user.user.id,
+        tab: '',
+        content: dd.message.content,
+        title: dd.message.title,
+        reply_content: dd.comments.comment,
+        visit_count: 0,
+        create_at: dd.message.created,
+        author: {
+            loginname: dd.message.user.user.name,
+            avatar_url: 'http://as.named.cn/f/' + (dd.message.user.user.icon.crop || dd.message.user.user.icon) + '.png'
+        },
+        replies: []
+    };
+    data = data.message.comments.list;
+    data.forEach((item)=> {
+        let d = {};
+        let dd = item.data;
+        d.id = dd.message.msgid;
+        d.content = dd.message.content;
+        d.create_at = dd.message.created;
+        dd.message.user.user.icon = dd.message.user.user.icon || 'f9bafc1e9eab04863fb7d42fa3a3f457.t80x80.fc.s0x-2xdddddd';
+        d.author = {
+            loginname: dd.message.user.user.name,
+            avatar_url: 'http://as.named.cn/f/' + (dd.message.user.user.icon.crop || dd.message.user.user.icon) + '.png'
+        };
+        resultData.replies.push(d);
+    });
     let rs = {
         site: 'cnode-bbs',
-        data
+        data: resultData
     };
     return rs;
 }
