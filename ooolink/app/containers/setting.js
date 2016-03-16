@@ -21,7 +21,6 @@ import React,{
 } from 'react-native';
 import SearchResult from '../components/searchResult';
 import {connect} from 'react-redux';
-import {changeSite} from '../actions/app';
 
 const {width, height} = Dimensions.get('window');
 
@@ -105,15 +104,10 @@ class Setting extends Component {
 
     onSelectSite(value) {
         setTimeout(()=> {
-            this.props.dispatch(changeSite(value));
+            this.props.actions.getSiteInfo(value);
         }, 200);
         this.props.navigator.popToTop();
     }
 }
 
-function setting() {
-    "use strict";
-    return {}
-}
-
-export default connect(setting)(Setting);
+export default Setting;

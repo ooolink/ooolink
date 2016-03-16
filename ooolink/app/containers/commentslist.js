@@ -19,7 +19,6 @@ import React,{
     TouchableOpacity,
     PropTypes
 } from 'react-native';
-import {connect} from 'react-redux';
 import LoadingBlock from '../common/components/loadingBlock';
 import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
@@ -121,35 +120,31 @@ class CommentsList extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
-        navigator: PropTypes.object
+        navigator: PropTypes.object,
+        topicId: PropTypes.any.isRequired
     };
 
     constructor(props) {
         super(props);
-        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: dataSource.cloneWithRows(this.props.data ? this.props.data.replies : [])
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.data ? nextProps.data.replies : [])
-        });
     }
 
     render() {
+        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const comments = this.props.state.content.comments[this.props.topicId];
+        dataSource = dataSource.cloneWithRows(comments ? comments.data.replies : []);
+
         let com;
-        if (this.props.data) {
+        if (comments) {
             com = <ListView
                 style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
-                dataSource={this.state.dataSource}
+                dataSource={dataSource}
                 renderHeader={this._renderHeader.bind(this)}
                 renderRow={this._renderRow.bind(this)}
             />;
         } else {
             com = <LoadingBlock/>
         }
+
         return (
             <View style={styles.container}>
                 <TopicBar onBack={this.onBack.bind(this)}/>
@@ -160,7 +155,8 @@ class CommentsList extends Component {
 
     _renderHeader() {
         if (!this.contentBlock) {
-            this.contentBlock = <ContentBlock data={this.props.data}/>
+            let {data} = this.props.state.content.comments[this.props.topicId];
+            this.contentBlock = <ContentBlock data={data}/>
         }
         return this.contentBlock;
     }
@@ -177,14 +173,4 @@ class CommentsList extends Component {
     }
 }
 
-function commentsList(state) {
-    "use strict";
-    let topic = state.content.topicSelected,
-        comments = state.content.comments[topic];
-
-    return {
-        data: comments ? comments.data : null
-    }
-}
-
-export default connect(commentsList)(CommentsList);
+export default CommentsList;

@@ -61,14 +61,6 @@ export function getTopics(site, theme, page = 0, limit = 10) {
     }
 }
 
-export function selectTopic(id) {
-    "use strict";
-    return {
-        type: ActionTypes.SELECT_TOPIC,
-        id
-    }
-}
-
 export function getTopic(id) {
     "use strict";
     return (dispatch, getState) => {

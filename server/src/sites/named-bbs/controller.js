@@ -64,6 +64,15 @@ class NamedController extends BaseController {
         });
     };
 
+    static getSiteConf = function *() {
+        this.body = {
+            themes: NamedController.themes,
+            conf: {
+                fn: []
+            }
+        }
+    };
+
     static themes = [
         'fibjs', '那么一起玩', '美丽秘密', '江南水乡', '我来818', '硬腿子'
     ]

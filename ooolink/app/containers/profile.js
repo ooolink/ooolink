@@ -27,7 +27,7 @@ class Profile extends Component {
     }
 }
 
-function profile(){
+function profile() {
     "use strict";
     return {}
 }

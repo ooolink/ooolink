@@ -16,28 +16,34 @@ import React,{
     Navigator,
     View
 } from 'react-native';
-import {connect} from 'react-redux';
 import Home from '../containers/home';
 import LoadingBlock from '../common/components/loadingBlock';
-import {getThemes} from '../actions/home';
+import oooLinkActions from '../actions/index';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
-            themes: []
+            isLoaded: false,
+            currentSite: this.props.currentSite,
+            state: this.props.state
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({themes: nextProps.themes})
+        this.setState({
+            isLoaded: nextProps.isLoaded,
+            state: nextProps.state,
+            currentSite: nextProps.currentSite
+        });
     }
 
     render() {
 
-        if (this.state.themes.length > 0) {
+        if (this.props.isLoaded) {
             return (
                 <Navigator
                     initialRoute={{name: 'home', index: 0, component: Home}}
@@ -59,23 +65,27 @@ class App extends Component {
     renderScene(route, navigator) {
 
         return React.createElement(route.component, Object.assign({}, route.props, {
-            navigator
+            navigator,
+            state: this.state.state,
+            actions: this.actions
         }));
     }
 
     componentDidMount() {
-        const {dispatch, site} = this.props;
-        dispatch(getThemes(site));
+        this.actions = bindActionCreators(oooLinkActions, this.props.dispatch);
+        this.actions.getSiteInfo(this.props.currentSite);
     }
 }
 
 
 function app(state) {
     "use strict";
-    let site = state.app.currentSite;
+    let isLoaded = state.app.appLoaded,
+        currentSite = state.app.currentSite;
     return {
-        themes: state.home.themes[site] || [],
-        site
+        currentSite,
+        isLoaded,
+        state
     }
 }
 

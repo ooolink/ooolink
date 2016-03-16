@@ -10,12 +10,11 @@
 import React,{
     Component
 } from 'react-native';
-import App from './containers/app';
 import {
     Provider
 } from 'react-redux'
-
 import configureStore from './store';
+import App from './containers/app';
 
 let store = configureStore();
 

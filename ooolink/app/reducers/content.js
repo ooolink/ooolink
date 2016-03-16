@@ -28,9 +28,6 @@ export default function(state = initialState, action) {
             let {id, topic} = action;
             state.comments[id] = topic;
             return Object.assign({}, state);
-        case types.SELECT_TOPIC:
-            state.topicSelected = action.id;
-            return Object.assign({}, state);
         default:
             return state;
     }

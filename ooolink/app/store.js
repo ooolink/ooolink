@@ -7,9 +7,9 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import rootReducer from './reducers'
+import { createStore, applyMiddleware } from 'redux'
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware

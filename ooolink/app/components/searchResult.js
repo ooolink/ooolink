@@ -19,7 +19,7 @@ import React,{
     TouchableOpacity,
     PropTypes
 } from 'react-native';
-import {searchSite} from '../actions/app';
+import {searchSite} from '../services/searchService';
 
 class SearchResult extends Component {
 

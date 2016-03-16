@@ -10,17 +10,23 @@ import * as types from '../constants/actionTypes'
 
 const initialState = {
     currentSite: 'cnode-bbs',
-    token: [],
+    token: {},
     siteInfo: {},
-    sites: []
+    appLoaded: false
 };
 
 export default function(state = initialState, action) {
     "use strict";
 
     switch (action.type) {
-        case types.SET_CURRENT_SITE:
+        case types.APP_LOADING:
             return Object.assign({}, state, {
+                appLoaded: false
+            });
+        case types.GET_SITE_INFO:
+            state.siteInfo[action.site] = action.info;
+            return Object.assign({}, state, {
+                appLoaded: true,
                 currentSite: action.site
             });
         default:

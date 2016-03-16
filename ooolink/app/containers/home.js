@@ -16,32 +16,33 @@ import React,{
     Navigator,
     View
 } from 'react-native';
-import {connect} from 'react-redux';
 import TopicList from '../components/topicslist';
-import CommentsList from '../containers/commentslist';
 import TitleBar from '../components/titlebar';
+import CommentsList from '../containers/commentslist';
 import Setting from '../containers/setting';
 import Profile from '../containers/profile';
-import {selectTheme} from '../actions/home';
-import {getTopic, selectTopic} from '../actions/content';
 
 let {height, width} = Dimensions.get('window');
 
 class Home extends Component {
 
     render() {
-        const {themesBlockHeight,themeSelected} = this.props;
+        const {themesBlockHeight,themeSelected} = this.props.state.home;
+        const {currentSite, siteInfo} = this.props.state.app;
+        const topics = this.props.state.content.topics[themeSelected] ?
+            this.props.state.content.topics[themeSelected][0].data :
+            [];
         let _this = this;
 
         return (
             <View style={styles.container}>
                 <TopicList
                     onSelectTopic={_this.onSelectTopic.bind(_this)}
-                    data={_this.props.topics}
+                    data={topics}
                     style={styles.content}/>
                 <TitleBar
                     style={styles.titleBar}
-                    themes={_this.props.themes}
+                    themes={siteInfo[currentSite].themes}
                     onChooseTheme={_this.onChooseTheme.bind(this)}
                     themeSelected={themeSelected}
                     themeBlockHeight={themesBlockHeight}
@@ -68,37 +69,23 @@ class Home extends Component {
     }
 
     onChooseTheme(theme) {
-        this.props.dispatch(selectTheme(this.props.site, theme));
+        this.props.actions.selectTheme(this.props.state.app.currentSite, theme);
     }
 
     onSelectTopic(topicId) {
-        this.props.dispatch(selectTopic(topicId));
         this.props.navigator.push({
             name: 'commentsList',
             index: 1,
-            component: CommentsList
+            component: CommentsList,
+            props: {
+                topicId
+            }
         });
         setTimeout(()=> {
-            this.props.dispatch(getTopic(topicId));
+            this.props.actions.getTopic(topicId);
         }, 200);
     }
 }
-
-function home(state) {
-    "use strict";
-    let themeSelected = state.home.themeSelected,
-        site = state.app.currentSite,
-        topics = state.content.topics[themeSelected];
-
-    return {
-        themesBlockHeight: state.home.themesBlockHeight,
-        themes: state.home.themes[site],
-        themeSelected,
-        topics: topics ? topics[0].data : [],
-        site
-    }
-}
-
 
 const styles = StyleSheet.create({
     container: {
@@ -121,5 +108,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(home)(Home);
+export default Home;
 
