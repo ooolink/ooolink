@@ -57,6 +57,14 @@ export default (router)=> {
 
     });
 
+    router.get('/:site/login', function*(next) {
+
+    });
+
+    router.get('/:site/user', function*(next) {
+
+    });
+
     router.post('/:site/user', function *(next) {
 
     });

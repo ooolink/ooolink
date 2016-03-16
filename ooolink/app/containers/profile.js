@@ -16,13 +16,14 @@ import React,{
     Navigator,
     View
 } from 'react-native';
+import LoginMod from '../common/components/loginMod';
 import {connect} from 'react-redux';
 
 class Profile extends Component {
 
     render() {
         return (
-            <Text></Text>
+            <LoginMod/>
         )
     }
 }

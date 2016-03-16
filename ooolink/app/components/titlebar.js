@@ -42,29 +42,18 @@ class TitleBar extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {themeBlockHeight, themeSelected} = nextProps;
-        if (themeBlockHeight != this.state.themeBlockHeight) {
-            this.setState({themeBlockHeight});
-        }
-
-        if (themeSelected != this.props.themeSelected) {
-            this.openBlock();
-        }
-    }
-
     render() {
         return (
             <View style={this.props.style}>
                 <DropDownBlock
                     openStatus={this.state.openStatus}
                     style={styles.dropDownBlock}
-                    endHeight={this.state.themeBlockHeight}
+                    endHeight={this.props.themeBlockHeight}
                 >
                     <View style={styles.dropDownBlockContainer}>
                         <Themes
                             themes={this.props.themes}
-                            onChooseTheme={this.props.onChooseTheme.bind(this)}
+                            onChooseTheme={this.onChooseTheme.bind(this)}
                         />
                     </View>
                 </DropDownBlock>
@@ -110,6 +99,13 @@ class TitleBar extends Component {
 
     openSetting() {
         this.props.onOpenSetting();
+    }
+
+    onChooseTheme(theme) {
+        this.openBlock();
+        setTimeout(()=> {
+            this.props.onChooseTheme(theme)
+        }, 200);
     }
 
     openBlock() {
