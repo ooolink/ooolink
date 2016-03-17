@@ -55,11 +55,11 @@ export default (router)=> {
     });
 
     router.post('/user/login', function*(next) {
-
+        yield loginService.login.call(this);
     });
 
-    router.post('/user/salt', function*(next) {
-
+    router.post('/user/session', function*(next) {
+        yield loginService.session.call(this);
     });
 
     router.post('/user/sign', function*(next) {

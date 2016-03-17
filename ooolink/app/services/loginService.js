@@ -9,9 +9,34 @@
 
 import {SERVER_ADDRESS} from '../constants/config';
 
-export function login(name, pwd) {
+export function session(name, cb) {
     "use strict";
+    fetch(`${SERVER_ADDRESS}user/session`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `name=${name}`
+    })
+        .then(response=>response.json())
+        .then(rs=> {
+            cb(rs);
+        })
+}
 
+export function login(name, pwd, token, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}user/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `name=${name}&password=${pwd}&token=${token}`
+    })
+        .then(response=>response.json())
+        .then(rs=> {
+            cb(rs);
+        })
 }
 
 export function sign(name, pwd, cb) {

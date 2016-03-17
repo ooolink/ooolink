@@ -52,7 +52,15 @@ class Profile extends Component {
     }
 
     onLogin(name, pwd) {
-
+        loginService.session(name, (data)=> {
+            if (data.result) {
+                loginService.login(name, pwd, data.token, (data)=> {
+                    if (data.result) {
+                        this.setState({status: 'logined'})
+                    }
+                })
+            }
+        })
     }
 
     onRegister(name, pwd) {
