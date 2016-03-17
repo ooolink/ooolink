@@ -8,7 +8,7 @@
  */
 import fs from 'fs';
 const famousNumber = 5;
-const SITES = fs.readdirSync(`${__dirname}/sites/`);
+const SITES = fs.readdirSync(`${__dirname}/../sites/`);
 
 export const getFamous = function *() {
     this.body = SITES.slice(0, famousNumber);

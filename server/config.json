@@ -1,0 +1,12 @@
+{
+  "mysql": {
+    "dbname": "ooolink",
+    "host": "188.166.255.124",
+    "port": 3306,
+    "username": "root",
+    "password": "cfc2013114"
+  },
+  "http": {
+    "port": 3070
+  }
+}

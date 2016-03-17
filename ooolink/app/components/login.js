@@ -24,10 +24,12 @@ import Button from 'react-native-button';
 const BG_URL = 'http://7lrzfj.com1.z0.glb.clouddn.com/soliury213H.png';
 const {width, height} = Dimensions.get('window');
 
-class LoginMod extends Component {
+class Login extends Component {
 
     static propTypes = {
-        type: PropTypes.string
+        type: PropTypes.string,
+        onGoRegister: PropTypes.func.isRequired,
+        onSubmit: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -58,12 +60,13 @@ class LoginMod extends Component {
                     onPress={this._submit.bind(this)}
                     style={styles.login}
                 >Log in</Button>
+                <Text onPress={this._onGoRegister.bind(this)}>注册</Text>
             </Image>
         )
     }
 
     _submit() {
-
+        this.props.onSubmit(this.state.name, this.state.pwd);
     }
 
     _changeName(name) {
@@ -75,7 +78,11 @@ class LoginMod extends Component {
         for (let i = 0, len = pwd.length; i < len; i++) {
             pwdOver += '*';
         }
-        this.setState({pwd, pwdOver})
+        this.setState({pwd: this.state.pwd + pwd.charAt(pwd.length - 1), pwdOver});
+    }
+
+    _onGoRegister() {
+        this.props.onGoRegister();
     }
 }
 
@@ -104,4 +111,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LoginMod;
+export default Login;

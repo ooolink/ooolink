@@ -16,15 +16,57 @@ import React,{
     Navigator,
     View
 } from 'react-native';
-import LoginMod from '../common/components/loginMod';
+import Login from '../components/login';
+import Register from '../components/register';
+import * as loginService from '../services/loginService';
 import {connect} from 'react-redux';
 
 class Profile extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            status: 'login'
+        }
+    }
+
     render() {
-        return (
-            <LoginMod/>
-        )
+        if (this.state.status === 'login') {
+            return (
+                <Login
+                    onSubmit={this.onLogin.bind(this)}
+                    onGoRegister={this.onGoRegister.bind(this)}
+                />
+            )
+        } else if (this.state.status === 'register') {
+            return (
+                <Register
+                    onSubmit={this.onRegister.bind(this)}
+                />
+            )
+        } else if (this.state.status === 'logined') {
+            return (
+                <Text>123</Text>
+            )
+        }
+    }
+
+    onLogin(name, pwd) {
+
+    }
+
+    onRegister(name, pwd) {
+        loginService.sign(name, pwd, (data=> {
+            if (data.result) {
+                this.setState({status: 'logined'})
+            }
+        }));
+    }
+
+    onGoRegister() {
+        this.setState({
+            status: 'register'
+        });
     }
 }
 

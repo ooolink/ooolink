@@ -37,4 +37,5 @@ npm-debug.log
 #product
 monitor
 #sites
+config.json
 dist

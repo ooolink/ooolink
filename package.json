@@ -4,7 +4,10 @@
   "description": "Feel the power of information",
   "main": "index.js",
   "dependencies": {
-    "gulp-nodemon": "^2.0.6"
+    "gulp-nodemon": "^2.0.6",
+    "koa-better-body": "^1.0.17",
+    "mysql": "~2.10.2",
+    "sequelize": "~3.19.3"
   },
   "devDependencies": {
     "babel-preset-nodejs-lts": "^1.2.1",

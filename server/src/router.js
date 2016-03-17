@@ -10,7 +10,8 @@
 import fs from 'fs';
 import path from 'path';
 import * as _controller from './controller';
-import * as searchService from './search';
+import * as searchService from './services/search';
+import * as loginService from './services/login';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
 
@@ -53,11 +54,19 @@ export default (router)=> {
         yield _controller.getSiteConf.call(this);
     });
 
-    router.get('/:site/user/:name', function *(next) {
+    router.post('/user/login', function*(next) {
 
     });
 
-    router.get('/:site/login', function*(next) {
+    router.post('/user/salt', function*(next) {
+
+    });
+
+    router.post('/user/sign', function*(next) {
+        yield loginService.sign.call(this);
+    });
+
+    router.get('/:site/user/:name', function *(next) {
 
     });
 
