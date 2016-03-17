@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-import User from '../models/user';
 import crypto from 'crypto';
+import co from 'co';
+import User from '../models/user';
 
 export const sign = function *() {
     "use strict";
@@ -72,4 +73,23 @@ export const session = function *() {
             this.status = 500;
             this.body = {result: 0}
         })
+};
+
+export const auth = function *(next) {
+    "use strict";
+    let {token} = this.query;
+    yield User.findOne({where: {user_token: token}})
+        .then(user=> {
+            if (user) {
+                this._domain = this._domain || {};
+                this._domain.user = user;
+                co(function *() {
+                    yield next;
+                });
+            } else {
+                console.error('Error:   0');
+                this.status = 500;
+                this.body = {result: 0}
+            }
+        });
 };

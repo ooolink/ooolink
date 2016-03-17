@@ -66,6 +66,10 @@ export default (router)=> {
         yield loginService.sign.call(this);
     });
 
+    router.get('/collect', loginService.auth, function *(next) {
+        console.log(1233);
+    });
+
     router.get('/:site/user/:name', function *(next) {
 
     });
