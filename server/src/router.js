@@ -12,6 +12,7 @@ import path from 'path';
 import * as _controller from './controller';
 import * as searchService from './services/search';
 import * as loginService from './services/login';
+import * as collectService from './services/collect';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
 
@@ -66,8 +67,19 @@ export default (router)=> {
         yield loginService.sign.call(this);
     });
 
-    router.get('/collect', loginService.auth, function *(next) {
-        console.log(1233);
+    router.post('/user/collect', loginService.auth, function *(next) {
+    });
+
+    router.post('/collect/:id', loginService.auth, function *(next) {
+
+    });
+
+    router.post('/collect', loginService.auth, function *(next) {
+
+    });
+
+    router.post('/collect', methodAuth('delete'), loginService.auth, function *(next) {
+
     });
 
     router.get('/:site/user/:name', function *(next) {

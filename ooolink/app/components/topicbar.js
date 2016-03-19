@@ -29,12 +29,28 @@ class TopicBar extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            likeStatus: 'none'
+        }
     }
 
     componentWillReceiveProps(nextProps) {
     }
 
     render() {
+        let likeImage = require('../images/like-none-white.png');
+
+        switch (this.state.likeStatus) {
+            case 'none':
+                likeImage = require('../images/like-none-white.png');
+                break;
+            case 'ok':
+                likeImage = require('../images/like-ok-white.png');
+                break;
+            case 'loading':
+                likeImage = require('../images/loading-white.png');
+                break;
+        }
         return (
             <View style={styles.bar}>
                 <TouchableOpacity
@@ -44,12 +60,25 @@ class TopicBar extends Component {
                         style={styles.backArrow}
                         source={require('../images/topic-back.png')}/>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={this._onLike.bind(this)}
+                >
+                    <Image
+                        style={styles.likeButton}
+                        source={likeImage}/>
+                </TouchableOpacity>
             </View>
         )
     }
 
     _onBack() {
         this.props.onBack();
+    }
+
+    _onLike() {
+        this.setState({
+            likeStatus: 'ok'
+        })
     }
 }
 
@@ -63,6 +92,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#22b473',
         flexDirection: "row",
         alignItems: "center"
+    },
+    likeButton: {
+        width: 20,
+        height: 20,
+        left: width - 50
     },
     backArrow: {
         marginLeft: 6,
