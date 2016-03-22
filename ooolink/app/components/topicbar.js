@@ -61,6 +61,7 @@ class TopicBar extends Component {
                         source={require('../images/topic-back.png')}/>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    style={{left: width - 50}}
                     onPress={this._onLike.bind(this)}
                 >
                     <Image
@@ -95,8 +96,7 @@ const styles = StyleSheet.create({
     },
     likeButton: {
         width: 20,
-        height: 20,
-        left: width - 50
+        height: 20
     },
     backArrow: {
         marginLeft: 6,
