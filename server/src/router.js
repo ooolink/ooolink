@@ -26,7 +26,7 @@ export default (router)=> {
 
     var methodAuth = method => {
         return function *(next) {
-            if (this.body._method === method) {
+            if (this.request.body.fields._method === method) {
                 yield next;
             } else {
                 error_auth.call(this);
@@ -71,15 +71,18 @@ export default (router)=> {
     });
 
     router.post('/collect/:id', loginService.auth, function *(next) {
-
     });
 
     router.post('/collect', loginService.auth, function *(next) {
+        yield collectService.collected.call(this);
+    });
 
+    router.delete('/collect', loginService.auth, function *() {
+        yield collectService.unCollected.call(this);
     });
 
     router.post('/collect', methodAuth('delete'), loginService.auth, function *(next) {
-
+        yield collectService.unCollected.call(this);
     });
 
     router.get('/:site/user/:name', function *(next) {

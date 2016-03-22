@@ -14,8 +14,8 @@ export const collected = function *() {
     let user = this._domain.user;
     let {site, type, flag, title, content} = this.request.body.fields;
     let collection_id = crypto.createHmac('sha256', site).update(flag).digest('hex').toString();
-    Collection.create({
-        collection_id,                                              //todo:添加联合键
+    yield Collection.create({
+        collection_id,                                              //todo:添加联合键 user.id
         collection_userId: user.id,
         collection_site: site,
         collection_flag: flag,
@@ -35,7 +35,7 @@ export const unCollected = function *() {
     "use strict";
     let user = this._domain.user;
     let id = this.request.body.fields.id;
-    Collection.destroy({where: {collection_id: id, collection_userId: user.id}})
+    yield Collection.destroy({where: {collection_id: id, collection_userId: user.id}})
         .then(rs=> {
             this.body = {result: 1}
         }, error=> {

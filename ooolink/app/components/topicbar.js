@@ -17,6 +17,7 @@ import React,{
     Image,
     TouchableOpacity
 } from 'react-native';
+import * as collectService from '../services/collectService';
 
 let {height, width} = Dimensions.get('window');
 
@@ -78,7 +79,12 @@ class TopicBar extends Component {
 
     _onLike() {
         this.setState({
-            likeStatus: 'ok'
+            likeStatus: 'loading'
+        });
+        collectService.collected('ad', 'a', '123', '123', 'sd', 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', ()=> {
+            this.setState({
+                likeStatus: 'ok'
+            });
         })
     }
 }

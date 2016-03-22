@@ -77,7 +77,7 @@ export const session = function *() {
 
 export const auth = function *(next) {
     "use strict";
-    let {token} = this.query;
+    let {token} = this.request.body.fields;
     yield User.findOne({where: {user_token: token}})
         .then(user=> {
             if (user) {
