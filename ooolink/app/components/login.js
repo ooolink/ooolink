@@ -21,7 +21,7 @@ import React,{
 } from 'react-native';
 import Button from 'react-native-button';
 
-const BG_URL = 'http://7lrzfj.com1.z0.glb.clouddn.com/soliury213H.png';
+const BG_URL = 'http://img.hb.aicdn.com/963f2ec0ed9098a6e20420c592fd220f37b0e6df31684-Ab2ZyV_fw658';
 const {width, height} = Dimensions.get('window');
 
 class Login extends Component {
