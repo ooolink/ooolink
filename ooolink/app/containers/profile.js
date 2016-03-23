@@ -14,7 +14,8 @@ import React,{
     Text,
     Dimensions,
     Navigator,
-    View
+    View,
+    Alert
 } from 'react-native';
 import Login from '../components/login';
 import Register from '../components/register';
@@ -45,10 +46,6 @@ class Profile extends Component {
                     onSubmit={this.onRegister.bind(this)}
                 />
             )
-        } else if (this.state.status === 'logined') {
-            return (
-                <Text>123</Text>
-            )
         }
     }
 
@@ -58,6 +55,7 @@ class Profile extends Component {
                 loginService.login(name, pwd, data.token, (data)=> {
                     if (data.result) {
                         setGlobal('oooLinkToken', data.token);
+                        Alert.alert('登陆成功');
                         this.setState({status: 'logined'})
                     }
                 })
@@ -69,6 +67,7 @@ class Profile extends Component {
         loginService.sign(name, pwd, (data=> {
             if (data.result) {
                 setGlobal('oooLinkToken', data.token);
+                Alert.alert('注册成功');
                 this.setState({status: 'logined'})
             }
         }));
