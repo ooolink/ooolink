@@ -78,7 +78,12 @@ class Login extends Component {
         for (let i = 0, len = pwd.length; i < len; i++) {
             pwdOver += '*';
         }
-        this.setState({pwd: this.state.pwd + pwd.charAt(pwd.length - 1), pwdOver});
+        if (this.state.pwd.length < pwd.length) {
+            pwd = this.state.pwd + pwd.charAt(pwd.length - 1);
+        } else {
+            pwd = this.state.pwd.substr(0, this.state.pwd.length - 1);
+        }
+        this.setState({pwd, pwdOver});
     }
 
     _onGoRegister() {

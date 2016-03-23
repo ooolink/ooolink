@@ -72,7 +72,7 @@ class Register extends Component {
     }
 
     _changePwd(pwd) {
-        this.setState({pwd: this.state.pwd + pwd.charAt(pwd.length - 1)})
+        this.setState({pwd})
     }
 }
 
