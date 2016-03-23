@@ -68,6 +68,7 @@ export default (router)=> {
     });
 
     router.post('/user/collect', loginService.auth, function *(next) {
+        yield collectService.getCollections.call(this);
     });
 
     router.post('/collect/:id', loginService.auth, function *(next) {

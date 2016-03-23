@@ -20,7 +20,8 @@ const Collection = db.define('collection', {
     collection_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     collection_title: {type: Sequelize.STRING(128)},
     collection_content: {type: Sequelize.TEXT},
-    collection_userId: {type: Sequelize.INTEGER}
+    collection_userId: {type: Sequelize.INTEGER},
+    collection_status: {type: Sequelize.INTEGER}
 }, {
     freezeTableName: true,
     timestamps: false

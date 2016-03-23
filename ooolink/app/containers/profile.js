@@ -19,16 +19,18 @@ import React,{
 } from 'react-native';
 import Login from '../components/login';
 import Register from '../components/register';
+import TopBar from '../common/components/topBar';
 import * as loginService from '../services/loginService';
+import * as collectService from '../services/collectService';
 import {connect} from 'react-redux';
-import {setGlobal} from '../store';
+import {setGlobal, getGlobal} from '../store';
 
 class Profile extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            status: 'login'
+            status: getGlobal('oooLinkToken') ? 'logined' : 'login'
         }
     }
 
@@ -39,14 +41,26 @@ class Profile extends Component {
                     onSubmit={this.onLogin.bind(this)}
                     onGoRegister={this.onGoRegister.bind(this)}
                 />
-            )
+            );
         } else if (this.state.status === 'register') {
             return (
                 <Register
                     onSubmit={this.onRegister.bind(this)}
                 />
-            )
+            );
+        } else if (this.state.status === 'logined') {
+            return (
+                <View>
+                    <TopBar
+                        onBack={this.onBack.bind(this)}
+                    />
+                </View>
+            );
         }
+    }
+
+    onBack() {
+        this.props.navigator.pop();
     }
 
     onLogin(name, pwd) {
@@ -56,6 +70,9 @@ class Profile extends Component {
                     if (data.result) {
                         setGlobal('oooLinkToken', data.token);
                         Alert.alert('登陆成功');
+                        collectService.getCollections(data.token, ()=> {
+
+                        });
                         this.setState({status: 'logined'})
                     }
                 })

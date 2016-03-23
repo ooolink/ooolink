@@ -25,7 +25,7 @@ export function collected(site, title, content, flag, type, token, cb, isNeedToS
         })
         .then(rs=> {
             cb(rs);
-        })
+        });
 }
 
 export function uncollected(id, token, cb, isNeedToSite = false) {
@@ -44,5 +44,24 @@ export function uncollected(id, token, cb, isNeedToSite = false) {
         })
         .then(rs=> {
             cb(rs);
+        });
+}
+
+export function getCollections(token, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}user/collect`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}`
+    })
+        .then(response=> {
+            if (response.status === 200) {
+                return response.json();
+            }
         })
+        .then(rs=> {
+            cb(rs);
+        });
 }
