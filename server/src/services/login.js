@@ -77,19 +77,19 @@ export const session = function *() {
 
 export const auth = function *(next) {
     "use strict";
-    let {token} = this.request.body.fields;
-    yield User.findOne({where: {user_token: token}})
-        .then(user=> {
-            if (user) {
-                this._domain = this._domain || {};
-                this._domain.user = user;
-                co(function *() {
-                    yield next;
-                });
-            } else {
-                console.error('Error:   0');
-                this.status = 500;
-                this.body = {result: 0}
-            }
-        });
+    let {token} = this.request.body.fields, user;
+    try {
+        user = yield User.findOne({where: {user_token: token}});
+    } catch (error) {
+        console.error('Error:   ' + error);
+    }
+    if (user) {
+        this._domain = this._domain || {};
+        this._domain.user = user;
+        yield next;
+    } else {
+        console.error('Error:   0');
+        this.status = 500;
+        this.body = {result: 0};
+    }
 };
