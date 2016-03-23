@@ -19,11 +19,11 @@ const Collection = db.define('collection', {
     collection_type: {type: Sequelize.STRING(10)},
     collection_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     collection_title: {type: Sequelize.STRING(128)},
-    collection_content: {type: Sequelize.STRING(256)},
+    collection_content: {type: Sequelize.TEXT},
     collection_userId: {type: Sequelize.INTEGER}
 }, {
     freezeTableName: true,
     timestamps: false
-});
+}, {indexes: [{unique: true, fields: ['collection_id', 'collection_userId']}]});
 
 export default Collection;

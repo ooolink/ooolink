@@ -24,6 +24,7 @@ import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
+import * as collectService from '../services/collectService';
 
 let {height, width} = Dimensions.get('window');
 
@@ -64,6 +65,88 @@ class CommentBlock extends Component {
                 </View>
             </View>
         );
+    }
+}
+
+class CommentsList extends Component {
+
+    static propTypes = {
+        style: View.propTypes.style,
+        navigator: PropTypes.object,
+        topicId: PropTypes.any.isRequired
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            likeStatus: 'none'
+        }
+    }
+
+    render() {
+        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const comments = this.props.state.content.comments[this.props.topicId];
+        dataSource = dataSource.cloneWithRows(comments ? comments.data.replies : []);
+
+        let com;
+        if (comments) {
+            com = <ListView
+                style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
+                dataSource={dataSource}
+                renderHeader={this._renderHeader.bind(this)}
+                renderRow={this._renderRow.bind(this)}
+            />;
+        } else {
+            com = <LoadingBlock/>
+        }
+
+        return (
+            <View style={styles.container}>
+                <TopicBar
+                    likeStatus={this.state.likeStatus}
+                    onLike={this.onLike.bind(this)}
+                    onBack={this.onBack.bind(this)}/>
+                {com}
+            </View>
+        );
+    }
+
+    _renderHeader() {
+        if (!this.contentBlock) {
+            let {data} = this.props.state.content.comments[this.props.topicId];
+            this.contentBlock = <ContentBlock data={data}/>
+        }
+        return this.contentBlock;
+    }
+
+    _renderRow(rowData, sectionID, rowID) {
+        return (
+            <CommentBlock
+                data={rowData} rowID={rowID}/>
+        )
+    }
+
+    onBack() {
+        this.props.navigator.pop();
+    }
+
+    onLike() {
+        if (this.state.likeStatus === 'none') {
+            this.setState({
+                likeStatus: 'loading'
+            });
+            let {currentSite} = this.props.state.app;
+            let {themeSelected} = this.props.state.home;
+            let {data} = this.props.state.content.comments[this.props.topicId];
+
+            collectService.collected(currentSite, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', ()=> {
+                this.setState({
+                    likeStatus: 'ok'
+                });
+            })
+        } else if (this.state.likeStatus === 'like') {
+
+        }
     }
 }
 
@@ -115,62 +198,5 @@ const styles = StyleSheet.create({
         marginTop: 10
     }
 });
-
-class CommentsList extends Component {
-
-    static propTypes = {
-        style: View.propTypes.style,
-        navigator: PropTypes.object,
-        topicId: PropTypes.any.isRequired
-    };
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const comments = this.props.state.content.comments[this.props.topicId];
-        dataSource = dataSource.cloneWithRows(comments ? comments.data.replies : []);
-
-        let com;
-        if (comments) {
-            com = <ListView
-                style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
-                dataSource={dataSource}
-                renderHeader={this._renderHeader.bind(this)}
-                renderRow={this._renderRow.bind(this)}
-            />;
-        } else {
-            com = <LoadingBlock/>
-        }
-
-        return (
-            <View style={styles.container}>
-                <TopicBar onBack={this.onBack.bind(this)}/>
-                {com}
-            </View>
-        );
-    }
-
-    _renderHeader() {
-        if (!this.contentBlock) {
-            let {data} = this.props.state.content.comments[this.props.topicId];
-            this.contentBlock = <ContentBlock data={data}/>
-        }
-        return this.contentBlock;
-    }
-
-    _renderRow(rowData, sectionID, rowID) {
-        return (
-            <CommentBlock
-                data={rowData} rowID={rowID}/>
-        )
-    }
-
-    onBack() {
-        this.props.navigator.pop();
-    }
-}
 
 export default CommentsList;

@@ -17,7 +17,6 @@ import React,{
     Image,
     TouchableOpacity
 } from 'react-native';
-import * as collectService from '../services/collectService';
 
 let {height, width} = Dimensions.get('window');
 
@@ -25,14 +24,12 @@ class TopicBar extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
-        onBack: PropTypes.func.isRequired
+        onBack: PropTypes.func.isRequired,
+        onLike: PropTypes.func.isRequired
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-            likeStatus: 'none'
-        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,7 +38,7 @@ class TopicBar extends Component {
     render() {
         let likeImage = require('../images/like-none-white.png');
 
-        switch (this.state.likeStatus) {
+        switch (this.props.likeStatus) {
             case 'none':
                 likeImage = require('../images/like-none-white.png');
                 break;
@@ -78,14 +75,7 @@ class TopicBar extends Component {
     }
 
     _onLike() {
-        this.setState({
-            likeStatus: 'loading'
-        });
-        collectService.collected('ad', 'a', '123', '123', 'sd', 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', ()=> {
-            this.setState({
-                likeStatus: 'ok'
-            });
-        })
+        this.props.onLike();
     }
 }
 
