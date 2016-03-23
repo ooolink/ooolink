@@ -20,6 +20,7 @@ import Login from '../components/login';
 import Register from '../components/register';
 import * as loginService from '../services/loginService';
 import {connect} from 'react-redux';
+import {setGlobal} from '../store';
 
 class Profile extends Component {
 
@@ -56,6 +57,7 @@ class Profile extends Component {
             if (data.result) {
                 loginService.login(name, pwd, data.token, (data)=> {
                     if (data.result) {
+                        setGlobal('oooLinkToken', data.token);
                         this.setState({status: 'logined'})
                     }
                 })
@@ -66,6 +68,7 @@ class Profile extends Component {
     onRegister(name, pwd) {
         loginService.sign(name, pwd, (data=> {
             if (data.result) {
+                setGlobal('oooLinkToken', data.token);
                 this.setState({status: 'logined'})
             }
         }));

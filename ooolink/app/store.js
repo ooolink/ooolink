@@ -18,3 +18,20 @@ const createStoreWithMiddleware = applyMiddleware(
 export default function configureStore(initialState) {
     return createStoreWithMiddleware(rootReducer, initialState)
 }
+
+let global = {
+    oooLinkToken: ''
+};
+
+export function getGlobal(key) {
+    "use strict";
+    if (key) {
+        return global[key];
+    }
+    return global;
+}
+
+export function setGlobal(key, value) {
+    "use strict";
+    global[key] = value;
+}

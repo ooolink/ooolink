@@ -24,6 +24,7 @@ import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
+import {getGlobal} from '../store';
 import * as collectService from '../services/collectService';
 
 let {height, width} = Dimensions.get('window');
@@ -137,11 +138,15 @@ class CommentsList extends Component {
         if (this.state.likeStatus === 'none') {
             let {data} = this.props.state.content.comments[this.props.topicId];
 
-            collectService.collected(currentSite, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', (rs)=> {
+            collectService.collected(currentSite, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
                     this.props.actions.collectTopic(rs.id, currentSite, this.props.topicId);
                     this.setState({
                         likeStatus: 'ok'
+                    });
+                } else {
+                    this.setState({
+                        likeStatus: 'none'
                     });
                 }
             })
@@ -157,11 +162,15 @@ class CommentsList extends Component {
             if (id === -1) {
                 return;
             }
-            collectService.uncollected(id, 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', (rs)=> {
+            collectService.uncollected(id, getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
                     this.props.actions.unCollectionTopic(rs.id, currentSite, this.props.topicId);
                     this.setState({
                         likeStatus: 'none'
+                    });
+                } else {
+                    this.setState({
+                        likeStatus: 'ok'
                     });
                 }
             })
