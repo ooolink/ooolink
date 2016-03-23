@@ -38,7 +38,6 @@ class SearchResult extends Component {
     render() {
         return (
             <ListView
-                style={{marginTop:20}}
                 dataSource={this.state.dataSource}
                 renderRow={this._renderRow.bind(this)}
             />

@@ -60,7 +60,6 @@ class SearchBlock extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
