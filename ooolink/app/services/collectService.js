@@ -20,9 +20,12 @@ export function collected(site, title, content, flag, type, token, cb, isNeedToS
     })
         .then(response=> {
             if (response.status === 200) {
-                cb(response.json());
+                return response.json();
             }
-        });
+        })
+        .then(rs=> {
+            cb(rs);
+        })
 }
 
 export function uncollected(id, token, cb, isNeedToSite = false) {
@@ -36,7 +39,10 @@ export function uncollected(id, token, cb, isNeedToSite = false) {
     })
         .then(response=> {
             if (response.status === 200) {
-                cb(response.json());
+                return response.json();
             }
-        });
+        })
+        .then(rs=> {
+            cb(rs);
+        })
 }

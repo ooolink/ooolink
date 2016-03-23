@@ -69,3 +69,23 @@ export function getTopic(id) {
         return dispatch(getTopicFromServer(site, id));
     }
 }
+
+export function collectTopic(id, site, topicId) {
+    "use strict";
+    return {
+        type: ActionTypes.ADD_COLLECTION,
+        id,
+        site,
+        topicId
+    }
+}
+
+export function unCollectionTopic(id, site, topicId) {
+    "use strict";
+    return {
+        type: ActionTypes.RM_COLLECTION,
+        id,
+        site,
+        topicId
+    }
+}

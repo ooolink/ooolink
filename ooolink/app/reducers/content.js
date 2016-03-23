@@ -13,7 +13,8 @@ import * as types from '../constants/actionTypes'
 const initialState = {
     topics: {},
     comments: {},
-    topicSelected: null
+    topicSelected: null,
+    collections: []
 };
 
 export default function(state = initialState, action) {
@@ -27,6 +28,16 @@ export default function(state = initialState, action) {
         case types.GET_TOPIC:
             let {id, topic} = action;
             state.comments[id] = topic;
+            return Object.assign({}, state);
+        case types.ADD_COLLECTION:
+            state.collections = [...state.collections, {
+                id: action.id,
+                topicId: action.topicId,
+                site: action.site
+            }];
+            return Object.assign({}, state);
+        case types.RM_COLLECTION:
+            state.collections = state.collections.filter(c=>!(c.topicId === action.topicId && c.site === action.site));
             return Object.assign({}, state);
         default:
             return state;

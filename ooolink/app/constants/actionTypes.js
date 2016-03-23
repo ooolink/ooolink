@@ -19,6 +19,8 @@ export const POST_TOPIC = 'PUT_TOPIC';
 /** COMMENT **/
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const POST_COMMENT = 'PUT_COMMENT';
+export const ADD_COLLECTION = 'ADD_COLLECTION';
+export const RM_COLLECTION = 'RM_COLLECTION';
 
 /** SITE **/
 export const APP_LOADING = 'APP_LOADING';

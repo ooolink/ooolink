@@ -15,7 +15,7 @@ export const collected = function *() {
     let {site, type, flag, title, content} = this.request.body.fields;
     let collection_id = crypto.createHmac('sha256', site).update(flag).digest('hex').toString();
     yield Collection.create({
-        collection_id,                                              //todo:添加联合键 user.id
+        collection_id,
         collection_userId: user.id,
         collection_site: site,
         collection_flag: flag,

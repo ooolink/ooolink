@@ -131,22 +131,44 @@ class CommentsList extends Component {
     }
 
     onLike() {
+        let {currentSite} = this.props.state.app;
+        let {themeSelected} = this.props.state.home;
+
         if (this.state.likeStatus === 'none') {
-            this.setState({
-                likeStatus: 'loading'
-            });
-            let {currentSite} = this.props.state.app;
-            let {themeSelected} = this.props.state.home;
             let {data} = this.props.state.content.comments[this.props.topicId];
 
-            collectService.collected(currentSite, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', ()=> {
-                this.setState({
-                    likeStatus: 'ok'
-                });
+            collectService.collected(currentSite, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', (rs)=> {
+                if (rs && rs.result) {
+                    this.props.actions.collectTopic(rs.id, currentSite, this.props.topicId);
+                    this.setState({
+                        likeStatus: 'ok'
+                    });
+                }
             })
-        } else if (this.state.likeStatus === 'like') {
-
+        } else if (this.state.likeStatus === 'ok') {
+            let collections = this.props.state.content.collections, len = collections.length;
+            let id = -1;
+            for (let i = 0; i < len; i++) {
+                if (collections[i].site === currentSite && collections[i].topicId === this.props.topicId) {
+                    id = collections[i].id;
+                    break;
+                }
+            }
+            if (id === -1) {
+                return;
+            }
+            collectService.uncollected(id, 'ec415af0b6acc6597f3477b7f4a15838b019e2839988ec04636ea8024bfe43bf', (rs)=> {
+                if (rs && rs.result) {
+                    this.props.actions.unCollectionTopic(rs.id, currentSite, this.props.topicId);
+                    this.setState({
+                        likeStatus: 'none'
+                    });
+                }
+            })
         }
+        this.setState({
+            likeStatus: 'loading'
+        });
     }
 }
 
