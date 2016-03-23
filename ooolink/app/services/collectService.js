@@ -18,10 +18,11 @@ export function collected(site, title, content, flag, type, token, cb, isNeedToS
         },
         body: `site=${site}&title=${title}&content=${content}&flag=${flag}&type=${type}&token=${token}`
     })
-        .then(response=>{console.log(response); response.json()})
-        .then(rs=> {
-            cb(rs);
-        })
+        .then(response=> {
+            if (response.status === 200) {
+                cb(response.json());
+            }
+        });
 }
 
 export function uncollected(id, token, cb, isNeedToSite = false) {
@@ -33,8 +34,9 @@ export function uncollected(id, token, cb, isNeedToSite = false) {
         },
         body: `id=${id}&token=${token}`
     })
-        .then(response=>response.json())
-        .then(rs=> {
-            cb(rs);
-        })
+        .then(response=> {
+            if (response.status === 200) {
+                cb(response.json());
+            }
+        });
 }
