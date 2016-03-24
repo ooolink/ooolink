@@ -20,7 +20,8 @@ export default function configureStore(initialState) {
 }
 
 let global = {
-    oooLinkToken: ''
+    oooLinkToken: 'a27778cc4a545ac318a840d858b21cadafa8a4ea4ef59a13b08afbd1fe8a3478',
+    userName: 'rube'
 };
 
 export function getGlobal(key) {

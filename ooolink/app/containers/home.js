@@ -19,7 +19,6 @@ import React,{
 import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
 import CommentsList from '../containers/commentslist';
-import Setting from '../containers/setting';
 import Profile from '../containers/profile';
 
 let {height, width} = Dimensions.get('window');
@@ -46,8 +45,7 @@ class Home extends Component {
                     onChooseTheme={_this.onChooseTheme.bind(this)}
                     themeSelected={themeSelected}
                     themeBlockHeight={themesBlockHeight}
-                    onOpenProfile={_this.onOpenProfile.bind(_this)}
-                    onOpenSetting={_this.onOpenSetting.bind(_this)}/>
+                    onOpenProfile={_this.onOpenProfile.bind(_this)}/>
             </View>
         );
     }
@@ -57,14 +55,6 @@ class Home extends Component {
             name: 'profile',
             index: 3,
             component: Profile
-        });
-    }
-
-    onOpenSetting() {
-        this.props.navigator.push({
-            name: 'setting',
-            index: 2,
-            component: Setting
         });
     }
 

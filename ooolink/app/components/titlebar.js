@@ -27,7 +27,6 @@ class TitleBar extends Component {
 
     static propTypes = {
         onOpenProfile: PropTypes.func.isRequired,
-        onOpenSetting: PropTypes.func.isRequired,
         onChooseTheme: PropTypes.func.isRequired,
         themeBlockHeight: PropTypes.number.isRequired,
         themeSelected: PropTypes.string.isRequired,
@@ -81,11 +80,10 @@ class TitleBar extends Component {
                         style={[styles.itemIcon,{
                             marginLeft: 10
                         }]}
-                        onPress={this.openSetting.bind(this)}
                     >
                         <Image
                             style={styles.itemIcon}
-                            source={require('../images/home-setting.png')}
+                            source={require('../images/like-none-white.png')}
                         />
                     </TouchableOpacity>
                 </View>
@@ -95,10 +93,6 @@ class TitleBar extends Component {
 
     openProfile() {
         this.props.onOpenProfile();
-    }
-
-    openSetting() {
-        this.props.onOpenSetting();
     }
 
     onChooseTheme(theme) {

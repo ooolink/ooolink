@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     }
 });
 
-class Setting extends Component {
+class Search extends Component {
 
     componentWillReceiveProps(nextProps) {
 
@@ -109,4 +109,4 @@ class Setting extends Component {
     }
 }
 
-export default Setting;
+export default Search;
