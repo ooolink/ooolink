@@ -95,14 +95,14 @@ export const getCollections = function *() {
 export const collectedSite = function *() {
     "use strict";
     let user = this._domain.user;
-    let {site,desc} = this.request.body.fields;
+    let site = this.params.site;
+    let {desc} = this.request.body.fields;
     let collection_id = user.id + '-' + site;
     yield SiteFocus.upsert({
         collection_id,
         collection_userId: user.id,
         collection_site: site,
         collection_desc: desc,
-        collection_content: content,
         collection_status: 1
     }).then(collection=> {
         this.body = {result: 1, id: collection_id}
@@ -116,7 +116,7 @@ export const collectedSite = function *() {
 export const unCollectedSite = function *() {
     "use strict";
     let user = this._domain.user;
-    let site = this.request.body.fields.site;
+    let site = this.params.site;
     yield SiteFocus.update({collection_status: 0}, {
             where: {
                 collection_id: user.id + '-' + site,
@@ -140,7 +140,8 @@ export const unCollectedSite = function *() {
 
 export const judgeSiteFocused = function *() {
     "use strict";
-    let user = this._domain.user, site = this.request.body.fields.site;
+    let user = this._domain.user;
+    let site = this.params.site;
     let collection = yield SiteFocus.findOne({
         where: {
             collection_id: user.id + '-' + site,

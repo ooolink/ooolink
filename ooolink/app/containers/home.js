@@ -20,10 +20,19 @@ import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
 import CommentsList from '../containers/commentslist';
 import Profile from '../containers/profile';
+import * as collectService from '../services/collectService';
+import {getGlobal} from '../store';
 
 let {height, width} = Dimensions.get('window');
 
 class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            siteLikeStatus: 'none'
+        }
+    }
 
     render() {
         const {themesBlockHeight,themeSelected} = this.props.state.home;
@@ -40,9 +49,11 @@ class Home extends Component {
                     data={topics}
                     style={styles.content}/>
                 <TitleBar
+                    siteLikeStatus={this.state.siteLikeStatus}
                     style={styles.titleBar}
                     themes={siteInfo[currentSite].themes}
                     onChooseTheme={_this.onChooseTheme.bind(this)}
+                    onSiteFocus={_this.onSiteFocus.bind(this)}
                     themeSelected={themeSelected}
                     themeBlockHeight={themesBlockHeight}
                     onOpenProfile={_this.onOpenProfile.bind(_this)}/>
@@ -56,6 +67,30 @@ class Home extends Component {
             index: 3,
             component: Profile
         });
+    }
+
+    onSiteFocus() {
+        const {currentSite} = this.props.state.app;
+        if (this.state.siteLikeStatus === 'none') {
+            collectService.collectedSite(currentSite, '', getGlobal('oooLinkToken'), (rs)=> {
+                if (rs && rs.result) {
+                    this.props.actions.collectSiteFocus(currentSite);
+                    this.setState({siteLikeStatus: 'ok'});
+                } else {
+                    this.setState({siteLikeStatus: 'none'});
+                }
+            });
+        } else if (this.state.siteLikeStatus === 'ok') {
+            collectService.unCollectedSite(currentSite, getGlobal('oooLinkToken'), (rs)=> {
+                if (rs && rs.result) {
+                    this.props.actions.unCollectSiteFocus(currentSite);
+                    this.setState({siteLikeStatus: 'none'});
+                } else {
+                    this.setState({siteLikeStatus: 'ok'});
+                }
+            })
+        }
+        this.setState({siteLikeStatus: 'loading'});
     }
 
     onChooseTheme(theme) {

@@ -11,7 +11,7 @@ import Sequelize from 'sequelize';
 import {getMysql} from '../services/cache';
 
 const db = getMysql();
-const Sitefocus = db.define('collection', {
+const Sitefocus = db.define('sitefocus', {
     id: {type: Sequelize.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
     collection_id: {type: Sequelize.STRING(64)},
     collection_site: {type: Sequelize.STRING(64)},

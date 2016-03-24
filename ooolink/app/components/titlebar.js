@@ -26,7 +26,9 @@ let {height, width} = Dimensions.get('window');
 class TitleBar extends Component {
 
     static propTypes = {
+        siteLikeStatus: PropTypes.string,
         onOpenProfile: PropTypes.func.isRequired,
+        onSiteFocus: PropTypes.func.isRequired,
         onChooseTheme: PropTypes.func.isRequired,
         themeBlockHeight: PropTypes.number.isRequired,
         themeSelected: PropTypes.string.isRequired,
@@ -42,6 +44,19 @@ class TitleBar extends Component {
     }
 
     render() {
+        let likeImage = require('../images/like-none-white.png');
+
+        switch (this.props.siteLikeStatus) {
+            case 'none':
+                likeImage = require('../images/like-none-white.png');
+                break;
+            case 'ok':
+                likeImage = require('../images/like-ok-white.png');
+                break;
+            case 'loading':
+                likeImage = require('../images/loading-white.png');
+                break;
+        }
         return (
             <View style={this.props.style}>
                 <DropDownBlock
@@ -77,18 +92,23 @@ class TitleBar extends Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
+                        onPress={this.siteFocus.bind(this)}
                         style={[styles.itemIcon,{
                             marginLeft: 10
                         }]}
                     >
                         <Image
                             style={styles.itemIcon}
-                            source={require('../images/like-none-white.png')}
+                            source={likeImage}
                         />
                     </TouchableOpacity>
                 </View>
             </View>
         )
+    }
+
+    siteFocus() {
+        this.props.onSiteFocus();
     }
 
     openProfile() {

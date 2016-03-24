@@ -65,3 +65,60 @@ export function getCollections(token, cb) {
             cb(rs);
         });
 }
+
+export function collectedSite(site, desc, token, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}${site}/collect`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}&desc=${desc}`
+    })
+        .then(response=> {
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .then(rs=> {
+            cb(rs);
+        });
+}
+
+export function unCollectedSite(site, token, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}${site}/collect`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}`
+    })
+        .then(response=> {
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .then(rs=> {
+            cb(rs);
+        });
+}
+
+export function getSitefocused(token, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}user/sitefocus`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}`
+    })
+        .then(response=> {
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .then(rs=> {
+            cb(rs);
+        });
+}

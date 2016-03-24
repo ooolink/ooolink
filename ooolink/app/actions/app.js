@@ -38,3 +38,19 @@ export function getSiteInfo(site) {
         return dispatch(getSiteInfoFromServer(site));
     }
 }
+
+export function collectSiteFocus(site) {
+    "use strict";
+    return {
+        type: ActionTypes.ADD_SITE_FOCUS,
+        site
+    }
+}
+
+export function unCollectSiteFocus(site) {
+    "use strict";
+    return {
+        type: ActionTypes.RM_SITE_FOCUS,
+        site
+    }
+}

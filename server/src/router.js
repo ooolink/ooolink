@@ -71,7 +71,8 @@ export default (router)=> {
         yield collectService.getCollections.call(this);
     });
 
-    router.post('/collect/:id', loginService.auth, function *(next) {
+    router.post('/user/sitefocus', loginService.auth, function *(next) {
+        yield collectService.getSitefocused.call(this);
     });
 
     router.post('/collect', loginService.auth, function *(next) {
@@ -84,6 +85,18 @@ export default (router)=> {
 
     router.post('/collect', methodAuth('delete'), loginService.auth, function *(next) {
         yield collectService.unCollected.call(this);
+    });
+
+    router.post('/:site/collect', loginService.auth, function *() {
+        yield collectService.collectedSite.call(this);
+    });
+
+    router.delete('/:site/collect', loginService.auth, function *() {
+        yield collectService.unCollectedSite.call(this);
+    });
+
+    router.post('/:site/collect', methodAuth('delete'), loginService.auth, function *(next) {
+        yield collectService.unCollectedSite.call(this);
     });
 
     router.get('/:site/user/:name', function *(next) {
