@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     selectedItem: {
-        width: 50,
         marginLeft: 10,
         textAlign: 'center',
         color: '#fff',
