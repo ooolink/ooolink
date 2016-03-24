@@ -9,6 +9,7 @@
 
 import * as ActionTypes from '../constants/actionTypes';
 import {SERVER_ADDRESS} from '../constants/config';
+import {clearContent} from '../actions/content';
 import {setThemesBlockHeight,selectTheme} from '../actions/home';
 import {computeThemeBlockHeight} from '../utils';
 
@@ -32,6 +33,7 @@ function getSiteInfoFromServer(site) {
 export function getSiteInfo(site) {
     "use strict";
     return (dispatch, getState)=> {
+        dispatch(clearContent());
         dispatch({
             type: ActionTypes.APP_LOADING
         });

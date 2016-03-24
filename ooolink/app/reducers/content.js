@@ -20,6 +20,13 @@ const initialState = {
 export default function(state = initialState, action) {
 
     switch (action.type) {
+        case types.CLEAR_CONTENT:
+            return {
+                topics: {},
+                comments: {},
+                topicSelected: null,
+                collections: []
+            };
         case types.GET_TOPICS:
             let {theme,page,topics} = action;
             state.topics[theme] = state.topics[theme] || {};

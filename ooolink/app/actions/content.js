@@ -14,7 +14,9 @@ function getTopicsFromServer(site, theme, page, limit) {
     "use strict";
     return dispatch => {
         return fetch(`${SERVER_ADDRESS}${site}/theme/${theme}?limit=${limit}&page=${page}`)
-            .then(response => response.json())
+            .then(response => {
+                return response.json();
+            })
             .then(json => {
                 let topics = json;
                 dispatch({
@@ -40,6 +42,13 @@ function getTopicFromServer(site, id) {
                     id
                 });
             });
+    }
+}
+
+export function clearContent(){
+    "use strict";
+    return {
+        type: ActionTypes.CLEAR_CONTENT
     }
 }
 

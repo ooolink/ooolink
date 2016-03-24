@@ -9,11 +9,16 @@
   "author": "Rube",
   "license": "ISC",
   "dependencies": {
+    "co": "^4.6.0",
+    "feedparser": "~1.1.4",
     "koa": "~1.2.0",
+    "koa-better-body": "^1.0.17",
     "koa-body": "~1.4.0",
     "koa-request": "^1.0.0",
     "koa-router": "~5.4.0",
-    "request": "^2.69.0"
+    "mysql": "~2.10.2",
+    "request": "^2.69.0",
+    "sequelize": "~3.19.3"
   },
   "devDependencies": {}
 }
