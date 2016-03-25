@@ -82,7 +82,7 @@ class TitleBar extends Component {
                     </Text>
                     <TouchableOpacity
                         style={[styles.itemIcon,{
-                            marginLeft: width-110
+                            left: width-60
                         }]}
                         onPress={this.openProfile.bind(this)}
                     >
@@ -94,7 +94,7 @@ class TitleBar extends Component {
                     <TouchableOpacity
                         onPress={this.siteFocus.bind(this)}
                         style={[styles.itemIcon,{
-                            marginLeft: 10
+                            left:width-30
                         }]}
                     >
                         <Image
@@ -166,6 +166,8 @@ const styles = StyleSheet.create({
         height: 10
     },
     itemIcon: {
+        top: 6,
+        position: 'absolute',
         width: 16,
         height: 16
     }
