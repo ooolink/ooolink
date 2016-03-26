@@ -15,6 +15,7 @@ import React,{
     Image,
     Dimensions,
     Navigator,
+    TouchableOpacity,
     View,
     TextInput,
     Alert
@@ -70,18 +71,27 @@ class Profile extends Component {
                             placeholder={"找找站点"}
                         />
                     </View>
-                    <View style={styles.item}>
-                        <Image style={styles.icon} source={require('../images/profile-site.png')}/>
-                        <Text style={styles.itemText}>
-                            我关注的站点
-                        </Text>
-                    </View>
-                    <View style={styles.item}>
-                        <Image style={styles.icon} source={require('../images/profile-like.png')}/>
-                        <Text style={styles.itemText}>
-                            我的收藏
-                        </Text>
-                    </View>
+                    <TouchableOpacity
+                        onPress={this.onGetFocusSite.bind(this)}
+                    >
+                        <View
+                            style={styles.item}>
+                            <Image style={styles.icon} source={require('../images/profile-site.png')}/>
+                            <Text style={styles.itemText}>
+                                我关注的站点
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={this.onGetLikeTopic.bind(this)}
+                    >
+                        <View style={styles.item}>
+                            <Image style={styles.icon} source={require('../images/profile-like.png')}/>
+                            <Text style={styles.itemText}>
+                                我的收藏
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                     <View style={styles.item}>
                         <Image style={styles.icon} source={require('../images/profile-message.png')}/>
                         <Text style={styles.itemText}>
@@ -91,6 +101,14 @@ class Profile extends Component {
                 </View>
             );
         }
+    }
+
+    onGetLikeTopic() {
+
+    }
+
+    onGetFocusSite() {
+        this.props.actions.getFocusSite(getGlobal('oooLinkToken'));
     }
 
     onBack() {

@@ -36,6 +36,9 @@ export default function(state = initialState, action) {
         case types.RM_SITE_FOCUS:
             delete state.siteFocus[action.site];
             return Object.assign({}, state);
+        case types.GET_SITE_FOCUS:
+            console.log(action.sites);
+            return Object.assign({}, state);
         default:
             return state;
     }

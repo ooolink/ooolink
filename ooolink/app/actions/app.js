@@ -8,6 +8,7 @@
  */
 
 import * as ActionTypes from '../constants/actionTypes';
+import * as collectService from '../services/collectService';
 import {SERVER_ADDRESS} from '../constants/config';
 import {clearContent} from '../actions/content';
 import {setThemesBlockHeight,selectTheme} from '../actions/home';
@@ -54,5 +55,24 @@ export function unCollectSiteFocus(site) {
     return {
         type: ActionTypes.RM_SITE_FOCUS,
         site
+    }
+}
+
+function getFocusSiteFromServer(token) {
+    "use strict";
+    return (dispatch)=> {
+        collectService.getSitefocused(token, (rs)=> {
+            dispatch({
+                type: ActionTypes.GET_SITE_FOCUS,
+                sites: rs.collections
+            })
+        })
+    }
+}
+
+export function getFocusSite(token) {
+    "use strict";
+    return (dispatch, getState)=> {
+        return dispatch(getFocusSiteFromServer(token));
     }
 }
