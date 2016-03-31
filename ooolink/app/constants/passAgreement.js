@@ -1,0 +1,1 @@
+export const TO_INFO_GROUP_FOCUS_SITE = "FOCUS_SITE";

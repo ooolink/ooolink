@@ -24,6 +24,8 @@ import Login from '../components/login';
 import Register from '../components/register';
 import TopBar from '../common/components/topBar';
 import Search from '../containers/search';
+import InfoGroup from '../containers/infoGroup';
+import {TO_INFO_GROUP_FOCUS_SITE} from '../constants/passAgreement';
 import * as loginService from '../services/loginService';
 import * as collectService from '../services/collectService';
 import {setGlobal, getGlobal} from '../store';
@@ -108,7 +110,14 @@ class Profile extends Component {
     }
 
     onGetFocusSite() {
-        this.props.actions.getFocusSite(getGlobal('oooLinkToken'));
+        this.props.navigator.push({
+            name: 'infoGroup',
+            index: 4,
+            props: {
+                type: TO_INFO_GROUP_FOCUS_SITE
+            },
+            component: InfoGroup
+        });
     }
 
     onBack() {

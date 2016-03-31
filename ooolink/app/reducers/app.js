@@ -37,7 +37,11 @@ export default function(state = initialState, action) {
             delete state.siteFocus[action.site];
             return Object.assign({}, state);
         case types.GET_SITE_FOCUS:
-            console.log(action.sites);
+            action.sites.forEach(site=> {
+                if (site.collection_status) {
+                    state.siteFocus[site.collection_site] = true;
+                }
+            });
             return Object.assign({}, state);
         default:
             return state;
