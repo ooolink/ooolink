@@ -13,7 +13,7 @@ import {getMysql} from '../services/cache';
 const db = getMysql();
 const Sitefocus = db.define('sitefocus', {
     id: {type: Sequelize.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-    collection_id: {type: Sequelize.STRING(64)},
+    collection_id: {type: Sequelize.STRING(64), unique: true},
     collection_site: {type: Sequelize.STRING(64)},
     collection_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     collection_desc: {type: Sequelize.STRING(128)},
@@ -22,6 +22,6 @@ const Sitefocus = db.define('sitefocus', {
 }, {
     freezeTableName: true,
     timestamps: false
-}, {indexes: [{unique: true, fields: ['collection_id', 'collection_userId']}]});
+});
 
 export default Sitefocus;
