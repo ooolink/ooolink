@@ -14,7 +14,7 @@ const changed = require('gulp-changed');
 
 //Server
 gulp.task('babel', ()=> {
-    return gulp.src(['server/src/**/*.js'], {base: './server/src'})
+    return gulp.src(['!server/src/default/nodeclub/**/*.*', 'server/src/**/*.js'], {base: './server/src'})
         .pipe(changed('./server/dist'))
         .pipe(babel({
             presets: ['nodejs-lts']
@@ -26,7 +26,7 @@ gulp.task('server', ['babel'], ()=> {
     nodemon({
         watch: ['./'],
         script: 'server/dist/index.js',
-        ignore: ['server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'ooolink/app'],
+        ignore: ['server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'ooolink/app', 'server/src/default/nodeclub'],
         ext: '.js',
         env: {'NODE_ENV': 'dev'},
         tasks: ['babel'],
