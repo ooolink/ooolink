@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-
+import * as collectService from '../services/collectService';
 import * as ActionTypes from '../constants/actionTypes';
 import {SERVER_ADDRESS} from '../constants/config';
 
@@ -96,5 +96,24 @@ export function unCollectionTopic(id, site, topicId) {
         id,
         site,
         topicId
+    }
+}
+
+function getCollectionsFromServer(token) {
+    "use strict";
+    return (dispatch)=> {
+        collectService.getCollections(token, (rs)=> {
+            dispatch({
+                type: ActionTypes.GET_COLLECTIONS,
+                collections: rs.collections
+            })
+        })
+    }
+}
+
+export function getCollections(token) {
+    "use strict";
+    return (dispatch, getState)=> {
+        return dispatch(getCollectionsFromServer(token));
     }
 }

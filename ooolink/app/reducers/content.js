@@ -36,6 +36,9 @@ export default function(state = initialState, action) {
             let {id, topic} = action;
             state.comments[id] = topic;
             return Object.assign({}, state);
+        case types.GET_COLLECTIONS:
+            state.collections = action.collections;
+            return Object.assign({}, state);
         case types.ADD_COLLECTION:
             state.collections = [...state.collections, {
                 id: action.id,
