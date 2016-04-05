@@ -20,7 +20,7 @@ import React,{
     Alert
 } from 'react-native';
 import TopBar from '../common/components/topBar';
-import {TO_INFO_GROUP_FOCUS_SITE} from '../constants/passAgreement';
+import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
 import {setGlobal, getGlobal} from '../store';
 
 class InfoGroup extends Component {
@@ -31,12 +31,25 @@ class InfoGroup extends Component {
 
     render() {
         let info = [];
-        for (let siteName in this.props.state.app.siteFocus) {
-            info.push(
-                <Text>
-                    {siteName}
-                </Text>
-            );
+        switch (this.props.type) {
+            case TO_INFO_GROUP_FOCUS_SITE:
+                for (let siteName in this.props.state.app.siteFocus) {
+                    info.push(
+                        <Text>
+                            {siteName}
+                        </Text>
+                    );
+                }
+                break;
+            case TO_INFO_GROUP_COLLECTIONS:
+                this.props.state.content.collections.forEach((item)=> {
+                    info.push(
+                        <Text>
+                            {item.collection_content}
+                        </Text>
+                    );
+                });
+                break;
         }
         return (
             <View>
@@ -48,7 +61,7 @@ class InfoGroup extends Component {
         )
     }
 
-    onBack(){
+    onBack() {
         this.props.navigator.pop();
     }
 
@@ -56,6 +69,10 @@ class InfoGroup extends Component {
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE :
                 this.props.actions.getFocusSite(getGlobal('oooLinkToken'));
+                break;
+
+            case TO_INFO_GROUP_COLLECTIONS:
+                this.props.actions.getCollections(getGlobal('oooLinkToken'));
                 break;
         }
     }
