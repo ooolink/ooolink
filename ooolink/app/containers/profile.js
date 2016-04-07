@@ -87,6 +87,7 @@ class Profile extends Component {
                             <Text style={styles.itemText}>
                                 我关注的站点
                             </Text>
+                            <Image style={styles.icon} source={require('../images/profile-up.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -97,6 +98,7 @@ class Profile extends Component {
                             <Text style={styles.itemText}>
                                 我的收藏
                             </Text>
+                            <Image style={styles.icon} source={require('../images/profile-up.png')}/>
                         </View>
                     </TouchableOpacity>
                     <View style={styles.item}>
@@ -104,6 +106,7 @@ class Profile extends Component {
                         <Text style={styles.itemText}>
                             我的消息
                         </Text>
+                        <Image style={styles.icon} source={require('../images/profile-up.png')}/>
                     </View>
                 </View>
             );
@@ -209,7 +212,7 @@ const styles = StyleSheet.create({
         fontWeight: '900'
     },
     itemText: {
-        width: width - 70,
+        width: width - 100,
         marginLeft: 20,
         textAlign: 'left'
     },
