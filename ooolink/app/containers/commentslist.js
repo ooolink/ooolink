@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     rowNumber: {
-        color: '#22b473',
+        color: '#2F85A7',
         fontSize: 12,
         fontWeight: '900'
     },

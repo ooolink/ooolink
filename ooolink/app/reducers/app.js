@@ -9,7 +9,7 @@
 import * as types from '../constants/actionTypes'
 
 const initialState = {
-    currentSite: 'named-bbs',
+    currentSite: 'cnode-bbs',
     siteFocus: {},
     token: {},
     siteInfo: {},

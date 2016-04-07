@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingLeft: 10,
-        backgroundColor: '#22b473'
+        backgroundColor: '#2F85A7'
     },
     itemLang: {
         fontSize: 12,

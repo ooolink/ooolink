@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         width: width - 40,
         height: 30,
-        backgroundColor: '#22b473'
+        backgroundColor: '#2F85A7'
     }
 });
 

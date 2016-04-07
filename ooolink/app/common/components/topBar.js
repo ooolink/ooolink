@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         width,
         flex: 1,
         height: 40,
-        backgroundColor: '#22b473',
+        backgroundColor: '#2F85A7',
         flexDirection: "row",
         alignItems: "center"
     },
