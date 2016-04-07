@@ -13,7 +13,7 @@ import _router from './router';
 
 export default (app, router)=> {
     "use strict";
-    app.use(koaStatic(__dirname + '../../public'));
+    app.use(koaStatic(path.join(__dirname, '../../public')));
     koaEjs(app, {
         root: path.join(__dirname, '../../', 'public/pages'),
         layout: 'template',

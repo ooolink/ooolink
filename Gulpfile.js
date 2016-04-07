@@ -32,7 +32,12 @@ gulp.task('css', ()=> {
         .pipe(gulp.dest('server/public/dist'));
 });
 
-gulp.task('server', ['babel', 'css'], ()=> {
+gulp.task('js', ()=>{
+    "use strict";
+    return gulp.src('server/public/js/*.js');
+});
+
+gulp.task('server', ['babel', 'css', 'js'], ()=> {
     nodemon({
         watch: ['./'],
         script: 'server/dist/index.js',
@@ -44,4 +49,5 @@ gulp.task('server', ['babel', 'css'], ()=> {
     });
 
     gulp.watch('server/public/css/*.css', ['css']);
+    gulp.watch('server/public/js/*.js', ['js']);
 });
