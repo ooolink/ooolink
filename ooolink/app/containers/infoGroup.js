@@ -35,7 +35,7 @@ class InfoGroup extends Component {
             case TO_INFO_GROUP_FOCUS_SITE:
                 for (let siteName in this.props.state.app.siteFocus) {
                     info.push(
-                        <Text>
+                        <Text onPress={this.onSelectSite.bind(this, siteName)}>
                             {siteName}
                         </Text>
                     );
@@ -63,6 +63,13 @@ class InfoGroup extends Component {
 
     onBack() {
         this.props.navigator.pop();
+    }
+
+    onSelectSite(siteName) {
+        setTimeout(()=> {
+            this.props.actions.getSiteInfo(siteName);
+        }, 200);
+        this.props.navigator.popToTop();
     }
 
     componentDidMount() {
