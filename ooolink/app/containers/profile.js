@@ -42,6 +42,8 @@ class Profile extends Component {
     }
 
     render() {
+        const {currentSite, siteInfo} = this.props.state.app;
+
         if (this.state.status === 'login') {
             return (
                 <Login
@@ -60,13 +62,16 @@ class Profile extends Component {
                 <View>
                     <TopBar
                         onBack={this.onBack.bind(this)}
+                        backText={siteInfo[currentSite].title}
                     />
-                    <View style={styles.item}>
+                    <Image
+                        source={require('../images/user-bg.jpg')}
+                        style={styles.userInfoItem}>
                         <Text style={styles.userInfoText}>
                             用户 : {getGlobal('userName')} (子账号数 : 3)
                         </Text>
-                    </View>
-                    <View style={styles.item}>
+                    </Image>
+                    <View style={styles.searchItem}>
                         <TextInput
                             onFocus={this.onSearchClick.bind(this)}
                             style={styles.searchInput}
@@ -169,6 +174,9 @@ class Profile extends Component {
         this.props.navigator.push({
             name: 'setting',
             index: 2,
+            props: {
+                backText: '用户中心'
+            },
             component: Search
         });
     }
@@ -179,13 +187,26 @@ const styles = StyleSheet.create({
         width,
         height: 50,
         borderBottomWidth: 2,
-        borderBottomColor: '#999',
+        borderBottomColor: '#eee',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    userInfoItem: {
+        width,
+        height: 50,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    searchItem: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center"
     },
     userInfoText: {
-        color: '#333'
+        color: '#fff',
+        fontWeight: '900'
     },
     itemText: {
         width: width - 70,
@@ -202,6 +223,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         width: width - 30,
         height: 30,
+        fontSize: 12,
         borderColor: '#333',
         borderWidth: 2,
         borderRadius: 4

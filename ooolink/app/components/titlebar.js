@@ -44,14 +44,14 @@ class TitleBar extends Component {
     }
 
     render() {
-        let likeImage = require('../images/like-none-white.png');
+        let likeImage = require('../images/star-none-white.png');
 
         switch (this.props.siteLikeStatus) {
             case 'none':
-                likeImage = require('../images/like-none-white.png');
+                likeImage = require('../images/star-none-white.png');
                 break;
             case 'ok':
-                likeImage = require('../images/like-ok-white.png');
+                likeImage = require('../images/star-ok-white.png');
                 break;
             case 'loading':
                 likeImage = require('../images/loading-white.png');

@@ -26,7 +26,8 @@ class TopBar extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
-        onBack: PropTypes.func.isRequired
+        onBack: PropTypes.func.isRequired,
+        backText: PropTypes.string.isRequired
     };
 
     render() {
@@ -38,6 +39,13 @@ class TopBar extends Component {
                     <Image
                         style={styles.backArrow}
                         source={require('../../images/topic-back.png')}/>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={this._onBack.bind(this)}
+                >
+                    <Text style={styles.backText}>
+                        {this.props.backText}
+                    </Text>
                 </TouchableOpacity>
             </View>
         )
@@ -61,6 +69,10 @@ const styles = StyleSheet.create({
         marginLeft: 6,
         width: 20,
         height: 20
+    },
+    backText: {
+        color: '#fff',
+        marginLeft: 6
     }
 });
 

@@ -20,6 +20,7 @@ import React,{
     PropTypes
 } from 'react-native';
 import SearchResult from '../components/searchResult';
+import TopBar from '../common/components/topBar';
 import {connect} from 'react-redux';
 
 const {width, height} = Dimensions.get('window');
@@ -80,12 +81,26 @@ class Search extends Component {
 
     }
 
+    static propTypes = {
+        backText: PropTypes.string.isRequired
+    };
+
     render() {
         return (
-            <SearchBlock
-                onSearch={this.onSearch.bind(this)}
-            />
+            <View>
+                <TopBar
+                    onBack={this.onBack.bind(this)}
+                    backText={this.props.backText}
+                />
+                <SearchBlock
+                    onSearch={this.onSearch.bind(this)}
+                />
+            </View>
         );
+    }
+
+    onBack(){
+        this.props.navigator.pop();
     }
 
     onSearch(value) {
