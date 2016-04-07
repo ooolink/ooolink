@@ -17,11 +17,15 @@ const Sitefocus = db.define('sitefocus', {
     collection_site: {type: Sequelize.STRING(64)},
     collection_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     collection_desc: {type: Sequelize.STRING(128)},
+    collection_site_name: {type: Sequelize.STRING(128)},
+    collection_site_image: {type: Sequelize.STRING(256)},
     collection_userId: {type: Sequelize.INTEGER},
     collection_status: {type: Sequelize.INTEGER}
 }, {
     freezeTableName: true,
     timestamps: false
 });
+
+Sitefocus.sync();
 
 export default Sitefocus;

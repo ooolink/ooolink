@@ -22,4 +22,7 @@ const User = db.define('user', {
     freezeTableName: true,
     timestamps: false
 });
+
+User.sync();
+
 export default User;

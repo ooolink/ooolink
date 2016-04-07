@@ -71,7 +71,8 @@ class CnodeController extends BaseController {
                 fn: []
             },
             desc:'Nodejs 中文社区',
-            title:'cnodejs 社区'
+            title:'cnodejs 社区',
+            image:'https://o4j806krb.qnssl.com/public/images/cnodejs_light.svg'
         }
     };
 

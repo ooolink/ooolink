@@ -70,9 +70,10 @@ class Home extends Component {
     }
 
     onSiteFocus() {
-        const {currentSite} = this.props.state.app;
+        const {currentSite, siteInfo} = this.props.state.app;
         if (this.state.siteLikeStatus === 'none') {
-            collectService.collectedSite(currentSite, '', getGlobal('oooLinkToken'), (rs)=> {
+            let desc = siteInfo[currentSite];                            //TODO: desc 描述字段化
+            collectService.collectedSite(currentSite, JSON.stringify(desc), getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
                     this.props.actions.collectSiteFocus(currentSite);
                     this.setState({siteLikeStatus: 'ok'});

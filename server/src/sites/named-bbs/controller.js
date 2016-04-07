@@ -70,8 +70,9 @@ class NamedController extends BaseController {
             conf: {
                 fn: []
             },
-            desc:'一个好玩的娱乐线上社区',
-            title:'那么社区'
+            desc: '一个好玩的娱乐线上社区',
+            title: '那么社区',
+            image: 'http://as.named.cn/f/5ff9062b936cbbdcf8104cc1337ee171.c0x0x298x180.t160x160.jpg'
         }
     };
 

@@ -54,6 +54,7 @@ class InfoGroup extends Component {
         return (
             <View>
                 <TopBar
+                    backText={this.props.backText}
                     onBack={this.onBack.bind(this)}
                 />
                 {info}

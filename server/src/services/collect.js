@@ -77,7 +77,6 @@ export const getCollections = function *() {
             collection_userId: user.id
         }
     });
-    console.log(collections);
     if (collections) {
         this.body = {
             result: 1,
@@ -163,7 +162,6 @@ export const getSitefocused = function *() {
             collection_userId: user.id
         }
     });
-    console.log(collections);
     if (collections) {
         this.body = {
             result: 1,
