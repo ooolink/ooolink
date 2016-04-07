@@ -69,7 +69,9 @@ class NamedController extends BaseController {
             themes: NamedController.themes,
             conf: {
                 fn: []
-            }
+            },
+            desc:'一个好玩的娱乐线上社区',
+            title:'那么社区'
         }
     };
 

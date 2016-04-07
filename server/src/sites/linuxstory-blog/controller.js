@@ -51,7 +51,9 @@ class LSController extends BaseController {
             themes: LSController.themes,
             conf: {
                 fn: []
-            }
+            },
+            desc:'一个有情有意的 Linux 社区',
+            title:'LinuxStory'
         }
     };
 

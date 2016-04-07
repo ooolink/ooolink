@@ -69,7 +69,9 @@ class CnodeController extends BaseController {
             themes: CnodeController.themes,
             conf: {
                 fn: []
-            }
+            },
+            desc:'Nodejs 中文社区',
+            title:'cnodejs 社区'
         }
     };
 
