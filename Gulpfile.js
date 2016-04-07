@@ -11,6 +11,8 @@ const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
 const babel = require('gulp-babel');
 const changed = require('gulp-changed');
+const minifycss = require('gulp-minify-css');
+const concat = require('gulp-concat');
 
 //Server
 gulp.task('babel', ()=> {
@@ -22,14 +24,24 @@ gulp.task('babel', ()=> {
         .pipe(gulp.dest('./server/dist'));
 });
 
-gulp.task('server', ['babel'], ()=> {
+gulp.task('css', ()=> {
+    "use strict";
+    return gulp.src('server/public/css/*.css')
+        .pipe(concat('main.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest('server/public/dist'));
+});
+
+gulp.task('server', ['babel', 'css'], ()=> {
     nodemon({
         watch: ['./'],
         script: 'server/dist/index.js',
         ignore: ['server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'ooolink/app', 'server/src/default/nodeclub'],
-        ext: '.js',
+        ext: '.js,.ejs',
         env: {'NODE_ENV': 'dev'},
         tasks: ['babel'],
         cwd: __dirname
     });
+
+    gulp.watch('server/public/css/*.css', ['css']);
 });
