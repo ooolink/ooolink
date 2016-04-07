@@ -1,0 +1,19 @@
+{
+  "name": "ooolink",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ooolink/ooolink",
+  "authors": [
+    "Rube <353371737@qq.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue": "~1.0.20"
+  }
+}
