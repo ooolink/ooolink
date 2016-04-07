@@ -11,11 +11,11 @@ import koa from 'koa';
 import koaRouter from 'koa-router';
 import koaBody from 'koa-better-body';
 import _router from './router';
-import _managerRouter from './manager/router';
+import manager from './manager/index';
 import config from '../config.json';
 
 const app = koa();
-const router = _managerRouter(_router(koaRouter()));
+const router = _router(koaRouter());
 
 app
     .use(koaBody({
@@ -26,5 +26,7 @@ app
     }))
     .use(router.routes())
     .use(router.allowedMethods());
+
+manager(app, router);
 
 app.listen(config.http.port);

@@ -8,5 +8,7 @@
  */
 export default (router)=> {
     "use strict";
-    return router;
+    router.get('/manager/index', function *(next) {
+        yield this.render('index');
+    });
 }
