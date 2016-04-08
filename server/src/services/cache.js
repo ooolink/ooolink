@@ -17,7 +17,8 @@ const sequelize = new Sequelize(dbname, username, password, {
         max: 10,
         min: 2,
         idle: 10000
-    }
+    },
+    logging: ()=>{}
 });
 
 export function getMysql() {

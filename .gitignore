@@ -36,6 +36,7 @@ npm-debug.log
 
 #product
 monitor
+bower_components
 #sites
 config.json
 dist

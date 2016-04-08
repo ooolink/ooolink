@@ -13,6 +13,7 @@ const babel = require('gulp-babel');
 const changed = require('gulp-changed');
 const minifycss = require('gulp-minify-css');
 const concat = require('gulp-concat');
+const webpack = require('gulp-webpack');
 
 //Server
 gulp.task('babel', ()=> {
@@ -32,9 +33,11 @@ gulp.task('css', ()=> {
         .pipe(gulp.dest('server/public/dist'));
 });
 
-gulp.task('js', ()=>{
+gulp.task('js', ()=> {
     "use strict";
-    return gulp.src('server/public/js/*.js');
+    return gulp.src('server/public/js/**/*.js')
+        .pipe(webpack(require('./webpack.base.config.js')))
+        .pipe(gulp.dest('server/public/dist/'));
 });
 
 gulp.task('server', ['babel', 'css', 'js'], ()=> {
@@ -48,6 +51,7 @@ gulp.task('server', ['babel', 'css', 'js'], ()=> {
         cwd: __dirname
     });
 
-    gulp.watch('server/public/css/*.css', ['css']);
-    gulp.watch('server/public/js/*.js', ['js']);
+    gulp.watch('server/public/css/**/*.css', ['css']);
+    gulp.watch('server/public/js/**/*.js', ['js']);
+    gulp.watch('server/public/js/**/*.vue', ['js']);
 });
