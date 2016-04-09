@@ -118,6 +118,7 @@ class Profile extends Component {
             name: 'infoGroup',
             index: 4,
             props: {
+                backText: '用户中心',
                 type: TO_INFO_GROUP_COLLECTIONS
             },
             component: InfoGroup

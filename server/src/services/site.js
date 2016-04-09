@@ -19,11 +19,11 @@ export const siteGet = function *(){
 		this.body = {
 				themes: String(sites.site_themes).split(','),
 				conf: {
-						fn: String(site.site_fn).split(',')
+						fn: String(sites.site_fn).split(',')
 				},
-				desc: site.site_desc,
-				title: site.site_name,
-				image: site.site_image
+				desc: sites.site_desc,
+				title: sites.site_name,
+				image: sites.site_image
 		}
 };
 
