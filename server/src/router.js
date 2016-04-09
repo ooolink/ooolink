@@ -36,10 +36,12 @@ export default (router)=> {
 
     router.use('/:site', function *(next) {
 
-        if (!~SITES.indexOf(this.params.site)) {
-            this.params.site = 'default';
+        let site = this.params.site;
+        let type = site.substr(site.split('-').shift().length + 1);
+        if (type !== 'bbs' && type !== 'blog'){
+            this._domain = this._domain || {};
+            this._domain.pluginName = type;
         }
-
         yield next;
     });
 

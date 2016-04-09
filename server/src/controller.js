@@ -16,8 +16,10 @@ export default Controller;
 
 const route = function(cb) {
     "use strict";
-    var site = this.params.site;
-
+    let site = this.params.site;
+    if (this._domain && this._domain.pluginName){
+        site = this._domain.pluginName;
+    }
     if (site === 'default') {
         return require(`./default/controller`);
     } else {
