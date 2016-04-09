@@ -20,6 +20,7 @@ import React,{
     Alert
 } from 'react-native';
 import TopBar from '../common/components/topBar';
+import InfoWithImageBlock from '../common/components/infoWithImageBlock';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
 import {setGlobal, getGlobal} from '../store';
 
@@ -30,16 +31,22 @@ class InfoGroup extends Component {
     }
 
     render() {
-        let info = [];
+        let info = [],
+            siteFocus = this.props.state.app.siteFocus;
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE:
-                for (let siteName in this.props.state.app.siteFocus) {
+                siteFocus.forEach(site=>{
+                    console.log(site)
                     info.push(
-                        <Text onPress={this.onSelectSite.bind(this, siteName)}>
-                            {siteName}
-                        </Text>
+                        <InfoWithImageBlock 
+                            onPress={this.onSelectSite.bind(this)}
+                            imageURL={site.collection_site_image}
+                            desc={site.collection_desc}
+                            name={site.collection_site_name}
+                            blockId={site.collection_site}
+                        />
                     );
-                }
+                });
                 break;
             case TO_INFO_GROUP_COLLECTIONS:
                 this.props.state.content.collections.forEach((item)=> {
@@ -66,9 +73,9 @@ class InfoGroup extends Component {
         this.props.navigator.pop();
     }
 
-    onSelectSite(siteName) {
+    onSelectSite(siteId) {
         setTimeout(()=> {
-            this.props.actions.getSiteInfo(siteName);
+            this.props.actions.getSiteInfo(siteId);
         }, 200);
         this.props.navigator.popToTop();
     }

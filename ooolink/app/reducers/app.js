@@ -10,7 +10,7 @@ import * as types from '../constants/actionTypes'
 
 const initialState = {
     currentSite: 'cnode-bbs',
-    siteFocus: {},
+    siteFocus: [],
     token: {},
     siteInfo: {},
     appLoaded: false
@@ -31,17 +31,19 @@ export default function(state = initialState, action) {
                 currentSite: action.site
             });
         case types.ADD_SITE_FOCUS:
-            state.siteFocus[action.site] = true;
+            state.siteFocus.forEach(site=>{
+                if (site.site_id !== action.site){
+                    state.siteFocus.push({
+                        //TODO
+                    });    
+                }
+            })
             return Object.assign({}, state);
         case types.RM_SITE_FOCUS:
             delete state.siteFocus[action.site];
             return Object.assign({}, state);
         case types.GET_SITE_FOCUS:
-            action.sites.forEach(site=> {
-                if (site.collection_status) {
-                    state.siteFocus[site.collection_site] = true;
-                }
-            });
+            state.siteFocus = action.sites;
             return Object.assign({}, state);
         default:
             return state;
