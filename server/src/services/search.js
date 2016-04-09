@@ -20,7 +20,7 @@ export const getSiteByType = function *() {
     switch (type) {
         case 'all':
         		let sites = yield Sites.findAll({
-        				attributes: ['site_name', 'site_id'],
+        				attributes: ['site_name', 'site_id','site_desc', 'site_image'],
         				where: {
         						$or: [
         								{site_name: 

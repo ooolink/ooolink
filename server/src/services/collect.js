@@ -14,10 +14,11 @@ import Sites from '../models/sites';
 export const collected = function *() {
     "use strict";
     let user = this._domain.user;
-    let {site, type, flag, title, content} = this.request.body.fields;
+    let {site, type, flag, title, content, sitename} = this.request.body.fields;
     let collection_id = crypto.createHmac('sha256', site).update(flag).digest('hex').toString();
     yield Collection.upsert({
         collection_id,
+        collection_site_name: sitename,
         collection_userId: user.id,
         collection_site: site,
         collection_flag: flag,

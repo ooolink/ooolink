@@ -9,14 +9,14 @@
 
 import {SERVER_ADDRESS} from '../constants/config';
 
-export function collected(site, title, content, flag, type, token, cb, isNeedToSite = false) {
+export function collected(site, sitename, title, content, flag, type, token, cb, isNeedToSite = false) {
     "use strict";
     fetch(`${SERVER_ADDRESS}collect`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `site=${site}&title=${title}&content=${content}&flag=${flag}&type=${type}&token=${token}`
+        body: `site=${site}&title=${title}&content=${content}&flag=${flag}&type=${type}&token=${token}&sitename=${sitename}`
     })
         .then(response=> {
             if (response.status === 200) {

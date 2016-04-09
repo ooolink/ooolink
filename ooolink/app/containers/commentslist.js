@@ -132,13 +132,12 @@ class CommentsList extends Component {
     }
 
     onLike() {
-        let {currentSite} = this.props.state.app;
+        let {currentSite, siteInfo} = this.props.state.app;
         let {themeSelected} = this.props.state.home;
 
         if (this.state.likeStatus === 'none') {
             let {data} = this.props.state.content.comments[this.props.topicId];
-
-            collectService.collected(currentSite, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, getGlobal('oooLinkToken'), (rs)=> {
+            collectService.collected(currentSite, siteInfo[currentSite].title, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
                     this.props.actions.collectTopic(rs.id, currentSite, this.props.topicId);
                     this.setState({

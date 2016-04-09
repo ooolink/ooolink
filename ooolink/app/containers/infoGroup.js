@@ -21,6 +21,7 @@ import React,{
 } from 'react-native';
 import TopBar from '../common/components/topBar';
 import InfoWithImageBlock from '../common/components/infoWithImageBlock';
+import InfoWithContentBlock from '../common/components/infoWithContentBlock';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
 import {setGlobal, getGlobal} from '../store';
 
@@ -51,20 +52,24 @@ class InfoGroup extends Component {
             case TO_INFO_GROUP_COLLECTIONS:
                 this.props.state.content.collections.forEach((item)=> {
                     info.push(
-                        <Text>
-                            {item.collection_content}
-                        </Text>
+                        <InfoWithContentBlock
+                            title={item.collection_title}
+                            time={item.collection_created}
+                            site={item.collection_site_name}
+                        />
                     );
                 });
                 break;
         }
         return (
-            <View>
+            <View style={{flex:1}}>
                 <TopBar
                     backText={this.props.backText}
                     onBack={this.onBack.bind(this)}
                 />
-                {info}
+                <ScrollView>
+                    {info}
+                </ScrollView>   
             </View>
         )
     }

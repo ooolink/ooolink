@@ -19,6 +19,8 @@ import React,{
     TouchableOpacity,
     PropTypes
 } from 'react-native';
+import TopBar from '../common/components/topBar';
+import InfoWithImageBlock from '../common/components/infoWithImageBlock';
 import {searchSite} from '../services/searchService';
 
 class SearchResult extends Component {
@@ -37,10 +39,16 @@ class SearchResult extends Component {
 
     render() {
         return (
-            <ListView
-                dataSource={this.state.dataSource}
-                renderRow={this._renderRow.bind(this)}
-            />
+            <View>
+                <TopBar
+                    onBack={this.onBack.bind(this)}
+                    backText={'搜索'}
+                />
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={this._renderRow.bind(this)}
+                />
+            </View>
         );
     }
 
@@ -52,10 +60,20 @@ class SearchResult extends Component {
 
     _renderRow(rowData, sectionID, rowID) {
         return (
-            <Text onPress={()=>{
-                this.props.onSelectSite(rowData.site_id);
-            }}>{rowData.site_name}</Text>
+            <InfoWithImageBlock
+                blockId={rowData.site_id}
+                name={rowData.site_name}
+                desc={rowData.site_desc}
+                imageURL={rowData.site_image}
+                onPress={(siteId)=>{
+                    this.props.onSelectSite(siteId);
+                }}
+            />
         )
+    }
+
+    onBack(){
+        this.props.navigator.pop();
     }
 }
 

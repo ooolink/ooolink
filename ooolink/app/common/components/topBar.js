@@ -59,7 +59,6 @@ class TopBar extends Component {
 const styles = StyleSheet.create({
     bar: {
         width,
-        flex: 1,
         height: 40,
         backgroundColor: '#2F85A7',
         flexDirection: "row",
