@@ -66,6 +66,25 @@ export function getCollections(token, cb) {
         });
 }
 
+export function judgeCollected(token, site, topicId, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}user/collected`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}&site=${site}&id=${topicId}`
+    })
+        .then(response=>{
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .then(rs=> {
+            cb(rs);
+        })
+}
+
 export function collectedSite(site, token, cb) {
     "use strict";
     fetch(`${SERVER_ADDRESS}${site}/collect`, {
@@ -121,4 +140,23 @@ export function getSitefocused(token, cb) {
         .then(rs=> {
             cb(rs);
         });
+}
+
+export function judgeSiteFocused(token, site, cb) {
+    "use strict";
+    fetch(`${SERVER_ADDRESS}user/sitefocused`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}&site=${site}`
+    })
+        .then(response=>{
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .then(rs=>{
+            cb(rs);
+        })
 }

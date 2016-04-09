@@ -30,7 +30,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            siteLikeStatus: 'none'
+            siteLikeStatus: 'loading'
         }
     }
 
@@ -59,6 +59,14 @@ class Home extends Component {
                     onOpenProfile={_this.onOpenProfile.bind(_this)}/>
             </View>
         );
+    }
+
+    componentDidMount() {
+        const {currentSite} = this.props.state.app;
+        collectService.judgeSiteFocused(getGlobal('oooLinkToken'), currentSite, (rs)=>{
+            let status = rs && rs.result ? 'ok' : 'none';
+            this.setState({siteLikeStatus: status});
+        });     
     }
 
     onOpenProfile() {

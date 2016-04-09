@@ -63,16 +63,19 @@ export const unCollected = function *() {
 
 export const judgeCollected = function *() {
     "use strict";
-    let user = this._domain.user, id = this.request.body.fields.id;
+    let user = this._domain.user;
+    let {id, site} = this.request.body.fields;
     let collection = yield Collection.findOne({
         where: {
-            collection_id: id,
+            collection_site: site,
+            collection_flag: id,
             collection_userId: user.id,
             collection_status: 1
         }
     });
     this.body = {
-        result: +(collection ? true : false)
+        result: +(collection ? true : false),
+        id: collection ? collection.collection_id : ''
     }
 };
 

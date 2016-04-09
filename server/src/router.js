@@ -73,8 +73,16 @@ export default (router)=> {
         yield collectService.getCollections.call(this);
     });
 
+    router.post('/user/collected', loginService.auth, function *(next) {
+        yield collectService.judgeCollected.call(this);
+    });
+
     router.post('/user/sitefocus', loginService.auth, function *(next) {
         yield collectService.getSitefocused.call(this);
+    });
+
+    router.post('/user/sitefocused', loginService.auth, function *(next){
+        yield collectService.judgeSiteFocused.call(this);
     });
 
     router.post('/collect', loginService.auth, function *(next) {

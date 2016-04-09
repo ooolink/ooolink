@@ -80,7 +80,7 @@ class CommentsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            likeStatus: 'none',
+            likeStatus: 'loading',
             collectionId: null
         }
     }
@@ -111,6 +111,15 @@ class CommentsList extends Component {
                 {com}
             </View>
         );
+    }
+
+    componentDidMount() {
+        let {currentSite} = this.props.state.app;
+        collectService.judgeCollected(getGlobal('oooLinkToken'), currentSite, this.props.topicId, (rs)=>{
+            let status = rs && rs.result ? 'ok' : 'none',
+                collectionId = rs.id;
+            this.setState({likeStatus: status, collectionId});
+        });   
     }
 
     _renderHeader() {
