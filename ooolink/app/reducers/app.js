@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
         case types.ADD_SITE_FOCUS:
             let flag = false;
             state.siteFocus.forEach(site=>{
-                if (site.site_id === state.currentSite){
+                if (site.collection_site === state.currentSite){
                     flag = true;
                 }
             });
