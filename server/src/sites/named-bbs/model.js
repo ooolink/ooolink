@@ -31,7 +31,7 @@ export function topicsModelTransform(data) {
     });
 
     let rs = {
-        site: 'cnode-bbs',
+        site: 'named-bbs',
         data
     };
     return rs;
