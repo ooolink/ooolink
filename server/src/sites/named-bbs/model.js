@@ -71,7 +71,7 @@ export function topicModelTransform(data) {
         resultData.replies.push(d);
     });
     let rs = {
-        site: 'cnode-bbs',
+        site: 'named-bbs',
         data: resultData
     };
     return rs;
