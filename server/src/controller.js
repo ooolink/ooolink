@@ -8,7 +8,6 @@
  */
 import * as siteService from './services/site';
 class Controller {
-    getThemes;
     getTheme;
     getTopic;
 }

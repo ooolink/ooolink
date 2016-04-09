@@ -9,6 +9,7 @@
 import crypto from 'crypto';
 import Collection from '../models/collection';
 import SiteFocus from '../models/sitefocus';
+import Sites from '../models/sites';
 
 export const collected = function *() {
     "use strict";
@@ -95,13 +96,21 @@ export const collectedSite = function *() {
     "use strict";
     let user = this._domain.user;
     let site = this.params.site;
-    let {desc} = this.request.body.fields;
     let collection_id = user.id + '-' + site;
+    
+    let sites = yield Sites.findOne({
+        where: {
+            site_id: site
+        }
+    });
+
     yield SiteFocus.upsert({
         collection_id,
         collection_userId: user.id,
         collection_site: site,
-        collection_desc: desc,
+        collection_site_name: sites.site_name,
+        collection_desc: sites.site_desc,
+        collection_site_image: sites.site_image,
         collection_status: 1
     }).then(collection=> {
         this.body = {result: 1, id: collection_id}

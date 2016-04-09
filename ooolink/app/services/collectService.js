@@ -66,14 +66,14 @@ export function getCollections(token, cb) {
         });
 }
 
-export function collectedSite(site, desc, token, cb) {
+export function collectedSite(site, token, cb) {
     "use strict";
     fetch(`${SERVER_ADDRESS}${site}/collect`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `token=${token}&desc=${desc}`
+        body: `token=${token}`
     })
         .then(response=> {
             if (response.status === 200) {
