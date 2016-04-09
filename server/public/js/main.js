@@ -7,3 +7,9 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 import Vue from 'vue';
+import App from './vue/App.vue';
+
+new Vue({
+	el: 'body',
+	components: {App}
+})

@@ -33,7 +33,7 @@ module.exports = {
     },
     vue: {
         loaders: {
-            js: 'babel'
+            js: 'babel?presets=nodejs-lts'
         }
     }
 };

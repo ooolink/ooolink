@@ -27,7 +27,7 @@ gulp.task('babel', ()=> {
 
 gulp.task('css', ()=> {
     "use strict";
-    return gulp.src('server/public/css/*.css')
+    return gulp.src('server/public/css/**/*.css')
         .pipe(concat('main.css'))
         .pipe(minifycss())
         .pipe(gulp.dest('server/public/dist'));
@@ -35,7 +35,7 @@ gulp.task('css', ()=> {
 
 gulp.task('js', ()=> {
     "use strict";
-    return gulp.src('server/public/js/**/*.js')
+    return gulp.src(['server/public/js/**/*.js', 'server/public/js/**/*.vue'])
         .pipe(webpack(require('./webpack.base.config.js')))
         .pipe(gulp.dest('server/public/dist/'));
 });
@@ -53,5 +53,5 @@ gulp.task('server', ['babel', 'css', 'js'], ()=> {
 
     gulp.watch('server/public/css/**/*.css', ['css']);
     gulp.watch('server/public/js/**/*.js', ['js']);
-    gulp.watch('server/public/js/**/*.vue', ['js']);
+    gulp.watch('server/public/js/vue/**/*.vue', ['js']);
 });

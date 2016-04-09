@@ -25,8 +25,15 @@ const Collection = db.define('collection', {
     collection_status: {type: Sequelize.INTEGER}
 }, {
     freezeTableName: true,
-    timestamps: false
-}, {indexes: [{unique: true, fields: ['collection_id', 'collection_userId']}]});
+    timestamps: false,
+    indexes: [
+        {
+            unique: true, 
+            name: 'unique_collection',
+            fields: ['collection_id', 'collection_userId']
+        }
+    ]
+});
 
 Collection.sync();
 

@@ -25,7 +25,7 @@ export const collected = function *() {
         collection_content: content,
         collection_status: 1
     }).then(collection=> {
-        this.body = {result: 1, id: collection_id}
+        this.body = {result: 1, id: collection_id};
     }, error=> {
         console.error('Error    ' + error);
         this.status = 500;

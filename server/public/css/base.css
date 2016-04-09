@@ -4,3 +4,19 @@ body{
     border: 0;
     background: #272636;
 }
+
+.lang-input-text{
+	display: block;
+}
+
+.lang-input-submit{
+	border: 0;
+	color: #fff;
+	background: rgba(83,83,83,.51);
+	width: 60px;
+	height: 25px;
+	font-size: 12px;
+	line-height: 25px;
+	text-align: center;
+	cursor: pointer;
+}

@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 import Sequelize from 'sequelize';
-const config = require('../config.json');
+const config = require('../../../config.json');
 const {dbname, username, password, host, port} = config.mysql;
 const sequelize = new Sequelize(dbname, username, password, {
     host,
@@ -17,7 +17,8 @@ const sequelize = new Sequelize(dbname, username, password, {
         max: 10,
         min: 2,
         idle: 10000
-    }
+    },
+    logging: ()=>{}
 });
 
 export function getMysql() {
