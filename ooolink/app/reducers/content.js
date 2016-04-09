@@ -41,12 +41,12 @@ export default function(state = initialState, action) {
             return Object.assign({}, state);
         case types.ADD_COLLECTION:
             let flag = false;
-            state.collections.forEach(collection=>{
+            state.collections.forEach((collection, idx)=>{
                 if (collection.collection_id === action.id){
-                    flag = true;
+                    flag = idx;
                 }
             });
-            if (!flag){
+            if (flag === false){
                 state.collections.push({
                     collection_id: action.id,
                     collection_site: action.site,
@@ -54,6 +54,8 @@ export default function(state = initialState, action) {
                     collection_title: action.title,
                     collection_created: action.created
                 });
+            } else {
+                state.collections[flag].collection_created = action.created;
             }
             return Object.assign({}, state);
         case types.RM_COLLECTION:
