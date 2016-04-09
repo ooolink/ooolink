@@ -53,8 +53,8 @@ class SearchResult extends Component {
     _renderRow(rowData, sectionID, rowID) {
         return (
             <Text onPress={()=>{
-                this.props.onSelectSite(rowData);
-            }}>{rowData}</Text>
+                this.props.onSelectSite(rowData.site_id);
+            }}>{rowData.site_name}</Text>
         )
     }
 }

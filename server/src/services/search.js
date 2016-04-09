@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-import fs from 'fs';
+import Sites from '../models/sites';
 const famousNumber = 5;
-const SITES = fs.readdirSync(`${__dirname}/../sites/`);
 
 export const getFamous = function *() {
     this.body = SITES.slice(0, famousNumber);
@@ -20,7 +19,30 @@ export const getSiteByType = function *() {
         name = this.query.name;
     switch (type) {
         case 'all':
-            this.body = !~SITES.indexOf(name) ? [] : [name];
+        		let sites = yield Sites.findAll({
+        				attributes: ['site_name', 'site_id'],
+        				where: {
+        						$or: [
+        								{site_name: 
+        										{
+        											$like: `%${name}%`
+        										}
+        								},
+        								{site_id:
+        										{
+        											$like: `%${name}%`
+        										}
+        								},
+        								{site_desc:
+        										{
+        											$like: `%${name}%`
+        										}
+        								}
+        						]
+        				},
+        				limit: 10
+        		});
+            this.body = sites;
             break;
     }
 };
