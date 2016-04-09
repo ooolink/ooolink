@@ -159,7 +159,8 @@ export const unCollectedSite = function *() {
 export const judgeSiteFocused = function *() {
     "use strict";
     let user = this._domain.user;
-    let site = this.params.site;
+    let site = this.request.body.fields.site;
+
     let collection = yield SiteFocus.findOne({
         where: {
             collection_id: user.id + '-' + site,

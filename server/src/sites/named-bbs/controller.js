@@ -17,7 +17,6 @@ class NamedController extends BaseController {
     };
 
     static getTheme = function *() {
-
         var options = {
             url: 'http://i.named.cn/rest/object/get.' + encodeURIComponent(this.params.id) + '.bbs'
         };
