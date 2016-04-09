@@ -62,7 +62,7 @@ class Profile extends Component {
                 <View>
                     <TopBar
                         onBack={this.onBack.bind(this)}
-                        backText={siteInfo[currentSite].title}
+                        backText={"用户中心"}
                     />
                     <Image
                         source={require('../images/user-bg.jpg')}
@@ -118,7 +118,7 @@ class Profile extends Component {
             name: 'infoGroup',
             index: 4,
             props: {
-                backText: '用户中心',
+                backText: '我的收藏',
                 type: TO_INFO_GROUP_COLLECTIONS
             },
             component: InfoGroup
@@ -130,7 +130,7 @@ class Profile extends Component {
             name: 'infoGroup',
             index: 4,
             props: {
-                backText: '用户中心',
+                backText: '我关注的站点',
                 type: TO_INFO_GROUP_FOCUS_SITE
             },
             component: InfoGroup
@@ -180,7 +180,7 @@ class Profile extends Component {
             name: 'setting',
             index: 2,
             props: {
-                backText: '用户中心'
+                backText: '搜索'
             },
             component: Search
         });

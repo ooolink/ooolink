@@ -42,7 +42,7 @@ class SearchResult extends Component {
             <View>
                 <TopBar
                     onBack={this.onBack.bind(this)}
-                    backText={'搜索'}
+                    backText={'搜索结果'}
                 />
                 <ListView
                     dataSource={this.state.dataSource}
