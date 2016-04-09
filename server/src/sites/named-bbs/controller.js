@@ -63,22 +63,6 @@ class NamedController extends BaseController {
             this.status = 500;
         });
     };
-
-    static getSiteConf = function *() {
-        this.body = {
-            themes: NamedController.themes,
-            conf: {
-                fn: []
-            },
-            desc: '一个好玩的娱乐线上社区',
-            title: '那么社区',
-            image: 'http://as.named.cn/f/5ff9062b936cbbdcf8104cc1337ee171.c0x0x298x180.t160x160.jpg'
-        }
-    };
-
-    static themes = [
-        'fibjs', '那么一起玩', '美丽秘密', '江南水乡', '我来818', '硬腿子'
-    ]
 }
 
 export default NamedController;

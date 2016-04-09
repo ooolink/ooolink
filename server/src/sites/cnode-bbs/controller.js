@@ -64,22 +64,6 @@ class CnodeController extends BaseController {
         });
     };
 
-    static getSiteConf = function *() {
-        this.body = {
-            themes: CnodeController.themes,
-            conf: {
-                fn: []
-            },
-            desc:'Nodejs 中文社区',
-            title:'cnodejs 社区',
-            image:'https://o4j806krb.qnssl.com/public/images/cnodejs_light.svg'
-        }
-    };
-
-    static themes = [
-        '首页', '精华', '分享', '问答', '招聘'
-    ];
-
     static themesMap = {
         "首页": '',
         "精华": 'good',

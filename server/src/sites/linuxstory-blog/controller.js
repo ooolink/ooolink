@@ -45,23 +45,6 @@ class LSController extends BaseController {
             this.status = 500;
         });
     };
-
-    static getSiteConf = function *() {
-        this.body = {
-            themes: LSController.themes,
-            conf: {
-                fn: []
-            },
-            desc: '一个有情有意的 Linux 社区',
-            title: 'LinuxStory',
-            image:'http://www.linuxstory.org/wp-content/uploads/2013/03/linux-story-logo-regular.png'
-        }
-    };
-
-    static themes = [
-        '首页',
-        'Linuxstory快资讯'
-    ]
 }
 
 export default LSController;

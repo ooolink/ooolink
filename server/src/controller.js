@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-
+import * as siteService from './services/site';
 class Controller {
     getThemes;
     getTheme;
@@ -28,14 +28,12 @@ const route = function(cb) {
 
 export function * getSiteConf() {
     "use strict";
-    let m = route.call(this);
-    yield m.getSiteConf.call(this);
+    yield siteService.siteGet.call(this);
 }
 
 export function * getThemes() {
     "use strict";
-    let m = route.call(this);
-    yield m.getThemes.call(this);
+    yield siteService.siteThemesGet.call(this);
 }
 
 export function * getTheme() {

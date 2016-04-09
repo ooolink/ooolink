@@ -41,7 +41,8 @@ module.exports = {
 			siteEnName: '',
 			siteThemes: '',
 			sitePluginType: '',
-			siteFn: []
+			siteFn: [],
+			sitePluginName: ''
 		}
 	},
 	methods:{
@@ -54,7 +55,8 @@ module.exports = {
 				enname: this.siteEnName,
 				themes: this.siteThemes,
 				fn: this.siteFn.join(','),
-				plugintype: this.sitePluginType
+				plugintype: this.sitePluginType,
+				pluginname: this.sitePluginName
 			};
 
 			fetch('/manager/site', {
