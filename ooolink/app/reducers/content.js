@@ -40,14 +40,24 @@ export default function(state = initialState, action) {
             state.collections = action.collections;
             return Object.assign({}, state);
         case types.ADD_COLLECTION:
-            state.collections = [...state.collections, {
-                id: action.id,
-                topicId: action.topicId,
-                site: action.site
-            }];
+            let flag = false;
+            state.collections.forEach(collection=>{
+                if (collection.collection_id === action.id){
+                    flag = true;
+                }
+            });
+            if (!flag){
+                state.collections.push({
+                    collection_id: action.id,
+                    collection_site: action.site,
+                    collection_site_name: action.sitename,
+                    collection_title: action.title,
+                    collection_created: action.created
+                });
+            }
             return Object.assign({}, state);
         case types.RM_COLLECTION:
-            state.collections = state.collections.filter(c=>!(c.topicId === action.topicId && c.site === action.site));
+            state.collections = state.collections.filter(c=>!(c.collection_id === action.id));
             return Object.assign({}, state);
         default:
             return state;

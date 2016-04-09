@@ -37,7 +37,6 @@ class InfoGroup extends Component {
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE:
                 siteFocus.forEach(site=>{
-                    console.log(site)
                     info.push(
                         <InfoWithImageBlock 
                             onPress={this.onSelectSite.bind(this)}

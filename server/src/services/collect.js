@@ -14,6 +14,7 @@ import Sites from '../models/sites';
 export const collected = function *() {
     "use strict";
     let user = this._domain.user;
+    let created = Date.now();
     let {site, type, flag, title, content, sitename} = this.request.body.fields;
     let collection_id = crypto.createHmac('sha256', site).update(flag).digest('hex').toString();
     yield Collection.upsert({
@@ -25,9 +26,14 @@ export const collected = function *() {
         collection_type: type,
         collection_title: title,
         collection_content: content,
+        collection_created: created,
         collection_status: 1
     }).then(collection=> {
-        this.body = {result: 1, id: collection_id};
+        this.body = {
+            result: 1, 
+            id: collection_id,
+            created
+        };
     }, error=> {
         console.error('Error    ' + error);
         this.status = 500;

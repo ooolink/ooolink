@@ -31,16 +31,27 @@ export default function(state = initialState, action) {
                 currentSite: action.site
             });
         case types.ADD_SITE_FOCUS:
+            let flag = false;
             state.siteFocus.forEach(site=>{
-                if (site.site_id !== action.site){
-                    state.siteFocus.push({
-                        //TODO
-                    });    
+                if (site.site_id === state.currentSite){
+                    flag = true;
                 }
-            })
+            });
+            if (!flag){
+                state.siteFocus.unshift({
+                    collection_site: state.currentSite,
+                    collection_desc: action.site.desc,
+                    collection_site_name: action.site.title,
+                    collection_site_image: action.site.image
+                });  
+            }
             return Object.assign({}, state);
         case types.RM_SITE_FOCUS:
-            delete state.siteFocus[action.site];
+            state.siteFocus.forEach((site, idx)=>{
+                if (site.collection_site === action.site){
+                    state.siteFocus.splice(idx, 1);
+                }
+            });
             return Object.assign({}, state);
         case types.GET_SITE_FOCUS:
             state.siteFocus = action.sites;

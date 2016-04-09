@@ -80,7 +80,8 @@ class CommentsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            likeStatus: 'none'
+            likeStatus: 'none',
+            collectionId: null
         }
     }
 
@@ -139,9 +140,10 @@ class CommentsList extends Component {
             let {data} = this.props.state.content.comments[this.props.topicId];
             collectService.collected(currentSite, siteInfo[currentSite].title, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
-                    this.props.actions.collectTopic(rs.id, currentSite, this.props.topicId);
+                    this.props.actions.collectTopic(rs.id, currentSite, siteInfo[currentSite].title, this.props.topicId, data.title, rs.created);
                     this.setState({
-                        likeStatus: 'ok'
+                        likeStatus: 'ok',
+                        collectionId: rs.id
                     });
                 } else {
                     this.setState({
@@ -151,21 +153,15 @@ class CommentsList extends Component {
             })
         } else if (this.state.likeStatus === 'ok') {
             let collections = this.props.state.content.collections, len = collections.length;
-            let id = -1;
-            for (let i = 0; i < len; i++) {
-                if (collections[i].site === currentSite && collections[i].topicId === this.props.topicId) {
-                    id = collections[i].id;
-                    break;
-                }
-            }
-            if (id === -1) {
+            if (this.state.collectionId === null) {
                 return;
             }
-            collectService.uncollected(id, getGlobal('oooLinkToken'), (rs)=> {
+            collectService.uncollected(this.state.collectionId, getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
-                    this.props.actions.unCollectionTopic(rs.id, currentSite, this.props.topicId);
+                    this.props.actions.unCollectionTopic(this.state.collectionId, currentSite, this.props.topicId);
                     this.setState({
-                        likeStatus: 'none'
+                        likeStatus: 'none',
+                        collectionId: null
                     });
                 } else {
                     this.setState({

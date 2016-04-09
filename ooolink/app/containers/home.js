@@ -74,7 +74,7 @@ class Home extends Component {
         if (this.state.siteLikeStatus === 'none') {
             collectService.collectedSite(currentSite, getGlobal('oooLinkToken'), (rs)=> {
                 if (rs && rs.result) {
-                    this.props.actions.collectSiteFocus(currentSite);
+                    this.props.actions.collectSiteFocus(siteInfo[currentSite]);
                     this.setState({siteLikeStatus: 'ok'});
                 } else {
                     this.setState({siteLikeStatus: 'none'});

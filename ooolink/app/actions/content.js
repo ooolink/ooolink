@@ -79,12 +79,15 @@ export function getTopic(id) {
     }
 }
 
-export function collectTopic(id, site, topicId) {
+export function collectTopic(id, site, sitename, topicId, title, created) {
     "use strict";
     return {
         type: ActionTypes.ADD_COLLECTION,
         id,
         site,
+        sitename,
+        title,
+        created,
         topicId
     }
 }
