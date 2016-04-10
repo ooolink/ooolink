@@ -17,7 +17,7 @@ export function topicsModelTransform(data) {
         d.id = dd.id;
         d.author_id = dd.message.user.id;
         d.tab = '';
-        d.content = dd.message.content;
+        d.content = '<div>' + dd.message.content + '</div>';
         d.title = dd.message.title;
         d.reply_count = dd.comments.comment;
         d.visit_count = 0;
@@ -45,7 +45,7 @@ export function topicModelTransform(data) {
         id: dd.message.id,
         author_id: dd.message.user.user.id,
         tab: '',
-        content: dd.message.content,
+        content: '<div>' + dd.message.content + '</div>',
         title: dd.message.title,
         reply_content: dd.comments.comment,
         visit_count: 0,
@@ -61,7 +61,7 @@ export function topicModelTransform(data) {
         let d = {};
         let dd = item.data;
         d.id = dd.message.msgid;
-        d.content = dd.message.content;
+        d.content = '<div>' + dd.message.content + '</div>';
         d.create_at = dd.message.created;
         dd.message.user.user.icon = dd.message.user.user.icon || 'f9bafc1e9eab04863fb7d42fa3a3f457.t80x80.fc.s0x-2xdddddd';
         d.author = {
