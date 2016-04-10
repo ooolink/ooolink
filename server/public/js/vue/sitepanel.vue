@@ -8,11 +8,20 @@
 				<option value="blog">博客</option>
 				<option value="bbs">论坛</option>
 			</select>
-			<select v-model="sitePluginType">
+			<select v-model="sitePluginType" v-on:change="changePluginType">
 				<option value="plugin">插件</option>
 				<option value="rss">rss</option>
 				<option value="template">oooLink模板</option>
 			</select>
+			<div v-bind:style="pluginConfigDisplay">
+				<input class="lang-input-test" type="text" placeholder="插件名(英文)" v-model="sitePluginName">
+			</div>
+			<div v-bind:style="rssConfigDisplay">
+				<input class="lang-input-test" type="text" placeholder="rss源地址" v-model="siteRssURL">
+			</div>
+			<div v-bind:style="templateConfigDisplay">
+				<input class="lang-input-test" type="text" placeholder="域名" v-model="siteDomain">
+			</div>
 			<input class="lang-input-text" type="text" placeholder="描述" v-model="siteDesc"/>
 			<input class="lang-input-text" type="text" placeholder="图片URL" v-model="siteImage"/>
 			<input class="lang-input-text" type="text" placeholder="主题(以逗号分隔)" v-model="siteThemes	"/>
@@ -33,7 +42,16 @@
 import {setBody} from '../common/tool';
 module.exports = {
 	data() {
-		return {
+		return {	
+			pluginConfigDisplay: {
+				display: 'none'
+			},
+			rssConfigDisplay: {
+				display: 'none'
+			},
+			templateConfigDisplay: {
+				display: 'none'
+			},
 			siteName: '',
 			siteDesc: '',
 			siteImage: '',
@@ -42,11 +60,17 @@ module.exports = {
 			siteThemes: '',
 			sitePluginType: '',
 			siteFn: [],
-			sitePluginName: ''
+			sitePluginName: '',
+			siteDomain: '',
+			siteRssURL: ''
 		}
 	},
 	methods:{
-		submit: function(){
+		changePluginType(){
+			['rss', 'template', 'plugin'].forEach(item=>this.$set(`${item}ConfigDisplay.display`, 'none'));
+			this.$set(`${this.sitePluginType}ConfigDisplay.display`, 'block');
+		},
+		submit(){
 			let body = {
 				name: this.siteName,
 				desc: this.siteDesc,
@@ -56,7 +80,9 @@ module.exports = {
 				themes: this.siteThemes,
 				fn: this.siteFn.join(','),
 				plugintype: this.sitePluginType,
-				pluginname: this.sitePluginName
+				pluginname: this.sitePluginName,
+				rssurl: this.siteRssURL,
+				domain: this.siteDomain
 			};
 
 			fetch('/manager/site', {

@@ -19,12 +19,18 @@ export const siteAdd = function *(){
 								type: 'plugin',
 								name: site_id
 						});
+						site_config = JSON.stringify({
+								pluginname: this.request.body.fields.pluginname
+						});
 						break;
 				case "rss": 
 					  site_id = enname + '-' + type;
 					  site_plugin = JSON.stringify({
 					  		type: 'rss',
 					  		name: site_id
+					  });  
+					  site_config = JSON.stringify({
+					  		rssURL: this.request.body.fields.rssurl
 					  });
 					  break;
 				case "template": 
@@ -32,6 +38,9 @@ export const siteAdd = function *(){
 						site_plugin = JSON.stringify({
 								type: 'template',
 								name: site_id + '-' + 'cnode' 
+						});
+						site_config = JSON.stringify({
+								domain: this.request.body.fields.domain
 						});
 						break;
 		}
@@ -43,7 +52,8 @@ export const siteAdd = function *(){
 				site_fn: fn,
 				site_type: type,
 				site_id,
-				site_plugin
+				site_plugin,
+				site_config
 		}).then(site=> {
 				this.body = {result: 1};
 		}, error=> {
@@ -52,3 +62,11 @@ export const siteAdd = function *(){
 				this.body = {result: 0};
 		});
 };
+
+export const siteFindAll = function *(){
+		let sites = Sites.findAll();
+		this.body = {
+				result: 1,
+				sites
+		};
+}
