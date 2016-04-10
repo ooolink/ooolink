@@ -11,7 +11,7 @@ import Sites from '../models/sites';
 
 export const siteAdd = function *(){
 		let {name, desc, image, themes, fn, type, plugintype, enname} = this.request.body.fields;
-		let site_id, site_plugin;
+		let site_id, site_plugin, site_config;
 		switch (plugintype){
 				case "plugin": 
 						site_id = enname + '-' + this.request.body.fields.pluginname;
