@@ -12,15 +12,12 @@ import {topicsModelTransform, topicModelTransform} from './model';
 import request from 'request';
 
 class TemplateController extends BaseController {
-    static getThemes = function *() {
-        this.body = CnodeController.themes;
-    };
 
-    static getTheme = function *() {
+    static getTheme = function *(params) {
 
         let page = this.query.page || 0, limit = this.query.limit || 10;
         let options = {
-            url: `https://cnodejs.org/api/v1/topics?page=${page}&limit=${limit}&tab=` + CnodeController.themesMap[this.params.id]
+            url: `${params.domain}/api/v1/topics?page=${page}&limit=${limit}&tab=` + TemplateController.themesMap[this.params.id]
         };
 
         yield new Promise((resolve, reject)=> {
@@ -40,11 +37,11 @@ class TemplateController extends BaseController {
         });
     };
 
-    static getTopic = function *() {
+    static getTopic = function *(params) {
 
         let topicId = this.params.id;
         let options = {
-            url: `https://cnodejs.org/api/v1/topic/${topicId}`
+            url: `${params.domain}/api/v1/topic/${topicId}`
         };
 
         yield new Promise((resolve, reject)=> {

@@ -37,3 +37,13 @@ export const siteThemesGet = function *(){
 		});
 		this.body = String(sites.site_themes).split(',');
 };
+
+export const siteConfigGet = function *(siteId){
+		let sites = yield Sites.findOne({
+				attributes: ['site_config', 'site_plugin'],
+				where: {
+						site_id: siteId
+				}
+		})
+		return sites;
+};
