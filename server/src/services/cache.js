@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 import Sequelize from 'sequelize';
+import LRU from 'lru-cache';
 const config = require('../../config.json');
 const {dbname, username, password, host, port} = config.mysql;
 const sequelize = new Sequelize(dbname, username, password, {
@@ -20,8 +21,21 @@ const sequelize = new Sequelize(dbname, username, password, {
     },
     logging: ()=>{}
 });
+const fastCache = LRU(200);
 
 export function getMysql() {
     "use strict";
     return sequelize;
+}
+
+export function getFastCache() {
+    "use strict";
+    return {
+        set(key, value){
+            fastCache.set(key, value);
+        },
+        get(key){
+            fastCache.get(key);
+        }
+    }
 }

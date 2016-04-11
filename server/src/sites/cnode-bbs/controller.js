@@ -11,7 +11,7 @@ import BaseController from '../../controller';
 import {topicsModelTransform, topicModelTransform} from './model';
 import request from 'request';
 
-class CnodeController extends BaseController {
+class TemplateController extends BaseController {
     static getThemes = function *() {
         this.body = CnodeController.themes;
     };
@@ -73,4 +73,4 @@ class CnodeController extends BaseController {
     }
 }
 
-export default CnodeController;
+export default TemplateController;

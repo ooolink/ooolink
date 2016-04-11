@@ -25,6 +25,7 @@
 			<input class="lang-input-text" type="text" placeholder="描述" v-model="siteDesc"/>
 			<input class="lang-input-text" type="text" placeholder="图片URL" v-model="siteImage"/>
 			<input class="lang-input-text" type="text" placeholder="主题(以逗号分隔)" v-model="siteThemes	"/>
+			<input class="lang-input-text" v-bind:style="templateConfigDisplay" type="text" placeholder="主题对应英文(以逗号分隔)" v-model="siteThemesMap">
 			<div class="unit-checkbox-group">
 				<label for="bsoi1">发布</label>
 				<input id="bsoi1" type="checkbox" value="publish" v-model="siteFn"/>
