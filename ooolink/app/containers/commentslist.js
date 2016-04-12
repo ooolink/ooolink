@@ -22,9 +22,11 @@ import React,{
 import LoadingBlock from '../common/components/loadingBlock';
 import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
+import Publish from '../containers/publish';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
 import {getGlobal} from '../store';
+import {TO_PUBLISH_COMMENT} from '../constants/passAgreement';
 import * as collectService from '../services/collectService';
 
 let {height, width} = Dimensions.get('window');
@@ -109,7 +111,7 @@ class CommentsList extends Component {
                     onLike={this.onLike.bind(this)}
                     onBack={this.onBack.bind(this)}/>
                 {com}
-                <Text style={styles.publishButton}>
+                <Text style={styles.publishButton} onPress={this.onPublish.bind(this)}>
                     跟帖
                 </Text>
             </View>
@@ -138,6 +140,17 @@ class CommentsList extends Component {
             <CommentBlock
                 data={rowData} rowID={rowID}/>
         )
+    }
+
+    onPublish(){
+        this.props.navigator.push({
+            name: 'publish',
+            index: 5,
+            component: Publish,
+            props: {
+                type: TO_PUBLISH_COMMENT
+            }
+        });
     }
 
     onBack() {

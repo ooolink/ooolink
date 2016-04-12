@@ -20,8 +20,10 @@ import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
 import CommentsList from '../containers/commentslist';
 import Profile from '../containers/profile';
+import Publish from '../containers/publish';
 import * as collectService from '../services/collectService';
 import {getGlobal} from '../store';
+import {TO_PUBLISH_TOPIC} from '../constants/passAgreement';
 
 let {height, width} = Dimensions.get('window');
 
@@ -57,7 +59,7 @@ class Home extends Component {
                     themeSelected={themeSelected}
                     themeBlockHeight={themesBlockHeight}
                     onOpenProfile={_this.onOpenProfile.bind(_this)}/>
-                <Text style={styles.publishButton}>
+                <Text style={styles.publishButton} onPress={this.onPublish.bind(this)}>
                     发布主题
                 </Text>
             </View>
@@ -77,6 +79,17 @@ class Home extends Component {
             name: 'profile',
             index: 3,
             component: Profile
+        });
+    }
+
+    onPublish(){
+        this.props.navigator.push({
+            name: 'publish',
+            index: 5,
+            component: Publish,
+            props: {
+                type: TO_PUBLISH_TOPIC
+            }
         });
     }
 
