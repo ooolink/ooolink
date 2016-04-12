@@ -58,9 +58,12 @@ class Login extends Component {
                 </View>
                 <Button
                     onPress={this._submit.bind(this)}
-                    style={styles.login}
-                >Log in</Button>
-                <Text onPress={this._onGoRegister.bind(this)}>注册</Text>
+                    style={styles.button}
+                >登陆</Button>
+                <Button 
+                    onPress={this._onGoRegister.bind(this)} 
+                    style={styles. button}>
+                    注册 oooLink 账号</Button>
             </Image>
         )
     }
@@ -92,6 +95,11 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 40 + (height - 40)/2 - 200,
+        left: 20 
+    },
     bgImage: {
         width,
         height,
@@ -99,13 +107,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     wordInput: {
+        paddingLeft: 10,
+        paddingRight: 10,
         color: '#fff',
         marginTop: 20,
-        backgroundColor: '#33333399',
+        backgroundColor: '#ffffff33',
         width: width - 40,
         height: 40
     },
-    login: {
+    button: {
         paddingTop: 5,
         paddingBottom: 5,
         marginTop: 16,

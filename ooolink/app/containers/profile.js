@@ -46,16 +46,28 @@ class Profile extends Component {
 
         if (this.state.status === 'login') {
             return (
-                <Login
-                    onSubmit={this.onLogin.bind(this)}
-                    onGoRegister={this.onGoRegister.bind(this)}
-                />
+                <View>
+                    <TopBar
+                        onBack={this.onBack.bind(this)}
+                        backText={"登陆"}
+                    />
+                    <Login
+                        onSubmit={this.onLogin.bind(this)}
+                        onGoRegister={this.onGoRegister.bind(this)}
+                    />
+                </View>
             );
         } else if (this.state.status === 'register') {
             return (
-                <Register
-                    onSubmit={this.onRegister.bind(this)}
-                />
+                <View>
+                    <TopBar
+                        onBack={this.onBack.bind(this)}
+                        backText={"注册"}
+                    />
+                    <Register
+                        onSubmit={this.onRegister.bind(this)}
+                    />
+                </View>
             );
         } else if (this.state.status === 'logined') {
             return (

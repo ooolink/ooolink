@@ -20,6 +20,7 @@ import React,{
     View
 } from 'react-native';
 import Button from 'react-native-button';
+import Loading from '../common/components/loadingBlock';
 
 const BG_URL = 'http://img.hb.aicdn.com/963f2ec0ed9098a6e20420c592fd220f37b0e6df31684-Ab2ZyV_fw658';
 const {width, height} = Dimensions.get('window');
@@ -36,11 +37,19 @@ class Register extends Component {
         this.state = {
             name: '',
             pwd: '',
-            pwdOver: ''
+            pwdOver: '',
+            loading: true
         }
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <View style={{width, height}}>
+                    <Loading/>
+                </View>
+            );
+        }
         return (
             <Image source={{uri: BG_URL}} style={styles.bgImage}>
                 <View style={styles.container}>
@@ -57,7 +66,7 @@ class Register extends Component {
                 </View>
                 <Button
                     onPress={this._submit.bind(this)}
-                    style={styles.login}
+                    style={styles.button}
                 >注册</Button>
             </Image>
         )
@@ -74,9 +83,20 @@ class Register extends Component {
     _changePwd(pwd) {
         this.setState({pwd})
     }
+
+    componentDidMount(){
+        setTimeout(()=>{
+            this.setState({loading: false});
+        }, 166);
+    }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 40 + (height - 40)/2 - 200,
+        left: 20 
+    },
     bgImage: {
         width,
         height,
@@ -84,13 +104,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     wordInput: {
+        paddingLeft: 10,
+        paddingRight: 10,
         color: '#fff',
         marginTop: 20,
-        backgroundColor: '#33333399',
+        backgroundColor: '#ffffff33',
         width: width - 40,
         height: 40
     },
-    login: {
+    button: {
         paddingTop: 5,
         paddingBottom: 5,
         marginTop: 16,
