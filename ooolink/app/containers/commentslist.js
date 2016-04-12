@@ -109,6 +109,9 @@ class CommentsList extends Component {
                     onLike={this.onLike.bind(this)}
                     onBack={this.onBack.bind(this)}/>
                 {com}
+                <Text style={styles.publishButton}>
+                    跟帖
+                </Text>
             </View>
         );
     }
@@ -230,6 +233,17 @@ const styles = StyleSheet.create({
         height: 24,
         borderRadius: 12,
         marginTop: 10
+    },
+    publishButton: {
+        position: 'absolute',
+        top: height - 40,
+        height: 40,
+        width,
+        backgroundColor: '#2F85A7dd',
+        color: '#fff',
+        textAlign: 'center',
+        lineHeight: 28,
+        fontWeight: '900'
     }
 });
 

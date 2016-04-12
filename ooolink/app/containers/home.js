@@ -57,6 +57,9 @@ class Home extends Component {
                     themeSelected={themeSelected}
                     themeBlockHeight={themesBlockHeight}
                     onOpenProfile={_this.onOpenProfile.bind(_this)}/>
+                <Text style={styles.publishButton}>
+                    发布主题
+                </Text>
             </View>
         );
     }
@@ -131,12 +134,22 @@ const styles = StyleSheet.create({
         top: 0
     },
     content: {
-        flex: 1,
         position: 'absolute',
         top: 40,
         width,
         height: height - 40,
         backgroundColor: '#333'
+    },
+    publishButton: {
+        position: 'absolute',
+        top: height - 40,
+        height: 40,
+        width,
+        backgroundColor: '#2F85A7dd',
+        color: '#fff',
+        textAlign: 'center',
+        lineHeight: 28,
+        fontWeight: '900'
     }
 });
 
