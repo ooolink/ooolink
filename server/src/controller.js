@@ -12,6 +12,8 @@ import {getFastCache} from './services/cache';
 class Controller {
     getTheme;
     getTopic;
+    publishTopic;
+    publishComment;
 }
 
 export default Controller;
@@ -88,5 +90,12 @@ export function * getTopic() {
     "use strict";
     let m = yield route.call(this);
     yield m.plugin.getTopic.call(this, m.params);
+}
+
+export function * publishComment(){
+}
+
+export function * publishTopic(){
+
 }
 

@@ -10,7 +10,10 @@ import Sites from '../models/sites';
 const famousNumber = 5;
 
 export const getFamous = function *() {
-    this.body = SITES.slice(0, famousNumber);
+    this.body = yield Sites.findAll({
+        attributes: ['site_name', 'site_id', 'site_desc', 'site_image'],
+        limit: 10
+    });
 };
 
 export const getSiteByType = function *() {

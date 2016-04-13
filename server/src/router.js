@@ -142,7 +142,7 @@ export default (router)=> {
     });
 
     router.post('/:site/topic', function *(next) {
-
+        yield _controller.publishTopic.call(this);
     });
 
     router.post('/:site/topic/:id', methodAuth('delete'), function *(next) {
@@ -154,7 +154,7 @@ export default (router)=> {
     });
 
     router.post('/:site/comment', function *(next) {
-
+        yield _controller.publishComment.call(this);
     });
 
     router.post('/:site/comment/:id', methodAuth('delete'), function *(next) {
