@@ -20,6 +20,7 @@ import React,{
     PropTypes
 } from 'react-native';
 import TopBar from '../common/components/topBar';
+import MarkDownEditMod from '../common/components/markdownEditMod';
 import {TO_PUBLISH_TOPIC, TO_PUBLISH_COMMENT} from '../constants/passAgreement';
 
 class Publish extends Component{
@@ -38,10 +39,15 @@ class Publish extends Component{
             backText = '跟帖';
         }
         return (
-            <TopBar
-                backText = {backText}
-                onBack = {this.onBack.bind(this)}
-            />
+            <View>
+                <TopBar
+                    backText = {backText}
+                    onBack = {this.onBack.bind(this)}
+                />
+                <MarkDownEditMod
+                    titleHaved = {this.props.type === TO_PUBLISH_TOPIC}
+                />
+            </View>
         )
     }
 

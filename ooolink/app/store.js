@@ -20,6 +20,7 @@ export default function configureStore(initialState) {
 }
 
 let global = {
+    appVersion: '0.0.1',
     oooLinkToken: 'a27778cc4a545ac318a840d858b21cadafa8a4ea4ef59a13b08afbd1fe8a3478',
     userName: 'rube'
 };
