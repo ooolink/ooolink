@@ -46,11 +46,14 @@ class Login extends Component {
             <Image source={{uri: BG_URL}} style={styles.bgImage}>
                 <View style={styles.container}>
                     <TextInput
+                        autoFocus={true}
+                        autoCorrect={false}
                         value={this.state.name}
                         onChangeText={this._changeName.bind(this)}
                         style={styles.wordInput}
                     />
                     <TextInput
+                        autoCorrect={false}
                         value={this.state.pwdOver}
                         onChangeText={this._changePwd.bind(this)}
                         style={styles.wordInput}
