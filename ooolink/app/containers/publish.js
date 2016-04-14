@@ -45,6 +45,7 @@ class Publish extends Component{
                     onBack = {this.onBack.bind(this)}
                 />
                 <MarkDownEditMod
+                    navigator={this.props.navigator}
                     titleHaved = {this.props.type === TO_PUBLISH_TOPIC}
                 />
             </View>

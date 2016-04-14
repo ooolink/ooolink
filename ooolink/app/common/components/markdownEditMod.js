@@ -20,6 +20,9 @@ import React,{
     TouchableOpacity,
     Animated
 } from 'react-native';
+import HtmlComponent from '../htmlRender/htmlComponent';
+import TopBar from './topBar';
+import {markdown} from 'markdown';
 
 let {height, width} = Dimensions.get('window');
 const images = {
@@ -78,6 +81,30 @@ const styles = StyleSheet.create({
 	}
 });
 
+class EditPreview extends Component{
+	render(){
+		return (
+			<View style={ {flex:1} }>
+				<TopBar
+					onBack={this.onBack.bind(this)}
+					backText={'内容预览'}
+				/>
+				<ScrollView
+					style={{padding:10}}
+				>
+					<HtmlComponent
+						content={this.props.content}
+					/>
+				</ScrollView>
+			</View>
+		)
+	}
+
+	onBack(){
+		this.props.navigator.pop();
+	}
+}
+
 class EditModal extends Component{
 	constructor(props){
 		super(props);
@@ -133,6 +160,10 @@ class EditModal extends Component{
 }
 
 class EditBlock extends Component{
+
+	static propTypes = {
+		navigator: PropTypes.any.isRequired,
+    };
 
 	constructor(props){
 		super(props);
@@ -199,7 +230,7 @@ class EditBlock extends Component{
 		if (this.state.modaltitle === '添加链接'){
 			content+=`[${desc}](${link})`;
 		} else if (this.state.modaltitle = '添加图片'){
-			content+=`\n![${desc}](${link})`;
+			content+=`\n\n![${desc}](${link})\n\n`;
 		}
 
 		this.setState({content, modaltitle: '', modalvisiable: false});
@@ -223,16 +254,16 @@ class EditBlock extends Component{
 	}
 
 	onInputyin(){
-		this.setState({content: this.state.content+'\n\n>'});
+		this.setState({content: this.state.content+'\n>'});
 	}
 
 	onInputlist(){
-		this.setState({content: this.state.content+'\n\n* '});
+		this.setState({content: this.state.content+'\n* '});
 	}
 
 	onInputlistn(){
 		let n = this.state.listnumber.n;
-		this.setState({content: this.state.content+`\n\n${n}. `, listnumber: {n: n+1, last: this.state.content.length + 4}});
+		this.setState({content: this.state.content+`\n${n}. `, listnumber: {n: n+1, last: this.state.content.length + 4}});
 	}
 
 	onInputcode(){
@@ -254,14 +285,23 @@ class EditBlock extends Component{
 	}
 
 	onInputpreview(){
-
+		let content = markdown.toHTML(this.state.content);
+		this.props.navigator.push({
+			name: 'markdownPreview',
+			index: 6,
+			component: EditPreview,
+			props: {
+				content
+			}
+		})
 	}
 }
 
 class MarkDownEditMod extends Component{
 	
 	static propTypes = {
-		titleHaved: PropTypes.bool.isRequired
+		titleHaved: PropTypes.bool.isRequired,
+		navigator: PropTypes.any.isRequired
     };
 
     constructor(props) {
@@ -270,7 +310,9 @@ class MarkDownEditMod extends Component{
 
     render(){
     	return (
-    		<EditBlock/>
+    		<EditBlock
+    			navigator={this.props.navigator}
+    		/>
     	);
     }
 
