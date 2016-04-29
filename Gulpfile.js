@@ -17,6 +17,7 @@ const webpack = require('gulp-webpack');
 
 //Server
 gulp.task('babel', ()=> {
+
     return gulp.src(['!server/src/default/nodeclub/**/*.*', 'server/src/**/*.js'], {base: './server/src'})
         .pipe(changed('./server/dist'))
         .pipe(babel({
@@ -40,11 +41,33 @@ gulp.task('js', ()=> {
         .pipe(gulp.dest('server/public/dist/'));
 });
 
+//ss
+gulp.task('babel-ss', ()=>{
+    return gulp.src(['ss/src/**/*.js'], {base: './ss/src'})
+        .pipe(changed('./ss/dist'))
+        .pipe(babel({
+            presets: ['nodejs-lts']
+        }))
+        .pipe(gulp.dest('./ss/dist'));
+});
+
+gulp.task('ss', ['babel-ss'], ()=> {
+    nodemon({
+        watch: ['./ss'],
+        script: 'ss/dist/app.js',
+        ignore: ['dist/**/*.js', 'server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'server/src/default/nodeclub'],
+        ext: '.js,.ejs',
+        env: {'NODE_ENV': 'dev'},
+        tasks: ['babel-ss'],
+        cwd: __dirname
+    });
+});
+
 gulp.task('server', ['babel', 'css', 'js'], ()=> {
     nodemon({
-        watch: ['./'],
+        watch: ['./server'],
         script: 'server/dist/index.js',
-        ignore: ['server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'ooolink/app', 'server/src/default/nodeclub'],
+        ignore: ['dist/**/*.js', '.git', '.idea', '.DS_Store', 'src/default/nodeclub'],
         ext: '.js,.ejs',
         env: {'NODE_ENV': 'dev'},
         tasks: ['babel'],
