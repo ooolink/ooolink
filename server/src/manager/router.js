@@ -6,16 +6,10 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-import * as siteService from './services/site'; 
+import * as controller from './controller'; 
 export default (router)=> {
     "use strict";
-    router.get('/manager/index', function *(next) {
-        yield this.render('index', {
-        		data: 1
-        });
-    });
+    router.get('/manager/index', controller.indexRender);
 
-    router.post('/manager/site', function *(next) {
-    		yield siteService.siteAdd.call(this);
-    });
+    router.post('/manager/site', controller.siteAdd);
 }
