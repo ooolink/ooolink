@@ -17,7 +17,8 @@ const User = db.define('user', {
     user_password: {type: Sequelize.STRING(64)},
     user_salt: {type: Sequelize.STRING(64)},
     user_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-    user_token: {type: Sequelize.STRING(64)}
+    user_token: {type: Sequelize.STRING(64)},
+    user_authtime: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 }, {
     freezeTableName: true,
     timestamps: false

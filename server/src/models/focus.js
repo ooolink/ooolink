@@ -11,25 +11,26 @@ import Sequelize from 'sequelize';
 import {getMysql} from '../services/cache';
 
 const db = getMysql();
-const Collection = db.define('collection', {
+const Focus = db.define('focus', {
     id: {type: Sequelize.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-    collection_id: {type: Sequelize.STRING(64)},
-    collection_type: {type: Sequelize.STRING(10)},
-    collection_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-    collection_userId: {type: Sequelize.INTEGER},
-    collection_status: {type: Sequelize.INTEGER}
+    focus_type: {type: Sequelize.STRING(10)},
+    focus_id: {type: Sequelize.STRING(128)},
+    focus_name: {type: Sequelize.STRING(128)},
+    focus_userId: {type: Sequelize.INTEGER},
+    focus_status: {type: Sequelize.INTEGER},
+    focus_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 }, {
     freezeTableName: true,
     timestamps: false,
     indexes: [
         {
             unique: true, 
-            name: 'unique_collection',
-            fields: ['collection_id', 'collection_userId']
+            name: 'unique_focus',
+            fields: ['focus_id', 'focus_userId']
         }
     ]
 });
 
-Collection.sync();
+Focus.sync();
 
-export default Collection;
+export default Focus;
