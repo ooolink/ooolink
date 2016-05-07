@@ -7,43 +7,110 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 "use strict";
+const consumer = require('fibms-node-client').Consumer();
+const producer = require('fibms-node-client').Producer();
 import Sites from '../models/sites';
+import {getFastCache} from './cache';
 
-export const siteGet = function *(){
-		let site = this.params.site;
-		let sites = yield Sites.findOne({
-				where: {
-						site_id: site
-				}
-		});
-		this.body = {
-				themes: String(sites.site_themes).split(','),
-				conf: {
-						fn: String(sites.site_fn).split(',')
-				},
-				desc: sites.site_desc,
-				title: sites.site_name,
-				image: sites.site_image
+export const getSiteByType = function *(type, pageNumber, limit){
+	let sites = yield Sites.findAll({
+		attributes: ['site_name', 'site_desc', 'site_image', 'site_id', 'site_created', 'site_updated'],
+		limit,
+		offset: limit * pageNumber,
+		where: {
+			site_type: type
 		}
+	});
+	return sites;
+}
+
+export const getSiteInfo = function *(siteid){
+		let key = `site_getSiteInfo_${siteid}`,
+			memrs = getFastCache().get(key);
+		if (memrs){
+			return memrs;
+		}
+		let sites = yield Sites.findOne({
+			where: {
+				site_id: siteid
+			}
+		});
+		if (!sites){
+			return false;
+		}
+		getFastCache().set(key, sites);
+		return sites;
 };
 
 export const siteThemesGet = function *(){
 		let site = this.params.site;
 		let sites = yield Sites.findOne({
-				attributes: ['site_themes'],
-				where: {
-						site_id: site
-				}
+			attributes: ['site_themes'],
+			where: {
+				site_id: site
+			}
 		});
 		this.body = String(sites.site_themes).split(',');
 };
 
 export const siteConfigGet = function *(siteId){
 		let sites = yield Sites.findOne({
-				attributes: ['site_config', 'site_plugin'],
-				where: {
-						site_id: siteId
-				}
+			attributes: ['site_config', 'site_plugin'],
+			where: {
+				site_id: siteId
+			}
 		})
 		return sites;
 };
+
+export const getSiteContentBySiteId = function *(site, theme, limit, page){
+    let rs = yield new Promise((resolve, reject)=>{
+        let message = producer.createMessage('ss_content_getContentBySiteId');
+        message.setType(producer.MESSAGE_REQUEST);
+        message.setParams('site', {
+            site_id: site,
+            theme,
+            limit,
+            page
+        });
+        message.addCallBack({
+            success:(result)=>{
+                resolve(result);
+            },
+            error: (result)=>{
+                reject(result);			//TODO 错误捕获
+            }
+        });
+        producer.sendMessage(message);
+    });
+    return rs;
+}
+
+export const getSiteContentByContentId = function *(site, id){
+    let rs = yield new Promise((resolve, reject)=>{
+        let message = producer.createMessage('ss_content_getContentByContentId');
+        message.setType(producer.MESSAGE_REQUEST);
+        message.setParams('content', {
+            site_id: site,
+            content_id: id
+        });
+        message.addCallBack({
+            success: (result)=>{
+                resolve(result);
+            },
+            error: (result)=>{
+                reject(result);
+            }
+        });
+        producer.sendMessage(message);
+    });
+
+    return rs;
+}
+
+
+
+
+
+
+

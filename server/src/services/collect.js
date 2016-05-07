@@ -8,7 +8,8 @@
  */
 import crypto from 'crypto';
 import Collection from '../models/collection';
-import SiteFocus from '../models/sitefocus';
+import SiteFocus from '../models/focus';
+import Focus from '../models/focus';
 import Sites from '../models/sites';
 
 export const collected = function *() {
@@ -102,33 +103,15 @@ export const getCollections = function *() {
 
 /** site **/
 
-export const collectedSite = function *() {
+export const focusSite = function *(focus_id, focus_userId) {
     "use strict";
-    let user = this._domain.user;
-    let site = this.params.site;
-    let collection_id = user.id + '-' + site;
-    
-    let sites = yield Sites.findOne({
-        where: {
-            site_id: site
-        }
+    let focus = yield Focus.upsert({
+        focus_id,
+        focus_type: 'site',
+        focus_userId,
+        focus_status: 1
     });
-
-    yield SiteFocus.upsert({
-        collection_id,
-        collection_userId: user.id,
-        collection_site: site,
-        collection_site_name: sites.site_name,
-        collection_desc: sites.site_desc,
-        collection_site_image: sites.site_image,
-        collection_status: 1
-    }).then(collection=> {
-        this.body = {result: 1, id: collection_id}
-    }, error=> {
-        console.error('Error    ' + error);
-        this.status = 500;
-        this.body = {result: 0}
-    })
+    return focus;
 };
 
 export const unCollectedSite = function *() {
