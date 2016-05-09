@@ -1,3 +1,29 @@
+#site-panel{
+    width: 100%;
+}
+
+.biz-site-list{
+    width: 49.5%;
+    float: left;
+}
+
 .biz-site-operate{
-	color: #fff;
+	width: 49.5%;
+    margin-top: 60px;
+    float: left;
+}
+
+.biz-site-operate .unit-checkbox-group{
+    color: #fff;
+    font-size: 13px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.biz-site-operate .lang-input-text{
+    margin-bottom: 10px;
+}
+
+.biz-site-operate select{
+    margin-bottom: 10px;
 }

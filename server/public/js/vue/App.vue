@@ -1,7 +1,9 @@
 <template>
-	<panel></panel>
 	<div id="app">
-		<sitepanel></sitepanel>	
+        <panel></panel>
+        <div id="container">
+		    <sitepanel></sitepanel>	
+        </div>
 	</div>
 </template>
 

@@ -3,20 +3,54 @@ body{
     padding: 0;
     border: 0;
     background: #272636;
+    height: 100%;
 }
 
 .lang-input-text{
 	display: block;
+    width: 200px;
+    height: 30px;
+    padding: 10px;
 }
 
 .lang-input-submit{
 	border: 0;
 	color: #fff;
-	background: rgba(83,83,83,.51);
+	background: #65b278;
 	width: 60px;
 	height: 25px;
 	font-size: 12px;
 	line-height: 25px;
 	text-align: center;
 	cursor: pointer;
+}
+
+#lang-logo{
+    color:#fff;
+    font-weight: 900;
+    font-size: 18px;
+    font-family: 'cursive';
+    background: #222;
+}
+
+.mod-select-list{
+    list-style: none;
+    width: 150px;
+    height: 100%;
+    background: rgba(83, 83, 83, 0.51);
+    margin: 0;
+    padding: 0;
+}
+.mod-select-list li{
+    color: #fff;
+    width: 150px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 16px;
+}
+.mod-select-list .select{
+    border-bottom: 2px solid #00b7ee;
 }
