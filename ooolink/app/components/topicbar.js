@@ -32,9 +32,6 @@ class TopicBar extends Component {
         super(props);
     }
 
-    componentWillReceiveProps(nextProps) {
-    }
-
     render() {
         let likeImage = require('../images/like-none-white.png');
 
@@ -59,7 +56,14 @@ class TopicBar extends Component {
                         source={require('../images/topic-back.png')}/>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{left: width - 50}}
+                    onPress={this._onBack.bind(this)}
+                >
+                    <Text style={styles.backText}>
+                        详细内容
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{left: width - 150}}
                     onPress={this._onLike.bind(this)}
                 >
                     <Image
@@ -85,14 +89,20 @@ const styles = StyleSheet.create({
         width,
         top: 0,
         flex: 1,
-        height: 40,
-        backgroundColor: '#2F85A7',
+        height: 50,
+        backgroundColor: 'rgb(41,44,52)',
         flexDirection: "row",
         alignItems: "center"
     },
     likeButton: {
         width: 20,
         height: 20
+    },
+    backText: {
+        fontWeight: '900',
+        fontSize: 16,
+        color: '#fff',
+        marginLeft: 6
     },
     backArrow: {
         marginLeft: 6,

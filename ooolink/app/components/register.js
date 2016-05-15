@@ -22,7 +22,6 @@ import React,{
 import Button from 'react-native-button';
 import Loading from '../common/components/loadingBlock';
 
-const BG_URL = 'http://img.hb.aicdn.com/963f2ec0ed9098a6e20420c592fd220f37b0e6df31684-Ab2ZyV_fw658';
 const {width, height} = Dimensions.get('window');
 
 class Register extends Component {
@@ -51,27 +50,42 @@ class Register extends Component {
             );
         }
         return (
-            <Image source={{uri: BG_URL}} style={styles.bgImage}>
-                <View style={styles.container}>
-                    <TextInput
-                        autoFocus={true}
-                        autoCorrect={false}
-                        value={this.state.name}
-                        onChangeText={this._changeName.bind(this)}
-                        style={styles.wordInput}
-                    />
-                    <TextInput
-                        autoCorrect={false}
-                        value={this.state.pwd}
-                        onChangeText={this._changePwd.bind(this)}
-                        style={styles.wordInput}
-                    />
-                </View>
-                <Button
-                    onPress={this._submit.bind(this)}
-                    style={styles.button}
-                >注册</Button>
+            <View>
+            <Image source={{uri: this.props.bgimage}} style={styles.bgImage}>
             </Image>
+            <View style={styles.cover}/>
+            <Text style={styles.logoText}>ooolink</Text>
+            <View style={styles.container}>
+                <TextInput
+                    placeholder={"Username"}
+                    placeholderTextColor="#fff"
+                    autoFocus={true}
+                    autoCorrect={false}
+                    value={this.state.name}
+                    onChangeText={this._changeName.bind(this)}
+                    style={styles.wordInput}
+                />
+                <View style={{borderWidth:0.5, width: width-70, borderColor:'#eeeeee66'}}/>
+                <TextInput
+                    placeholder={"Password"}
+                    placeholderTextColor="#fff"
+                    autoCorrect={false}
+                    value={this.state.pwd}
+                    onChangeText={this._changePwd.bind(this)}
+                    style={styles.wordInput}
+                />
+            </View>
+            <Text
+                onPress={this._submit.bind(this)}
+                style={styles.button}>
+                Sign up
+            </Text>
+            <Text 
+                onPress={this.props.onGoLogin.bind(this)} 
+                style={styles. buttonText}>
+                返回登录
+            </Text>
+            </View>
         )
     }
 
@@ -96,34 +110,61 @@ class Register extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        top: 40 + (height - 40)/2 - 200,
-        left: 20 
+        margin: 20,
+        borderColor: '#eeeeee66',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 5
+    },
+    logoText:{
+        width,
+        textAlign: 'center',
+        color:'#fff',
+        backgroundColor: '#00000000',
+        fontWeight: "900",
+        fontSize: 20,
+        marginTop: 40 + (height - 40)/2 - 200
     },
     bgImage: {
+        position: 'absolute',
         width,
         height,
         alignItems: 'center',
         justifyContent: 'center'
     },
     wordInput: {
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
         color: '#fff',
-        marginTop: 20,
-        backgroundColor: '#ffffff33',
+        borderBottomColor: '#333',
+        borderBottomWidth: 1,
+        backgroundColor: '#ffffff00',
         width: width - 40,
         height: 40
     },
     button: {
-        paddingTop: 5,
-        paddingBottom: 5,
-        marginTop: 16,
+        fontWeight:'900',
+        lineHeight: 26,
+        textAlign: 'center',
+        margin: 20,
         color: '#fff',
-        width: width - 40,
+        height: 40,
+        backgroundColor: '#65b278'
+    },
+    buttonText: {
+        fontWeight:'900',
+        lineHeight: 20,
+        textAlign: 'center',
+        margin: 20,
+        color: '#fff',
         height: 30,
-        backgroundColor: '#2F85A7'
+        },
+    cover:{
+        position:'absolute',
+        top:0,
+        width,
+        height,
+        backgroundColor: '#00000066'
     }
 });
-
 export default Register;

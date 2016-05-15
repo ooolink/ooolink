@@ -27,7 +27,8 @@ class TitleBar extends Component {
 
     static propTypes = {
         siteLikeStatus: PropTypes.string,
-        onOpenProfile: PropTypes.func.isRequired,
+        onBack: PropTypes.func.isRequired,
+        backText: PropTypes.string.isRequired,
         onSiteFocus: PropTypes.func.isRequired,
         onChooseTheme: PropTypes.func.isRequired,
         themeBlockHeight: PropTypes.number.isRequired,
@@ -72,6 +73,20 @@ class TitleBar extends Component {
                     </View>
                 </DropDownBlock>
                 <View style={styles.bar}>
+                    <TouchableOpacity
+                        onPress={this._onBack.bind(this)}
+                    >
+                        <Image
+                            style={styles.backArrow}
+                            source={require('../images/topic-back.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={this._onBack.bind(this)}
+                    >
+                        <Text style={styles.backText}>
+                            {this.props.backText}
+                        </Text>
+                    </TouchableOpacity>
                     <Text style={styles.selectedItem}
                           onPress={this.openBlock.bind(this)}>
                         {this.props.themeSelected}&nbsp;
@@ -80,17 +95,6 @@ class TitleBar extends Component {
                             source={this.state.arrowImage}
                         />
                     </Text>
-                    <TouchableOpacity
-                        style={[styles.itemIcon,{
-                            left: width-60
-                        }]}
-                        onPress={this.openProfile.bind(this)}
-                    >
-                        <Image
-                            style={styles.itemIcon}
-                            source={require('../images/home-profile.png')}
-                        />
-                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={this.siteFocus.bind(this)}
                         style={[styles.itemIcon,{
@@ -111,10 +115,6 @@ class TitleBar extends Component {
         this.props.onSiteFocus();
     }
 
-    openProfile() {
-        this.props.onOpenProfile();
-    }
-
     onChooseTheme(theme) {
         this.openBlock();
         setTimeout(()=> {
@@ -128,6 +128,10 @@ class TitleBar extends Component {
             arrowImage: !this.state.openStatus ? require('../images/home-arrow-up.png') : require('../images/home-arrow-down.png')
         });
     }
+
+    _onBack(){
+        this.props.onBack();
+    }
 }
 
 const styles = StyleSheet.create({
@@ -139,8 +143,8 @@ const styles = StyleSheet.create({
         width,
         top: 0,
         flex: 1,
-        height: 40,
-        backgroundColor: '#2F85A7',
+        height: 50,
+        backgroundColor: 'rgb(41,44,52)',
         flexDirection: "row",
         alignItems: "center"
     },
@@ -170,6 +174,17 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 16,
         height: 16
+    },
+    backArrow: {
+        marginLeft: 6,
+        width: 16,
+        height: 16
+    },
+    backText: {
+        fontWeight: '900',
+        fontSize: 16,
+        color: '#fff',
+        marginLeft: 6
     }
 });
 
