@@ -8,6 +8,34 @@
  */
 
 import {SERVER_ADDRESS} from '../constants/config';
+import {getGlobal, setGlobal} from '../store'
+
+export function reAuth(cb){
+    getGlobal('userName', (name)=>{
+        if (!name){
+            return cb({result: 401});
+        }
+        getGlobal('passWord', (pwd)=>{
+            if (!pwd){
+                return cb({result: 401});
+            }
+            session(name, (rs)=>{
+                if (rs && rs.result === 1){
+                    login(name, pwd, rs.data, (r)=>{
+                        if (r && r.result === 1){
+                            setGlobal('oooLinkToken', r.data);
+                            cb(r)
+                        } else {
+                            cb({result: 401});
+                        }
+                    });
+                } else {
+                    cb({result: 401});
+                }
+            });
+        });
+    });
+}
 
 export function session(name, cb) {
     "use strict";

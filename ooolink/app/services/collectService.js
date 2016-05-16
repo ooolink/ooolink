@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-
+import * as loginService from './loginService';
 import {SERVER_ADDRESS} from '../constants/config';
+import {getGlobal, setGlobal} from '../store'
 
 export function collected(site, sitename, title, content, flag, type, token, cb, isNeedToSite = false) {
     "use strict";
@@ -87,20 +88,32 @@ export function judgeCollected(token, site, topicId, cb) {
 
 export function collectedSite(site, token, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}${site}/collect`, {
+    fetch(`${SERVER_ADDRESS}collect/site`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `token=${token}`
+        body: `token=${token}&site=${site}`
     })
         .then(response=> {
             if (response.status === 200) {
                 return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth((rs)=>{
+                    if (rs && rs.result === 401){
+                        setGlobal('isLogin', false);
+                        cb({result: 401});
+                    } else {
+                        collectedSite(site, rs.data, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
             }
+            return;
         })
         .then(rs=> {
-            cb(rs);
+            rs && cb(rs);
         });
 }
 
@@ -116,6 +129,8 @@ export function unCollectedSite(site, token, cb) {
         .then(response=> {
             if (response.status === 200) {
                 return response.json();
+            } else {
+                cb({result: 0});
             }
         })
         .then(rs=> {

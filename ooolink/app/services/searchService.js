@@ -17,3 +17,4 @@ export function searchSite(value = '', type = '', cb) {
             cb && cb(sites);
         });
 }
+
