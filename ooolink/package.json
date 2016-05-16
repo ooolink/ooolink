@@ -11,6 +11,8 @@
     "react-native-button": "^1.4.2",
     "react-native-html-render": "^1.0.3",
     "react-native-scrollable-tab-view": "^0.4.0",
+    "react-native-storage": "0.0.16",
+    "react-native-swiper": "^1.4.3",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
     "redux-thunk": "^2.0.1"
