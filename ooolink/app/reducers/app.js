@@ -9,17 +9,21 @@
 import * as types from '../constants/actionTypes'
 
 const initialState = {
-    currentSite: 'nativebbs-bbs',
+    currentSite: '',
     siteFocus: [],
-    token: {},
     siteInfo: {},
-    appLoaded: false
+    appLoaded: true,
+    siteLoaded: true
 };
 
 export default function(state = initialState, action) {
     "use strict";
 
     switch (action.type) {
+        case types.SITE_LOADING:
+            return Object.assign({}, state, {
+                siteLoaded: false
+            });
         case types.APP_LOADING:
             return Object.assign({}, state, {
                 appLoaded: false
@@ -27,7 +31,7 @@ export default function(state = initialState, action) {
         case types.GET_SITE_INFO:
             state.siteInfo[action.site] = action.info;
             return Object.assign({}, state, {
-                appLoaded: true,
+                siteLoaded: true,
                 currentSite: action.site
             });
         case types.ADD_SITE_FOCUS:

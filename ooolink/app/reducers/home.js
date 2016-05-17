@@ -12,6 +12,7 @@ import * as types from '../constants/actionTypes'
 //0 view, 1 person, 2 setting
 const initialState = {
     themeSelected: '',
+    themeSelectedWord: '',
     themesBlockHeight: 40
 };
 
@@ -24,7 +25,8 @@ export default function(state = initialState, action) {
             });
         case types.CHANGE_THEME:
             return Object.assign({}, state, {
-                themeSelected: action.theme
+                themeSelected: action.theme,
+                themeSelectedWord: action.themeWord
             });
         default:
             return state;

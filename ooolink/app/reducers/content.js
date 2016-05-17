@@ -9,33 +9,50 @@
 
 import * as types from '../constants/actionTypes'
 
-//0 view, 1 person, 2 setting
 const initialState = {
     topics: {},
-    comments: {},
-    topicSelected: null,
+    loadingTopicsIdNow: null,
+    getTopicsLoading: false,
+    loadingTopicIdNow: null,
+    getTopicLoading: false,
+    topic: null,
     collections: []
 };
 
 export default function(state = initialState, action) {
 
     switch (action.type) {
-        case types.CLEAR_CONTENT:
-            return {
-                topics: {},
-                comments: {},
-                topicSelected: null,
-                collections: []
-            };
+        case types.GET_TOPICS_LOADING:
+            state.getTopicsLoading = true;
+            state.topics = {};
+            state.loadingTopicsIdNow = action.loadingTopicsIdNow;
+            return Object.assign({}, state);
+
         case types.GET_TOPICS:
-            let {theme,page,topics} = action;
-            state.topics[theme] = state.topics[theme] || {};
-            state.topics[theme][page] = topics;
+            let {page, topics, loadingTopicsIdNow} = action;
+            if (loadingTopicsIdNow !== state.loadingTopicsIdNow){
+                return Object.assign({}, state);
+            }
+            state.topics = state.topics || {};
+            state.topics[page] = topics;
+            state.getTopicsLoading = false;
             return Object.assign({}, state);
+        
+        case types.GET_TOPIC_LOADING:
+            state.getTopicLoading = true;
+            state.topic = null;
+            state.loadingTopicIdNow = action.loadingTopicIdNow;
+            return Object.assign({}, state);
+
         case types.GET_TOPIC:
-            let {id, topic} = action;
-            state.comments[id] = topic;
+            let {topic, loadingTopicIdNow} = action;
+            if (loadingTopicIdNow !== state.loadingTopicIdNow){
+                return Object.assign({}, state);
+            }            
+            state.topic = topic;
+            state.getTopicLoading = false;
             return Object.assign({}, state);
+        
         case types.GET_COLLECTIONS:
             state.collections = action.collections;
             return Object.assign({}, state);
