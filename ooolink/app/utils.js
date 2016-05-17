@@ -31,6 +31,10 @@ export function computeThemeBlockHeight(themes) {
 export function UriDeal(uri) {
     "use strict";
 
+    if (uri.substr(uri.length - 3) === 'gif'){
+        return null;
+    }
+
     if (typeof uri === 'string' && uri.substr(0, 2) === '//') {
         return `https:${uri}`;
     }
@@ -85,10 +89,57 @@ export function timeDeal(time, type) {
         return t + '毫秒前';
     }
 
+    function read(time){
+        if (time < 30){
+            return '半分钟';
+        } else if (time < 60){
+            return ' ' + 1 + ' 分钟';
+        } else {
+            let t = (time / 60 + 1).toFixed(0);
+            return ' ' + t + ' 分钟';
+        }
+    }
+
     switch (type) {
         case 'ago':
             return ago(time);
+        case 'read':
+            return read(time);
         default:
             return ago(time);
     }
 }
+
+export function numberDeal(number, type) {
+
+    function general(number){
+        if (number >= 1000 && number < 10000){
+            return (number / 1000).toFixed(0) + 'k+';
+        } else if (number >= 10000 && number < 100000) {
+            return (number / 10000).toFixed(0) + 'w+';
+        } else if (number >= 100000 && number < 1000000){
+            return (number / 10000).toFixed(0) + 'w';
+        } else if (number >= 1000000 && number < 10000000){
+            return (number / 1000000).toFixed(0) + 'm+';
+        } else if (number >= 10000000 && number < 100000000){
+            return (number / 1000000).toFixed(0) + 'm';
+        } else if (number >= 100000000){
+            return (number / 100000000).toFixed(0) + 'b+';
+        }
+        return number;
+    }
+
+    switch (type){
+        case 'general':
+            return general(number);
+        default:
+            return general(number);
+    }
+}
+
+
+
+
+
+
+

@@ -17,16 +17,24 @@ import {computeThemeBlockHeight} from '../utils';
 function getSiteInfoFromServer(site) {
     "use strict";
     return (dispatch)=> {
-        fetch(`${SERVER_ADDRESS}${site}/conf`)
+        fetch(`${SERVER_ADDRESS}site/conf?site=${site}`)
             .then(response=>response.json())
             .then(info=> {
-                dispatch(selectTheme(site, info.themes[0]));
-                dispatch(setThemesBlockHeight(computeThemeBlockHeight(info.themes)));
-                dispatch({
-                    type: ActionTypes.GET_SITE_INFO,
-                    site,
-                    info
-                })
+                if (!info.result){
+                    //TODO 
+                } else {
+                    info = info.data;
+                    info.site_themes = JSON.parse(info.site_themes);
+                    info.site_themes.themes.unshift('全部');
+                    info.site_themes.themesmap.unshift('_all_');
+                    dispatch(selectTheme(site, 0, info.site_themes));
+                    dispatch(setThemesBlockHeight(computeThemeBlockHeight(info.site_themes.themes)));
+                    dispatch({
+                        type: ActionTypes.GET_SITE_INFO,
+                        site,
+                        info
+                    });
+                }
             })
     }
 }
@@ -34,9 +42,8 @@ function getSiteInfoFromServer(site) {
 export function getSiteInfo(site) {
     "use strict";
     return (dispatch, getState)=> {
-        dispatch(clearContent());
         dispatch({
-            type: ActionTypes.APP_LOADING
+            type: ActionTypes.SITE_LOADING
         });
         return dispatch(getSiteInfoFromServer(site));
     }

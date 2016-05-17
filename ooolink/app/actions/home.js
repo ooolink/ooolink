@@ -10,11 +10,11 @@
 import * as ActionTypes from '../constants/actionTypes';
 import {getTopics} from './content';
 
-export function selectTheme(site, theme) {
+export function selectTheme(site, index, t) {
     "use strict";
     return (dispatch, getState)=> {
-        dispatch({type: ActionTypes.CHANGE_THEME, theme});
-        return dispatch(getTopics(site, theme));
+        dispatch({type: ActionTypes.CHANGE_THEME, theme: t.themesmap[index], themeWord: t.themes[index]});
+        return dispatch(getTopics(site, t.themesmap[index]));
     };
 }
 
