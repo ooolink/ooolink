@@ -31,7 +31,7 @@ class DropDownBlock extends Component {
         startHeight: 0,
         endHeight: 100,
         duration: 200,
-        overHeight: 40
+        overHeight: 50
     };
 
     constructor(props) {

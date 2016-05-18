@@ -26,8 +26,8 @@ class TopBar extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
-        onBack: PropTypes.func.isRequired,
-        backText: PropTypes.string.isRequired
+        onBack: PropTypes.func,
+        backText: PropTypes.string
     };
 
     render() {
@@ -59,17 +59,19 @@ class TopBar extends Component {
 const styles = StyleSheet.create({
     bar: {
         width,
-        height: 40,
-        backgroundColor: '#2F85A7',
+        height: 50,
+        backgroundColor: 'rgb(41,44,52)',
         flexDirection: "row",
         alignItems: "center"
     },
     backArrow: {
         marginLeft: 6,
-        width: 20,
-        height: 20
+        width: 16,
+        height: 16
     },
     backText: {
+        fontWeight: '900',
+        fontSize: 16,
         color: '#fff',
         marginLeft: 6
     }
