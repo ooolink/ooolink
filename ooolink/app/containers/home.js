@@ -18,9 +18,10 @@ import React,{
 } from 'react-native';
 import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
-import CommentsList from '../containers/commentslist';
+import TopicDetail from '../containers/topicDetail';
 import Profile from '../containers/profile';
 import Publish from '../containers/publish';
+import LoadingBlock from '../common/components/loadingBlock';
 import * as collectService from '../services/collectService';
 import {getGlobal} from '../store';
 import {TO_PUBLISH_TOPIC} from '../constants/passAgreement';
@@ -37,28 +38,31 @@ class Home extends Component {
     }
 
     render() {
-        const {themesBlockHeight,themeSelected} = this.props.state.home;
-        const {currentSite, siteInfo} = this.props.state.app;
-        const topics = this.props.state.content.topics[themeSelected] ?
-            this.props.state.content.topics[themeSelected][0].data :
-            [];
-        let _this = this;
-
+        if (!this.props.state.app.siteLoaded){
+            return <LoadingBlock/>
+        }
+        let {themesBlockHeight,themeSelected, themeSelectedWord} = this.props.state.home;
+        let {currentSite, siteInfo} = this.props.state.app;
+        let topics = this.props.state.content.topics[0] ?                       //TODO
+            this.props.state.content.topics[0] :
+            [];                             
         return (
             <View style={styles.container}>
                 <TopicList
-                    onSelectTopic={_this.onSelectTopic.bind(_this)}
+                    isLoading={this.props.state.content.getTopicsLoading}
+                    onSelectTopic={this.onSelectTopic.bind(this)}
                     data={topics}
                     style={styles.content}/>
                 <TitleBar
                     siteLikeStatus={this.state.siteLikeStatus}
                     style={styles.titleBar}
-                    themes={siteInfo[currentSite].themes}
-                    onChooseTheme={_this.onChooseTheme.bind(this)}
-                    onSiteFocus={_this.onSiteFocus.bind(this)}
-                    themeSelected={themeSelected}
-                    themeBlockHeight={themesBlockHeight}
-                    onOpenProfile={_this.onOpenProfile.bind(_this)}/>
+                    onBack={this.onBack.bind(this)}
+                    onSiteFocus={this.onSiteFocus.bind(this)}
+                    onChooseTheme={this.onChooseTheme.bind(this)}
+                    themes={siteInfo[currentSite].site_themes.themes}
+                    backText={siteInfo[currentSite].site_name}
+                    themeSelected={themeSelectedWord}
+                    themeBlockHeight={themesBlockHeight} />   
                 <Text style={styles.publishButton} onPress={this.onPublish.bind(this)}>
                     发布主题
                 </Text>
@@ -67,19 +71,15 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const {currentSite} = this.props.state.app;
-        collectService.judgeSiteFocused(getGlobal('oooLinkToken'), currentSite, (rs)=>{
-            let status = rs && rs.result ? 'ok' : 'none';
-            this.setState({siteLikeStatus: status});
-        });     
+        // const {currentSite} = this.props.state.app;
+        // collectService.judgeSiteFocused(getGlobal('oooLinkToken'), currentSite, (rs)=>{
+        //     let status = rs && rs.result ? 'ok' : 'none';
+        //     this.setState({siteLikeStatus: status});
+        // });     
     }
 
-    onOpenProfile() {
-        this.props.navigator.push({
-            name: 'profile',
-            index: 3,
-            component: Profile
-        });
+    onBack(){
+        this.props.navigator.pop();
     }
 
     onPublish(){
@@ -118,20 +118,23 @@ class Home extends Component {
     }
 
     onChooseTheme(theme) {
-        this.props.actions.selectTheme(this.props.state.app.currentSite, theme);
+        const {currentSite, siteInfo} = this.props.state.app;
+        const site = siteInfo[currentSite];
+        let idx = site.site_themes.themes.indexOf(theme);
+        this.props.actions.selectTheme(currentSite, idx, site.site_themes);
     }
 
     onSelectTopic(topicId) {
-        this.props.navigator.push({
-            name: 'commentsList',
-            index: 1,
-            component: CommentsList,
-            props: {
-                topicId
-            }
-        });
+        this.props.actions.getTopic(topicId);
         setTimeout(()=> {
-            this.props.actions.getTopic(topicId);
+            this.props.navigator.push({
+                name: 'TopicDetail',
+                index: 1,
+                component: TopicDetail,
+                props: {
+                    topicId
+                }
+            });    
         }, 200);
     }
 }
@@ -139,7 +142,7 @@ class Home extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#333'
+        backgroundColor: 'rgb(41,44,52)'
     },
     titleBar: {
         flex: 1,
@@ -148,17 +151,17 @@ const styles = StyleSheet.create({
     },
     content: {
         position: 'absolute',
-        top: 40,
+        top: 50,
         width,
         height: height - 40,
-        backgroundColor: '#333'
+        backgroundColor: 'rgb(41,44,52)'
     },
     publishButton: {
         position: 'absolute',
         top: height - 40,
         height: 40,
         width,
-        backgroundColor: '#2F85A7dd',
+        backgroundColor: 'rgba(41,44,52,0.7)',
         color: '#fff',
         textAlign: 'center',
         lineHeight: 28,

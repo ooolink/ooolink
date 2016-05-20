@@ -20,6 +20,7 @@ import React,{
     TextInput,
     Alert
 } from 'react-native';
+import LoadingBlock from '../common/components/loadingBlock'
 import Login from '../components/login';
 import Register from '../components/register';
 import TopBar from '../common/components/topBar';
@@ -37,21 +38,31 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: getGlobal('oooLinkToken') ? 'logined' : 'login'
+            status: '',
+            isSync: false,
+            bgimage: ''
         }
     }
 
     render() {
         const {currentSite, siteInfo} = this.props.state.app;
-
+        let that = this;
+        if (!this.state.isSync){
+            return <LoadingBlock/>;
+        }
         if (this.state.status === 'login') {
             return (
                 <View>
-                    <TopBar
-                        onBack={this.onBack.bind(this)}
-                        backText={"登陆"}
-                    />
+                    {(()=>{
+                       if (that.props.from !== 'welcome'){
+                        return (<TopBar
+                                 onBack={that.onBack.bind(that)}
+                                 backText={"登陆"}
+                                />);
+                       }
+                    })()}
                     <Login
+                        bgimage={this.state.bgimage}
                         onSubmit={this.onLogin.bind(this)}
                         onGoRegister={this.onGoRegister.bind(this)}
                     />
@@ -60,11 +71,17 @@ class Profile extends Component {
         } else if (this.state.status === 'register') {
             return (
                 <View>
-                    <TopBar
-                        onBack={this.onBack.bind(this)}
-                        backText={"注册"}
-                    />
+                    {(()=>{
+                       if (that.props.from !== 'welcome'){
+                        return (<TopBar
+                                 onBack={that.onBack.bind(that)}
+                                 backText={"注册"}
+                                />);
+                       }
+                    })()}
                     <Register
+                        bgimage={this.state.bgimage}
+                        onGoLogin={this.onGoLogin.bind(this)}
                         onSubmit={this.onRegister.bind(this)}
                     />
                 </View>
@@ -156,12 +173,14 @@ class Profile extends Component {
     onLogin(name, pwd) {
         loginService.session(name, (data)=> {
             if (data.result) {
-                loginService.login(name, pwd, data.token, (data)=> {
+                loginService.login(name, pwd, data.data, (data)=> {
                     if (data.result) {
-                        setGlobal('oooLinkToken', data.token);
+                        setGlobal('oooLinkToken', data.data);
                         setGlobal('userName', name);
+                        setGlobal('passWord', pwd);
+                        setGlobal('isLogin', true);
                         Alert.alert('登陆成功');
-                        collectService.getCollections(data.token, ()=> {
+                        collectService.getCollections(data.data, ()=> {
 
                         });
                         this.setState({status: 'logined'})
@@ -175,6 +194,9 @@ class Profile extends Component {
         loginService.sign(name, pwd, (data=> {
             if (data.result) {
                 setGlobal('oooLinkToken', data.token);
+                setGlobal('userName', name);
+                setGlobal('passWord', pwd);
+                setGlobal('isLogin', true);
                 Alert.alert('注册成功');
                 this.setState({status: 'logined'})
             }
@@ -187,6 +209,12 @@ class Profile extends Component {
         });
     }
 
+    onGoLogin() {
+        this.setState({
+            status: 'login'
+        });
+    }
+
     onSearchClick() {
         this.props.navigator.push({
             name: 'setting',
@@ -195,6 +223,16 @@ class Profile extends Component {
                 backText: '搜索'
             },
             component: Search
+        });
+    }
+
+    componentDidMount() {
+        getGlobal('loginBgImage', (ret)=>{
+            this.setState({bgimage: ret});
+            getGlobal('isLogin', (ret)=>{
+                let status = ret ? 'logined' : 'login';
+                this.setState({status, isSync: true});
+            })
         });
     }
 }

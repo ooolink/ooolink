@@ -34,9 +34,9 @@ let {height, width} = Dimensions.get('window');
 class ContentBlock extends Component {
     render() {
         let data = this.props.data,
-            avatar = UriDeal(data.author.avatar_url);
+            avatar = UriDeal(data.author.author_avatar);
         return (
-            <View style={styles.contentBlock}>
+            <ScrollView style={styles.contentBlock}>
                 <Text style={styles.contentTitle}>{data.title}</Text>
                 <Image
                     style={styles.authorHead}
@@ -45,33 +45,33 @@ class ContentBlock extends Component {
                 <HtmlComponent
                     content={data.content}
                 />
-            </View>
+            </ScrollView>
         );
     }
 }
 
-class CommentBlock extends Component {
-    render() {
-        let data = this.props.data, avatar = UriDeal(data.author.avatar_url);
-        return (
-            <View style={styles.commentBlock}>
-                <Text style={styles.rowNumber}>{(parseInt(this.props.rowID) + 1) + '楼'}</Text>
-                <HtmlComponent
-                    content={data.content}
-                />
-                <View style={styles.commentInfo}>
-                    <Image
-                        style={styles.authorHead}
-                        source={{uri: avatar ? avatar : USER_DEFAULT_HEAD }}/>
-                    <Text style={styles.authorName}>{data.author.loginname}</Text>
-                    <Text style={styles.createTime}>{timeDeal(data.create_at)}</Text>
-                </View>
-            </View>
-        );
-    }
-}
+// class CommentBlock extends Component {
+//     render() {
+//         let data = this.props.data, avatar = UriDeal(data.author.avatar_url);
+//         return (
+//             <View style={styles.commentBlock}>
+//                 <Text style={styles.rowNumber}>{(parseInt(this.props.rowID) + 1) + '楼'}</Text>
+//                 <HtmlComponent
+//                     content={data.content}
+//                 />
+//                 <View style={styles.commentInfo}>
+//                     <Image
+//                         style={styles.authorHead}
+//                         source={{uri: avatar ? avatar : USER_DEFAULT_HEAD }}/>
+//                     <Text style={styles.authorName}>{data.author.loginname}</Text>
+//                     <Text style={styles.createTime}>{timeDeal(data.create_at)}</Text>
+//                 </View>
+//             </View>
+//         );
+//     }
+// }
 
-class CommentsList extends Component {
+class TopicDetail extends Component {
 
     static propTypes = {
         style: View.propTypes.style,
@@ -82,24 +82,15 @@ class CommentsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            likeStatus: 'loading',
-            collectionId: null
+            likeStatus: 'loading'
         }
     }
 
     render() {
-        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const comments = this.props.state.content.comments[this.props.topicId];
-        dataSource = dataSource.cloneWithRows(comments ? comments.data.replies : []);
-
+        let topic = this.props.state.content.topic;
         let com;
-        if (comments) {
-            com = <ListView
-                style={[this.props.style, {backgroundColor:'#fff', marginTop:40}]}
-                dataSource={dataSource}
-                renderHeader={this._renderHeader.bind(this)}
-                renderRow={this._renderRow.bind(this)}
-            />;
+        if (topic) {
+            com = <ContentBlock data={topic}/>
         } else {
             com = <LoadingBlock/>
         }
@@ -119,27 +110,12 @@ class CommentsList extends Component {
     }
 
     componentDidMount() {
-        let {currentSite} = this.props.state.app;
-        collectService.judgeCollected(getGlobal('oooLinkToken'), currentSite, this.props.topicId, (rs)=>{
-            let status = rs && rs.result ? 'ok' : 'none',
-                collectionId = rs.id;
-            this.setState({likeStatus: status, collectionId});
-        });   
-    }
-
-    _renderHeader() {
-        if (!this.contentBlock) {
-            let {data} = this.props.state.content.comments[this.props.topicId];
-            this.contentBlock = <ContentBlock data={data}/>
-        }
-        return this.contentBlock;
-    }
-
-    _renderRow(rowData, sectionID, rowID) {
-        return (
-            <CommentBlock
-                data={rowData} rowID={rowID}/>
-        )
+        // let {currentSite} = this.props.state.app;
+        // collectService.judgeCollected(getGlobal('oooLinkToken'), currentSite, this.props.topicId, (rs)=>{
+        //     let status = rs && rs.result ? 'ok' : 'none',
+        //         collectionId = rs.id;
+        //     this.setState({likeStatus: status, collectionId});
+        // });   
     }
 
     onPublish(){
@@ -207,9 +183,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     contentBlock: {
-        padding: 6,
-        borderBottomWidth: 10,
-        borderBottomColor: '#333'
+        marginTop: 50,
+        padding: 6
     },
     contentTitle: {
         fontWeight: '900'
@@ -260,4 +235,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CommentsList;
+export default TopicDetail;

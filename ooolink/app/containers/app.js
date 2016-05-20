@@ -16,7 +16,7 @@ import React,{
     Navigator,
     View
 } from 'react-native';
-import Home from '../containers/home';
+import Welcome from './welcome';
 import LoadingBlock from '../common/components/loadingBlock';
 import oooLinkActions from '../actions/index';
 import {bindActionCreators} from 'redux';
@@ -27,26 +27,22 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoaded: false,
-            currentSite: this.props.currentSite,
             state: this.props.state
         }
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            isLoaded: nextProps.isLoaded,
             state: nextProps.state,
-            currentSite: nextProps.currentSite
         });
     }
 
     render() {
-
+        let com = {name: 'welcome', index: 0, component: Welcome}
         if (this.props.isLoaded) {
             return (
                 <Navigator
-                    initialRoute={{name: 'home', index: 0, component: Home}}
+                    initialRoute={com}
                     renderScene={this.renderScene.bind(this)}
                     configureScene={this.configureScene.bind(this)}
                 />
@@ -59,11 +55,13 @@ class App extends Component {
     }
 
     configureScene(route, routeStack) {
-        return Navigator.SceneConfigs.FloatFromBottom;
+        return Navigator.SceneConfigs.FadeAndroid;
     }
 
     renderScene(route, navigator) {
-
+        if (!this.actions){
+            this.actions = bindActionCreators(oooLinkActions, this.props.dispatch);
+        }
         return React.createElement(route.component, Object.assign({}, route.props, {
             navigator,
             state: this.state.state,
@@ -73,17 +71,14 @@ class App extends Component {
 
     componentDidMount() {
         this.actions = bindActionCreators(oooLinkActions, this.props.dispatch);
-        this.actions.getSiteInfo(this.props.currentSite);
     }
 }
 
 
 function app(state) {
     "use strict";
-    let isLoaded = state.app.appLoaded,
-        currentSite = state.app.currentSite;
+    let isLoaded = state.app.appLoaded;
     return {
-        currentSite,
         isLoaded,
         state
     }
