@@ -16,9 +16,9 @@ export const methodAuth = method => {
 //参数空校验
 export const blankAuth = (query, body, params) => {
     return function*(next) {
-        if ((query && !query.filter(p => !!this.query[p]).length === query.length) ||
-            (body && !body.filter(b => !!this.request.body.fields[b]) === body.length) ||
-            (params && !params.filter(p => !!this.params[p]) === params.length)) {
+        if ((query && query.filter(p => !!this.query[p]).length !== query.length) ||
+            (body && body.filter(b => !!this.request.body.fields[b]) !== body.length) ||
+            (params && params.filter(p => !!this.params[p]) !== params.length)) {
             throw new Error('blankAuth checkError 500');
         }
         if (next){
