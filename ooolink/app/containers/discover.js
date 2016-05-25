@@ -87,6 +87,7 @@ class Discover extends Component{
         for (var i = 0; i < 5; i++){
             p.push(
                 <DiscoverSwiperBlock
+                    key={i}
                     uri={uris[i]}
                     text={texts[i]}
                 />
@@ -94,7 +95,6 @@ class Discover extends Component{
         }
         return (
             <ScrollView style={styles.container}>
-                <Text style={styles.logoText}>oooLink</Text>
                 <Swiper
                     activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
                     style={styles.swiper}
@@ -148,17 +148,6 @@ const styles = StyleSheet.create({
         width,
         height,
         backgroundColor: 'rgb(41,44,52)'
-    },
-    logoText:{
-        width,
-        textAlign: 'left',
-        paddingLeft: 20,
-        color:'#fff',
-        backgroundColor: '#00000000',
-        fontWeight: "900",
-        fontSize: 18,
-        marginTop: 16,
-        marginBottom: 16
     },
     swiper:{
     },

@@ -60,7 +60,7 @@ class Classification extends Component{
                 return;
             }
             ca.push(
-                <View style={styles.group}>
+                <View style={styles.group} key={idx}>
                     <InfoWithImageBlock
                         scale={1/2}
                         blockId={idx}

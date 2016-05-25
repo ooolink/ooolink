@@ -20,8 +20,52 @@ import React,{
     TouchableOpacity
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import IndexTopBar from '../components/indexTopBar'
+import Discover from './discover'
+import Profile from './profile'
 
 const {width, height} = Dimensions.get('window');
+
+class ScrollableTabViewBar extends Component{
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return (
+            <View style={styles.stvbar}>
+                <TouchableOpacity
+                    onPress={this.chooseContainer.bind(this, 0)}
+                >
+                <View style={styles.stvbarView}>
+                    <Image style={styles.stvbarImage} source={require('../images/root-bar-discover.png')}/>
+                    <Text style={styles.stvbarText}>{this.props.tabs[0]}</Text>
+                </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={this.chooseContainer.bind(this, 1)}
+                >
+                <View style={styles.stvbarView}>
+                    <Image style={styles.stvbarImage} source={require('../images/root-bar-message.png')}/>
+                    <Text style={styles.stvbarText}>{this.props.tabs[1]}</Text>
+                </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={this.chooseContainer.bind(this, 2)}
+                >
+                <View style={styles.stvbarView}>
+                    <Image style={styles.stvbarImage} source={require('../images/root-bar-my.png')}/>
+                    <Text style={styles.stvbarText}>{this.props.tabs[2]}</Text>
+                </View>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
+    chooseContainer(index){
+        this.props.goToPage(index);
+    }
+}
 
 class Root extends Component{
 
@@ -31,21 +75,61 @@ class Root extends Component{
 
     render(){
         let type = this.props.type;
+        let index = ['discover', 'message', 'my'].indexOf(type);
         return (
-            <ScrollableTabView
-            >
-                <ScrollView tabLabel="发现" style={styles.scrollView}>
-                </ScrollView>
-                <ScrollView tabLabel="消息" style={styles.scrollView}>
-                </ScrollView>
-                <ScrollView tabLabel="我的" style={styles.scrollView}>
-                </ScrollView>
-            </ScrollableTabView>    
+            <View>
+                <IndexTopBar/>
+                <ScrollableTabView
+                    initialPage={index}
+                    scrollWithoutAnimation={true}
+                    tabBarPosition = 'bottom'
+                    renderTabBar={()=><ScrollableTabViewBar selected={index}/>}
+                >
+                    <View tabLabel="发现" style={styles.scrollView}>
+                        <Discover
+                            navigator={this.props.navigator}
+                            state={this.props.state}
+                            actions={this.props.actions}
+                        />
+                    </View>
+                    <View tabLabel="消息" style={styles.scrollView}>
+                    </View>
+                    <View tabLabel="我的" style={styles.scrollView}>
+                        <Profile
+                            navigator={this.props.navigator}
+                            state={this.props.state}
+                            actions={this.props.actions}
+                        />
+                    </View>
+                </ScrollableTabView>    
+            </View>
         );   
     }
 }
 
 const styles=StyleSheet.create({
+    stvbar:{
+        flexDirection: 'row',
+        width,
+        height: 50,
+        backgroundColor: '#65b278'
+    },
+    stvbarImage:{
+        width: 30,
+        height: 30
+    },
+    stvbarView:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: width/3,
+        height: 50,
+        flexDirection: 'column'
+    },
+    stvbarText:{
+        fontSize: 11,
+        textAlign: 'center',
+        color: '#fff'
+    },
     scrollView:{
         flex: 1,
         width,

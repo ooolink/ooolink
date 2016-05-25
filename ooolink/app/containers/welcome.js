@@ -17,9 +17,7 @@ import React,{
     View
 } from 'react-native';
 import Root from './root'
-import Profile from './profile'
 import TopicDetail from './topicDetail'
-import Discover from './discover'
 import LoadingBlock from '../common/components/loadingBlock'
 import * as contentService from '../services/contentService'
 import {getGlobal} from '../store'
@@ -110,7 +108,7 @@ class Welcome extends Component{
             name: 'Root',
             component: Root,
             props:{
-                type: 'user'
+                type: 'my'
             }
         });
     }

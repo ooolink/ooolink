@@ -88,11 +88,7 @@ class Profile extends Component {
             );
         } else if (this.state.status === 'logined') {
             return (
-                <View>
-                    <TopBar
-                        onBack={this.onBack.bind(this)}
-                        backText={"用户中心"}
-                    />
+                <View style={{backgroundColor:'#fff'}}>
                     <Image
                         source={require('../images/user-bg.jpg')}
                         style={styles.userInfoItem}>
