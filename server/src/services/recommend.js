@@ -9,13 +9,16 @@
 const consumer = require('fibms-node-client').Consumer();
 const producer = require('fibms-node-client').Producer();
 
-export const getOneRecommend = function *(next){
+export const getOneRecommend = function *(time){
     let rs = yield new Promise((resolve, reject)=>{
-        let message = producer.createMessage('ss_content_getContentByContentId');
+        let message = producer.createMessage('ss_recommend_getWelcome');
         message.setType(producer.MESSAGE_REQUEST);
-        message.setParams('content', {
-            site_id: '04be9c7c2e7f7eda6febba12aa579a8d',
-            content_id: '04be9c7c2e7f7eda6febba12aa579a8d_54c58bc40d075f173d433f23'
+        message.setParams('recommend', {
+            time,
+            location: '重庆',
+            user:{
+
+            }
         });
         message.addCallBack({
             success: (result)=>{

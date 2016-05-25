@@ -12,7 +12,7 @@ import {timeDeal, UriDeal} from '../utils';
 
 export function getWelcomeContent(cb){
     "use strict";
-    fetch(`${SERVER_ADDRESS}recommend/welcome`)
+    fetch(`${SERVER_ADDRESS}recommend/welcome?time=${Date.now()}`)
         .then(response=> {
             if (response.status === 200) {
                 return response.json();
@@ -32,7 +32,7 @@ export function getWelcomeContent(cb){
                 readtime: '读完大约需要' + timeDeal(rs.quantity.view_avetime_general, 'read'),
                 image: UriDeal(rs.image)
             };
-            setGlobal('welcomeContent', saveData);
-            cb(saveData);
+            setGlobal('welcomeContent', saveData, 1000*3600*6);
+            cb && cb(saveData);
         });
 }

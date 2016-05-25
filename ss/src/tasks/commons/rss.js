@@ -47,6 +47,9 @@ consumer.onMessage('ss_task_getSiteAllContents_rss', params=>{
         }).
         on('end', ()=>{
             _taskLog.info(_log('rss', 'getSiteAllContents', `siteid:${siteModel.site_id}全部数据抓取完毕`, __filename, 49));
+        }).
+        on('error', (error)=>{
+            console.log(error);
         });
     }
 

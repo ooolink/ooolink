@@ -121,7 +121,7 @@ export default (router)=> {
         yield collectService.unCollected.call(this);
     });
 
-    router.get('/recommend/welcome', recommendController.getWelcomeContent)
+    router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent)
 
     return router;
 }

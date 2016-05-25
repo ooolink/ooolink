@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-
+'use strict'
 import React,{
     Component,
     StyleSheet,
@@ -38,7 +38,7 @@ class App extends Component {
     }
 
     render() {
-        let com = {name: 'welcome', index: 0, component: Welcome}
+        let com = {name: 'welcome', index: 0, component: Welcome};
         if (this.props.isLoaded) {
             return (
                 <Navigator
@@ -46,7 +46,7 @@ class App extends Component {
                     renderScene={this.renderScene.bind(this)}
                     configureScene={this.configureScene.bind(this)}
                 />
-            )
+            );
         } else {
             return (
                 <LoadingBlock/>
@@ -78,9 +78,11 @@ class App extends Component {
 function app(state) {
     "use strict";
     let isLoaded = state.app.appLoaded;
+    let indexComponent = state.app.indexComponent;
     return {
         isLoaded,
-        state
+        state,
+        indexComponent
     }
 }
 

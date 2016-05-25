@@ -18,6 +18,7 @@ import * as recommendService from '../services/recommend';
  }
 
  export const getWelcomeContent = function *(next){
-    let rs = yield recommendService.getOneRecommend();
+    let {time} = this.query;
+    let rs = yield recommendService.getOneRecommend(time);
     this.body = rs;
  }

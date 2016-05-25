@@ -16,6 +16,7 @@ import React,{
     Navigator,
     View
 } from 'react-native';
+import Root from './root'
 import Profile from './profile'
 import TopicDetail from './topicDetail'
 import Discover from './discover'
@@ -89,6 +90,7 @@ class Welcome extends Component{
     }
 
     onRead(){
+        contentService.getWelcomeContent();
         let topicId = this.state.welcomeContent.id;
         this.props.actions.getTopic(topicId);
         setTimeout(()=> {
@@ -104,19 +106,23 @@ class Welcome extends Component{
     }
 
     onUserClick(){
-        this.props.navigator.push({
-            name: 'Profile',
+        this.props.navigator.replace({
+            name: 'Root',
+            component: Root,
             props:{
-                from: 'welcome'
-            },  
-            component: Profile
+                type: 'user'
+            }
         });
     }
 
     onDiscoverClick(){
-        this.props.navigator.push({
-            name: 'Discover',
-            component: Discover
+        contentService.getWelcomeContent();
+        this.props.navigator.replace({
+            name: 'Root',
+            component: Root,
+            props:{
+                type: 'discover'
+            }
         })
     }
 }
@@ -196,7 +202,8 @@ const styles = StyleSheet.create({
         height: 50,
         textAlignVertical: 'center',
         textAlign: 'left',
-        color: '#ccc',
+        color: '#eee',
+        fontWeight:'900',
         backgroundColor: '#00000000',
     }
 });
