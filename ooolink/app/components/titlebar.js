@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         height: 10
     },
     itemIcon: {
-        top: 6,
+        top: 8,
         position: 'absolute',
         width: 16,
         height: 16
