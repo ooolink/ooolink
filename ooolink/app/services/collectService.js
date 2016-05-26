@@ -10,38 +10,62 @@ import * as loginService from './loginService';
 import {SERVER_ADDRESS} from '../constants/config';
 import {getGlobal, setGlobal} from '../store'
 
-export function collected(site, sitename, title, content, flag, type, token, cb, isNeedToSite = false) {
+export function collected(contentid, token, type, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}collect`, {
+    fetch(`${SERVER_ADDRESS}collect/content`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `site=${site}&title=${title}&content=${content}&flag=${flag}&type=${type}&token=${token}&sitename=${sitename}`
+        body: `token=${token}&contentid=${contentid}&type=${type}`
     })
         .then(response=> {
             if (response.status === 200) {
                 return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth((rs)=>{
+                    if (rs && rs.result === 401){
+                        setGlobal('isLogin', false);
+                        cb({result: 401});
+                    } else {
+                        collected(contentid, rs.data, type, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
             }
+            return;
         })
         .then(rs=> {
             cb(rs);
         });
 }
 
-export function uncollected(id, token, cb, isNeedToSite = false) {
+export function uncollected(contentid, token, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}collect`, {
+    fetch(`${SERVER_ADDRESS}collect/content`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `id=${id}&token=${token}`
+        body: `contentid=${contentid}&token=${token}`
     })
         .then(response=> {
             if (response.status === 200) {
                 return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth((rs)=>{
+                    if (rs && rs.result === 401){
+                        setGlobal('isLogin', false);
+                        cb({result: 401});
+                    } else {
+                        collected(contentid, rs.data, type, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
             }
+            return;
         })
         .then(rs=> {
             cb(rs);
@@ -67,19 +91,30 @@ export function getCollections(token, cb) {
         });
 }
 
-export function judgeCollected(token, site, topicId, cb) {
+export function judgeCollected(token, contentId, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}user/collected`, {
+    fetch(`${SERVER_ADDRESS}collect/judgecontent`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `token=${token}&site=${site}&id=${topicId}`
+        body: `token=${token}&contentid=${contentId}`
     })
         .then(response=>{
             if (response.status === 200) {
                 return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth(rs=>{
+                    if (rs && rs.result === 401){
+                        cb({result: 401});
+                    } else if (rs && rs.result === 1){
+                        judgeCollected(rs.data, contentId, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
             }
+            return;
         })
         .then(rs=> {
             cb(rs);
@@ -119,22 +154,32 @@ export function collectedSite(site, token, cb) {
 
 export function unCollectedSite(site, token, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}${site}/collect`, {
+    fetch(`${SERVER_ADDRESS}collect/site`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `token=${token}`
+        body: `token=${token}&site=${site}`
     })
         .then(response=> {
             if (response.status === 200) {
                 return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth((rs)=>{
+                    if (rs && rs.result === 401){
+                        setGlobal('isLogin', false);
+                        cb({result: 401});
+                    } else {
+                        unCollectedSite(site, rs.data, cb);
+                    }
+                });
             } else {
                 cb({result: 0});
             }
+            return;
         })
         .then(rs=> {
-            cb(rs);
+            rs && cb(rs);
         });
 }
 
@@ -159,7 +204,7 @@ export function getSitefocused(token, cb) {
 
 export function judgeSiteFocused(token, site, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}user/sitefocused`, {
+    fetch(`${SERVER_ADDRESS}collect/judgesite`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -169,7 +214,18 @@ export function judgeSiteFocused(token, site, cb) {
         .then(response=>{
             if (response.status === 200) {
                 return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth(rs=>{
+                    if (rs && rs.result === 401){
+                        cb({result: 401});
+                    } else if (rs && rs.result === 1){
+                        judgeSiteFocused(rs.data, site, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
             }
+            return;
         })
         .then(rs=>{
             cb(rs);

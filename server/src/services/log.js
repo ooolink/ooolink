@@ -16,6 +16,7 @@ export default function *(next){
         this.body = {result: 0};
         let msgArr = e.message.split(' ');
         this.status = parseInt(msgArr[2]) || 500;   
-        console.log(e.stack)
+        console.log(e.stack);
+        console.log('----------------------------------');
 	}
 }

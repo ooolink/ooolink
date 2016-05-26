@@ -23,7 +23,7 @@ import TopBar from '../common/components/topBar'
 import LoadingBlock from '../common/components/loadingBlock'
 import InfoWithImageBlock from '../common/components/infoWithImageBlock'
 import OperateLoading from '../common/components/operateLoading'
-import Profile from '../containers/profile'
+import Login from './loginContainer'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import * as siteService from '../services/siteService'
 import * as collectService from '../services/collectService'
@@ -118,8 +118,8 @@ class ClassificationDetail extends Component{
                     Alert.alert('关注成功');
                 } else if (rs && rs.result === 401) {
                     this.props.navigator.push({
-                        name: 'Profile',
-                        component: Profile
+                        name: 'Login',
+                        component: Login
                     });
                 } else {
                     Alert.alert('关注失败');
@@ -132,7 +132,10 @@ class ClassificationDetail extends Component{
         this.props.actions.getSiteInfo(item.site_id);
         this.props.navigator.push({
             name: 'Home',
-            component: Home
+            component: Home,
+            props: {
+                site_id: item.site_id
+            }
         });
     }
 

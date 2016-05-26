@@ -12,71 +12,30 @@ import SiteFocus from '../models/focus';
 import Focus from '../models/focus';
 import Sites from '../models/sites';
 
-export const collected = function *() {
+export const changeCollectionContentStatus = function *(collection_id, collection_userId, collection_type, collection_status) {
     "use strict";
-    let user = this._domain.user;
-    let created = Date.now();
-    let {site, type, flag, title, content, sitename} = this.request.body.fields;
-    let collection_id = crypto.createHmac('sha256', site).update(flag).digest('hex').toString();
-    yield Collection.upsert({
+    let collection = yield Collection.upsert({
         collection_id,
-        collection_site_name: sitename,
-        collection_userId: user.id,
-        collection_site: site,
-        collection_flag: flag,
-        collection_type: type,
-        collection_title: title,
-        collection_content: content,
-        collection_created: created,
-        collection_status: 1
-    }).then(collection=> {
-        this.body = {
-            result: 1, 
-            id: collection_id,
-            created
-        };
-    }, error=> {
-        console.error('Error    ' + error);
-        this.status = 500;
-        this.body = {result: 0}
+        collection_userId,
+        collection_status,
+        collection_type
     });
+    return collection;
 };
 
-export const unCollected = function *() {
+export const getCollectionContentStatus = function *(collection_userId, collection_id) {
     "use strict";
-    let user = this._domain.user;
-    let id = this.request.body.fields.id;
-    yield Collection.update({collection_status: 0}, {where: {collection_id: id, collection_userId: user.id}})
-        .then(rs=> {
-            if (rs) {
-                this.body = {result: 1}
-            } else {
-                console.error('Error    ' + 0);
-                this.status = 500;
-                this.body = {result: 0}
-            }
-        }, error=> {
-            console.error('Error    ' + error);
-            this.status = 500;
-            this.body = {result: 0}
-        });
-};
-
-export const judgeCollected = function *() {
-    "use strict";
-    let user = this._domain.user;
-    let {id, site} = this.request.body.fields;
     let collection = yield Collection.findOne({
+        attributes: ['collection_status'],
         where: {
-            collection_site: site,
-            collection_flag: id,
-            collection_userId: user.id,
-            collection_status: 1
+            collection_userId,
+            collection_id
         }
     });
-    this.body = {
-        result: +(collection ? true : false),
-        id: collection ? collection.collection_id : ''
+    if (collection && collection.collection_status){
+        return 1;
+    } else {
+        return 0;
     }
 };
 
@@ -103,56 +62,29 @@ export const getCollections = function *() {
 
 /** site **/
 
-export const focusSite = function *(focus_id, focus_userId) {
+export const changeFocusSiteStatus = function *(focus_id, focus_userId, status) {
     "use strict";
     let focus = yield Focus.upsert({
         focus_id,
         focus_type: 'site',
         focus_userId,
-        focus_status: 1
+        focus_status: status
     });
     return focus;
 };
 
-export const unCollectedSite = function *() {
-    "use strict";
-    let user = this._domain.user;
-    let site = this.params.site;
-    yield SiteFocus.update({collection_status: 0}, {
-            where: {
-                collection_id: user.id + '-' + site,
-                collection_userId: user.id
-            }
-        })
-        .then(rs=> {
-            if (rs) {
-                this.body = {result: 1}
-            } else {
-                console.error('Error    ' + 0);
-                this.status = 500;
-                this.body = {result: 0}
-            }
-        }, error=> {
-            console.error('Error    ' + error);
-            this.status = 500;
-            this.body = {result: 0}
-        });
-};
-
-export const judgeSiteFocused = function *() {
-    "use strict";
-    let user = this._domain.user;
-    let site = this.request.body.fields.site;
-
-    let collection = yield SiteFocus.findOne({
+export const getFocusSiteStatus = function *(focus_id, focus_userId){
+    let focus = yield Focus.findOne({
+        attributes: ['focus_status'],
         where: {
-            collection_id: user.id + '-' + site,
-            collection_userId: user.id,
-            collection_status: 1
+            focus_id,
+            focus_userId
         }
     });
-    this.body = {
-        result: +(collection ? true : false)
+    if (focus && focus.focus_status) {
+        return 1;
+    } else {
+        return 0;
     }
 };
 

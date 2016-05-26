@@ -82,6 +82,13 @@ export const session = function *(next){
     }
 }
 
+export const getUserCollectionTypes = function *(next){
+    let d = this._domain.user.user_collection_type;
+    this.body = {
+        result: 1,
+        data: d ? d.split(',') : []
+    }
+}
 
 
 

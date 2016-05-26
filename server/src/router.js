@@ -35,6 +35,12 @@ export default (router)=> {
 
     router.post('/collect/judgesite', blankAuth(null, ['site', 'token']), userController.auth, collectController.isCollectedSite);
 
+    router.post('/collect/content', blankAuth(null, ['contentid', 'token', 'type']), userController.auth, collectController.collectContent);
+
+    router.delete('/collect/content', blankAuth(null, ['contentid', 'token']), userController.auth, collectController.unCollectContent);
+
+    router.post('/collect/judgecontent', blankAuth(null, ['contentid', 'token']), userController.auth, collectController.isCollectedContent);
+
     router.post('/sites', blankAuth(['type'],['limit', 'page']), siteController.getSiteByType);
 
     router.use('/site', blankAuth(['site']), siteController.siteEntrance);
@@ -74,6 +80,8 @@ export default (router)=> {
     router.post('/user/session', userController.session);
 
     router.post('/user/sign', userController.sign);
+
+    router.post('/user/collectiontype', blankAuth(null, ['token']), userController.auth, userController.getUserCollectionTypes);
 
     router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent)
 

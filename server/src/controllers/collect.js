@@ -13,8 +13,8 @@ import * as collectService from '../services/collect';
 export const collectSite = function *(next){
     let siteId = this.request.body.fields.site;
     let userId = this._domain.user.id;
-    let focus = yield collectService.focusSite(siteId, userId);
-    if (focus){
+    let focus = yield collectService.changeFocusSiteStatus(siteId, userId, 1);
+    if (focus === true || focus === false){
         this.body = {
             result: 1
         }
@@ -24,21 +24,70 @@ export const collectSite = function *(next){
 }
 
 export const unCollectSite = function *(next){
-
+    let siteId = this.request.body.fields.site;
+    let userId = this._domain.user.id;
+    let focus = yield collectService.changeFocusSiteStatus(siteId, userId, 0);
+    if (focus === true || focus === false){
+        this.body = {
+            result: 1
+        }
+    } else {
+        throw new Error('focus operateError 500');
+    }
 }
 
 export const isCollectedSite = function *(next){
-
+    let site = this.request.body.fields.site;
+    let userId = this._domain.user.id;
+    let status = yield collectService.getFocusSiteStatus(site, userId);
+    this.body = {
+        result: 1,
+        data: status
+    }
 }
 
 export const collectContent = function *(next){
+    let contentid = this.request.body.fields.contentid,
+        userid = this._domain.user.id,
+        type = this.request.body.fields.type;
 
+    let collection = yield collectService.changeCollectionContentStatus(contentid, userid, type, 1);
+    if (collection === true || collection === false){
+        this.body = {
+            result: 1
+        }
+    } else {
+        throw new Error('collect operateError 500');
+    }
 }
 
 export const unCollectContent = function *(next){
+    let contentid = this.request.body.fields.contentid,
+        userid = this._domain.user.id;
 
+    let collection = yield collectService.changeCollectionContentStatus(contentid, userid, null, 0);
+    if (collection === true || collection === false){
+        this.body = {
+            result: 1
+        }
+    } else {
+        throw new Error('collect operateError 500');
+    }
 }
 
 export const isCollectedContent = function *(next){
-    
+    let contentId = this.request.body.fields.contentid;
+    let userId = this._domain.user.id;
+    let status = yield collectService.getCollectionContentStatus(userId, contentId);
+    this.body = {
+        result: 1,
+        data: status
+    }
 }
+
+
+
+
+
+
+

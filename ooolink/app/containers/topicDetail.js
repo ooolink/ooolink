@@ -16,13 +16,15 @@ import React,{
     Image,
     Dimensions,
     View,
+    Picker,
     TouchableOpacity,
     PropTypes
 } from 'react-native';
 import LoadingBlock from '../common/components/loadingBlock';
 import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
-import Publish from '../containers/publish';
+import Publish from './publish';
+import Login from './loginContainer';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
 import {getGlobal} from '../store';
@@ -46,6 +48,68 @@ class ContentBlock extends Component {
                     content={data.content}
                 />
             </ScrollView>
+        );
+    }
+}
+
+class TypeChooseModal extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            itemChoose: 'default'
+        }
+    }
+
+    render(){
+        return (
+            <View style={styles.wrap}>
+                <View
+                    style={styles.typePicker}
+                >
+                    <View>
+                        <Text style={styles.typePickerTitle}>
+                            选择收藏夹
+                        </Text>
+                        <TouchableOpacity
+                                style={{position: 'absolute', top: 10, left: 10}}
+                                onPress={this.props.onClose.bind(this)}
+                            >
+                            <Image style={{width: 10, height: 10}} source={require('../images/login-close.png')}/>
+                        </TouchableOpacity> 
+                        <Text 
+                        style={{position: 'absolute', top: 6, left: 165, backgroundColor:'#00000000', color:'#fff', fontWeight: '900'}}>
+                        新建
+                        </Text>                       
+                    </View>
+                    <Picker
+                        style={{height: 200}}
+                        selectedValue={this.state.itemChoose}
+                        onValueChange={itemChoose=>this.setState({itemChoose})}
+                    >
+                        <Picker.Item style={styles.typePikerItem} label="default" value="default" />
+                        <Picker.Item style={styles.typePikerItem} label="default1" value="default1" />
+                        <Picker.Item style={styles.typePikerItem} label="default2" value="default2" />
+                        <Picker.Item style={styles.typePikerItem} label="default3" value="default3" />
+                        <Picker.Item style={styles.typePikerItem} label="default4" value="default4" />
+                    </Picker>
+                    <Text 
+                        onPress={this.props.onCollect.bind(this, this.state.itemChoose)}
+                        style={styles.typePickerButton}>收藏</Text>
+                </View>
+            </View>
+        )
+    }
+}
+
+class CreatedTypeModal extends Component{
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return (
+            <View style={styles.wrap}>
+            </View>
         );
     }
 }
@@ -82,40 +146,50 @@ class TopicDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            likeStatus: 'loading'
+            likeStatus: 'loading',
+            isPressLike: false
         }
     }
 
     render() {
         let topic = this.props.state.content.topic;
-        let com;
+        let com, modalCom = null;
         if (topic) {
             com = <ContentBlock data={topic}/>
         } else {
             com = <LoadingBlock/>
         }
 
+        if (this.state.isPressLike){
+            modalCom = <TypeChooseModal 
+                            onCollect = {this.onCollect.bind(this)}
+                            onCreate = {this.onCreateCollectionFolder.bind(this)}
+                            onClose={()=>{this.setState({isPressLike: false})}}
+                        />
+        }
+
         return (
             <View style={styles.container}>
                 <TopicBar
                     likeStatus={this.state.likeStatus}
-                    onLike={this.onLike.bind(this)}
+                  onLike={this.onLike.bind(this)}
                     onBack={this.onBack.bind(this)}/>
                 {com}
                 <Text style={styles.publishButton} onPress={this.onPublish.bind(this)}>
                     跟帖
                 </Text>
+                {modalCom}
             </View>
         );
     }
 
     componentDidMount() {
-        // let {currentSite} = this.props.state.app;
-        // collectService.judgeCollected(getGlobal('oooLinkToken'), currentSite, this.props.topicId, (rs)=>{
-        //     let status = rs && rs.result ? 'ok' : 'none',
-        //         collectionId = rs.id;
-        //     this.setState({likeStatus: status, collectionId});
-        // });   
+        getGlobal('oooLinkToken', token=>{
+            collectService.judgeCollected(token, this.props.topicId, rs=>{
+                let status = rs && rs.result === 1 && rs.data === 1 ? 'ok' : 'none';
+                this.setState({likeStatus: status});
+            });
+        });
     }
 
     onPublish(){
@@ -134,46 +208,51 @@ class TopicDetail extends Component {
     }
 
     onLike() {
-        let {currentSite, siteInfo} = this.props.state.app;
-        let {themeSelected} = this.props.state.home;
-
         if (this.state.likeStatus === 'none') {
-            let {data} = this.props.state.content.comments[this.props.topicId];
-            collectService.collected(currentSite, siteInfo[currentSite].title, data.title, data.content.substr(0, 1000), this.props.topicId, themeSelected, getGlobal('oooLinkToken'), (rs)=> {
-                if (rs && rs.result) {
-                    this.props.actions.collectTopic(rs.id, currentSite, siteInfo[currentSite].title, this.props.topicId, data.title, rs.created);
-                    this.setState({
-                        likeStatus: 'ok',
-                        collectionId: rs.id
-                    });
-                } else {
-                    this.setState({
-                        likeStatus: 'none'
-                    });
-                }
-            })
+            this.setState({
+                isPressLike: true
+            });
         } else if (this.state.likeStatus === 'ok') {
-            let collections = this.props.state.content.collections, len = collections.length;
-            if (this.state.collectionId === null) {
-                return;
-            }
-            collectService.uncollected(this.state.collectionId, getGlobal('oooLinkToken'), (rs)=> {
-                if (rs && rs.result) {
-                    this.props.actions.unCollectionTopic(this.state.collectionId, currentSite, this.props.topicId);
-                    this.setState({
-                        likeStatus: 'none',
-                        collectionId: null
-                    });
-                } else {
-                    this.setState({
-                        likeStatus: 'ok'
-                    });
-                }
-            })
+            this.setState({likeStatus: 'loading'});
+            getGlobal('oooLinkToken', token=>{
+                collectService.uncollected(this.props.topicId, token, rs=>{
+                    if (rs && rs.result === 1){
+                        this.setState({likeStatus: 'none'});
+                    } else {
+                        this.setState({likeStatus: 'ok'});
+                        if (rs && rs.result === 401){
+                            this.props.navigator.push({
+                                name: 'Login',
+                                component: Login
+                            });
+                        }
+                    }
+                });
+            });
         }
-        this.setState({
-            likeStatus: 'loading'
+    }
+
+    onCollect(type){
+        this.setState({likeStatus: 'loading', isPressLike: false})
+        getGlobal('oooLinkToken', token=>{
+            collectService.collected(this.props.topicId, token, type, rs=>{
+                if (rs && rs.result === 1) {
+                    this.setState({likeStatus: 'ok'});
+                } else {
+                    this.setState({likeStatus: 'none'});
+                    if (rs.result === 401){
+                        this.props.navigator.push({
+                            name: 'Login',
+                            component: Login
+                        });
+                    }
+                }
+            });
         });
+    }
+
+    onCreateCollectionFolder(){
+
     }
 }
 
@@ -232,6 +311,41 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 28,
         fontWeight: '900'
+    },
+    wrap: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width,
+        height,
+        backgroundColor: '#999999cc'
+    },
+    typePicker:{
+        top: height/2 - 130,
+        width: 200,
+        height: 260,
+        alignSelf: 'center',
+        backgroundColor: '#fff'
+    },
+    typePikerItem:{
+        fontWeight: '900'
+    },
+    typePickerTitle:{
+        backgroundColor:'rgb(41,44,52)',
+        width: 200,
+        height: 30,
+        textAlign: 'center',
+        color: '#fff',
+        lineHeight: 20
+    },
+    typePickerButton:{
+        width: 200,
+        height: 30,
+        textAlign: 'center',
+        color: '#fff',
+        lineHeight: 20,
+        fontWeight: '900',
+        backgroundColor: '#65b278'
     }
 });
 

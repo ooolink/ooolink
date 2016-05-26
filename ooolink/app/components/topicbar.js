@@ -63,7 +63,7 @@ class TopicBar extends Component {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{left: width - 150}}
+                    style={{left: width - 130}}
                     onPress={this._onLike.bind(this)}
                 >
                     <Image

@@ -19,8 +19,9 @@ import React,{
 import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
 import TopicDetail from '../containers/topicDetail';
-import Profile from '../containers/profile';
-import Publish from '../containers/publish';
+import Profile from './profile';
+import Login from './loginContainer'
+import Publish from './publish';
 import LoadingBlock from '../common/components/loadingBlock';
 import * as collectService from '../services/collectService';
 import {getGlobal} from '../store';
@@ -71,13 +72,12 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const {currentSite} = this.props.state.app;
         getGlobal('oooLinkToken', token=>{
             if (!token){
                 return this.setState({siteLikeStatus: 'none'});
             }
-            collectService.judgeSiteFocused(token, currentSite, (rs)=>{
-                let status = rs && rs.result ? 'ok' : 'none';
+            collectService.judgeSiteFocused(token, this.props.site_id, (rs)=>{
+                let status = rs && rs.result === 1 && rs.data === 1 ? 'ok' : 'none';
                 this.setState({siteLikeStatus: status});
             });  
         });   
@@ -100,26 +100,41 @@ class Home extends Component {
 
     onSiteFocus() {
         const {currentSite, siteInfo} = this.props.state.app;
-        if (this.state.siteLikeStatus === 'none') {
-            collectService.collectedSite(currentSite, getGlobal('oooLinkToken'), (rs)=> {
-                if (rs && rs.result) {
-                    this.props.actions.collectSiteFocus(siteInfo[currentSite]);
-                    this.setState({siteLikeStatus: 'ok'});
-                } else {
-                    this.setState({siteLikeStatus: 'none'});
-                }
-            });
-        } else if (this.state.siteLikeStatus === 'ok') {
-            collectService.unCollectedSite(currentSite, getGlobal('oooLinkToken'), (rs)=> {
-                if (rs && rs.result) {
-                    this.props.actions.unCollectSiteFocus(currentSite);
-                    this.setState({siteLikeStatus: 'none'});
-                } else {
-                    this.setState({siteLikeStatus: 'ok'});
-                }
-            })
-        }
-        this.setState({siteLikeStatus: 'loading'});
+        getGlobal('oooLinkToken', token=>{
+            if (this.state.siteLikeStatus === 'none') {
+                collectService.collectedSite(currentSite, token, (rs)=> {
+                    if (rs && rs.result === 1) {
+                        this.props.actions.collectSiteFocus(siteInfo[currentSite]);
+                        this.setState({siteLikeStatus: 'ok'});
+                    } else {
+                        this.setState({siteLikeStatus: 'none'});
+                        if (rs.result === 401){
+                            this.props.navigator.push({
+                                name: 'Login',
+                                component: Login
+                            });
+                        }
+                    }
+                });
+            } else if (this.state.siteLikeStatus === 'ok') {
+                collectService.unCollectedSite(currentSite, token, (rs)=> {
+                    if (rs && rs.result === 1) {
+                        this.props.actions.unCollectSiteFocus(currentSite);
+                        this.setState({siteLikeStatus: 'none'});
+                    } else {
+                        //TODO 操作失败提示
+                        this.setState({siteLikeStatus: 'ok'});
+                        if (rs.result === 401){
+                            this.props.navigator.push({
+                                name: 'Login',
+                                component: Login
+                            });
+                        }
+                    }
+                })
+            }
+            this.setState({siteLikeStatus: 'loading'});
+        });
     }
 
     onChooseTheme(theme) {

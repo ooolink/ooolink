@@ -115,6 +115,7 @@ class Welcome extends Component{
             });            
         } else {
             this.props.navigator.push({
+                name: 'Login',
                 component: Login
             });          
         }
