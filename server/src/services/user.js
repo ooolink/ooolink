@@ -43,7 +43,7 @@ export const updateLoginInfo = function *(name, password, salt, token, now_p) {
 export const getSaltByName = function *(name) {
     "use strict";
     let user = yield User.findOne({where: {user_name: name}});
-    return user.user_salt;
+    return user ? user.user_salt : '';
 };
 
 export const findUserByToken = function *(token){

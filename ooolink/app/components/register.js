@@ -36,19 +36,11 @@ class Register extends Component {
         this.state = {
             name: '',
             pwd: '',
-            pwdOver: '',
-            loading: true
+            pwdOver: ''
         }
     }
 
     render() {
-        if (this.state.loading) {
-            return (
-                <View style={{width, height}}>
-                    <Loading/>
-                </View>
-            );
-        }
         return (
             <View>
             <Image source={{uri: this.props.bgimage}} style={styles.bgImage}>
@@ -99,12 +91,6 @@ class Register extends Component {
 
     _changePwd(pwd) {
         this.setState({pwd})
-    }
-
-    componentDidMount(){
-        setTimeout(()=>{
-            this.setState({loading: false});
-        }, 166);
     }
 }
 

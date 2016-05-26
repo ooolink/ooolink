@@ -17,6 +17,7 @@ import React,{
     View
 } from 'react-native';
 import Root from './root'
+import Login from './loginContainer'
 import TopicDetail from './topicDetail'
 import LoadingBlock from '../common/components/loadingBlock'
 import * as contentService from '../services/contentService'
@@ -104,13 +105,19 @@ class Welcome extends Component{
     }
 
     onUserClick(){
-        this.props.navigator.replace({
-            name: 'Root',
-            component: Root,
-            props:{
-                type: 'my'
-            }
-        });
+        if (this.state.isLogin){
+            this.props.navigator.replace({
+                name: 'Root',
+                component: Root,
+                props:{
+                    type: 'my'
+                }
+            });            
+        } else {
+            this.props.navigator.push({
+                component: Login
+            });          
+        }
     }
 
     onDiscoverClick(){

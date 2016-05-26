@@ -21,26 +21,24 @@ import React,{
     Alert
 } from 'react-native';
 import LoadingBlock from '../common/components/loadingBlock'
-import Login from '../components/login';
-import Register from '../components/register';
 import TopBar from '../common/components/topBar';
-import Search from '../containers/search';
-import InfoGroup from '../containers/infoGroup';
+import Search from './search';
+import InfoGroup from './infoGroup';
+import Login from './loginContainer';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
-import * as loginService from '../services/loginService';
 import * as collectService from '../services/collectService';
-import {setGlobal, getGlobal} from '../store';
+import {setGlobal, getGlobal, removeGlobal} from '../store';
 
 let {height, width} = Dimensions.get('window');
 
 class Profile extends Component {
-
-    constructor(props) {
+    
+    constructor(props){
         super(props);
         this.state = {
             status: '',
-            isSync: false,
-            bgimage: ''
+            userName: '',
+            isSync: false
         }
     }
 
@@ -50,50 +48,20 @@ class Profile extends Component {
         if (!this.state.isSync){
             return <LoadingBlock/>;
         }
-        if (this.state.status === 'login') {
-            return (
-                <View>
-                    {(()=>{
-                       if (that.props.from !== 'welcome'){
-                        return (<TopBar
-                                 onBack={that.onBack.bind(that)}
-                                 backText={"登陆"}
-                                />);
-                       }
-                    })()}
-                    <Login
-                        bgimage={this.state.bgimage}
-                        onSubmit={this.onLogin.bind(this)}
-                        onGoRegister={this.onGoRegister.bind(this)}
-                    />
-                </View>
-            );
-        } else if (this.state.status === 'register') {
-            return (
-                <View>
-                    {(()=>{
-                       if (that.props.from !== 'welcome'){
-                        return (<TopBar
-                                 onBack={that.onBack.bind(that)}
-                                 backText={"注册"}
-                                />);
-                       }
-                    })()}
-                    <Register
-                        bgimage={this.state.bgimage}
-                        onGoLogin={this.onGoLogin.bind(this)}
-                        onSubmit={this.onRegister.bind(this)}
-                    />
-                </View>
-            );
-        } else if (this.state.status === 'logined') {
+        let loginOutCom = this.state.status === 'logined' ? 
+                    <Text 
+                        onPress={this.onLoginOut.bind(this)}
+                        style={styles.loginOutButton}>
+                        退出登录
+                    </Text> : null;
+
             return (
                 <View style={{backgroundColor:'#fff'}}>
                     <Image
                         source={require('../images/user-bg.jpg')}
                         style={styles.userInfoItem}>
-                        <Text style={styles.userInfoText}>
-                            用户 : {getGlobal('userName')} (子账号数 : 3)
+                        <Text style={styles.userInfoText} onPress={this.onClickUserInfo.bind(this)}>
+                            {this.state.status === 'logined' ? `用户 : ${this.state.userName} (子账号数 : 3)` : '登录/注册'}
                         </Text>
                     </Image>
                     <View style={styles.searchItem}>
@@ -133,9 +101,9 @@ class Profile extends Component {
                         </Text>
                         <Image style={styles.icon} source={require('../images/profile-up.png')}/>
                     </View>
+                    {loginOutCom}
                 </View>
             );
-        }
     }
 
     onGetLikeTopic() {
@@ -162,55 +130,6 @@ class Profile extends Component {
         });
     }
 
-    onBack() {
-        this.props.navigator.pop();
-    }
-
-    onLogin(name, pwd) {
-        loginService.session(name, (data)=> {
-            if (data.result) {
-                loginService.login(name, pwd, data.data, (data)=> {
-                    if (data.result) {
-                        setGlobal('oooLinkToken', data.data);
-                        setGlobal('userName', name);
-                        setGlobal('passWord', pwd);
-                        setGlobal('isLogin', true);
-                        Alert.alert('登陆成功');
-                        collectService.getCollections(data.data, ()=> {
-
-                        });
-                        this.setState({status: 'logined'})
-                    }
-                })
-            }
-        })
-    }
-
-    onRegister(name, pwd) {
-        loginService.sign(name, pwd, (data=> {
-            if (data.result) {
-                setGlobal('oooLinkToken', data.token);
-                setGlobal('userName', name);
-                setGlobal('passWord', pwd);
-                setGlobal('isLogin', true);
-                Alert.alert('注册成功');
-                this.setState({status: 'logined'})
-            }
-        }));
-    }
-
-    onGoRegister() {
-        this.setState({
-            status: 'register'
-        });
-    }
-
-    onGoLogin() {
-        this.setState({
-            status: 'login'
-        });
-    }
-
     onSearchClick() {
         this.props.navigator.push({
             name: 'setting',
@@ -222,13 +141,34 @@ class Profile extends Component {
         });
     }
 
+    onClickUserInfo(){
+        if (this.state.status !== 'logined'){
+            return this.goToLogin();
+        }
+    }
+
+    onLoginOut(){
+        removeGlobal('oooLinkToken');
+        removeGlobal('userName');
+        removeGlobal('passWord');
+        setGlobal('isLogin', false);
+        Alert.alert('退出成功');
+    }
+
+    goToLogin(){
+        this.props.navigator.push({
+            name: 'login',
+            component: Login
+        });
+    }
+
     componentDidMount() {
-        getGlobal('loginBgImage', (ret)=>{
-            this.setState({bgimage: ret});
+        getGlobal('userName', (userName)=>{
+            userName && this.setState({userName});
             getGlobal('isLogin', (ret)=>{
                 let status = ret ? 'logined' : 'login';
                 this.setState({status, isSync: true});
-            })
+            });
         });
     }
 }
@@ -257,6 +197,7 @@ const styles = StyleSheet.create({
     },
     userInfoText: {
         color: '#fff',
+        backgroundColor: '#00000000',
         fontWeight: '900'
     },
     itemText: {
@@ -278,6 +219,20 @@ const styles = StyleSheet.create({
         borderColor: '#333',
         borderWidth: 2,
         borderRadius: 4
+    },
+    loginOutButton: {
+        width: 100,
+        height: 30,
+        borderWidth: 1,
+        borderColor: '#f54b72',
+        color: '#f54b72',
+        textAlign: 'center',
+        lineHeight: 21,
+        fontSize: 14,
+        borderRadius: 5,
+        marginTop: 40,
+        marginBottom: 20,
+        alignSelf: 'center'
     }
 });
 

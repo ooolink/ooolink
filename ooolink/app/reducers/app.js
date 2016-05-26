@@ -13,7 +13,8 @@ const initialState = {
     siteFocus: [],
     siteInfo: {},
     appLoaded: true,
-    siteLoaded: true
+    siteLoaded: true,
+    isAppLogined: false
 };
 
 export default function(state = initialState, action) {

@@ -71,11 +71,16 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        // const {currentSite} = this.props.state.app;
-        // collectService.judgeSiteFocused(getGlobal('oooLinkToken'), currentSite, (rs)=>{
-        //     let status = rs && rs.result ? 'ok' : 'none';
-        //     this.setState({siteLikeStatus: status});
-        // });     
+        const {currentSite} = this.props.state.app;
+        getGlobal('oooLinkToken', token=>{
+            if (!token){
+                return this.setState({siteLikeStatus: 'none'});
+            }
+            collectService.judgeSiteFocused(token, currentSite, (rs)=>{
+                let status = rs && rs.result ? 'ok' : 'none';
+                this.setState({siteLikeStatus: status});
+            });  
+        });   
     }
 
     onBack(){

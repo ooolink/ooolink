@@ -26,3 +26,19 @@ export const collectSite = function *(next){
 export const unCollectSite = function *(next){
 
 }
+
+export const isCollectedSite = function *(next){
+
+}
+
+export const collectContent = function *(next){
+
+}
+
+export const unCollectContent = function *(next){
+
+}
+
+export const isCollectedContent = function *(next){
+    
+}

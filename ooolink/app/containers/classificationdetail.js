@@ -52,7 +52,7 @@ class ClassificationDetail extends Component{
             )
         }
         let coms = [];
-        this.state.sites.forEach((item)=>{
+        this.state.sites.forEach((item, idx)=>{
             let  siteChooseCom = 
             <View style={styles.siteChooseCom}>
                 <Text 
@@ -65,6 +65,7 @@ class ClassificationDetail extends Component{
 
             coms.push(
                 <InfoWithImageBlock
+                    key={idx}
                     canChoose={siteChooseCom}
                     height={80}
                     blockId={item}

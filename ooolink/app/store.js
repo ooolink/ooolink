@@ -79,6 +79,14 @@ export function setGlobal(key, value, expires) {
     storage.save(obj);
 }
 
+export function removeGlobal(key, id){
+    'use strict';
+    if (!key && !id){
+        return storage.clearMap();                     //只clear key-id, key还会保留
+    }
+    let obj = id ? {key, id} : {key};
+    storage.remove(obj); 
+}
 
 
 

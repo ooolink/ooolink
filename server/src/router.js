@@ -33,33 +33,15 @@ export default (router)=> {
 
     router.delete('/collect/site', blankAuth(null, ['site', 'token']), userController.auth, collectController.unCollectSite);
 
+    router.post('/collect/judgesite', blankAuth(null, ['site', 'token']), userController.auth, collectController.isCollectedSite);
+
     router.post('/sites', blankAuth(['type'],['limit', 'page']), siteController.getSiteByType);
 
     router.use('/site', blankAuth(['site']), siteController.siteEntrance);
 
     router.get('/site/conf', siteController.getSiteConf);
 
-    router.get('/site/user/:name', function *(next) {
-
-    });
-
-    router.get('/site/user', function*(next) {
-
-    });
-
-    router.post('/site/user', function *(next) {
-
-    });
-
-    router.post('/site/user/:name', methodAuth('delete'), function *(next) {
-    });
-
-    router.post('/site/user/:name', methodAuth('put'), function *(next) {
-
-    });
-
     router.get('/site/theme', blankAuth(['theme', 'limit', 'page']), siteController.getSiteContentBySiteId);
-
 
     router.get('/site/topic/:id', blankAuth(['site'], null, ['id']), siteController.getSiteContentByContentId);
 
@@ -92,34 +74,6 @@ export default (router)=> {
     router.post('/user/session', userController.session);
 
     router.post('/user/sign', userController.sign);
-
-    router.post('/user/collect', userController.auth, function *(next) {
-        yield collectService.getCollections.call(this);
-    });
-
-    router.post('/user/collected', userController.auth, function *(next) {
-        yield collectService.judgeCollected.call(this);
-    });
-
-    router.post('/user/sitefocus', userController.auth, function *(next) {
-        yield collectService.getSitefocused.call(this);
-    });
-
-    router.post('/user/sitefocused', userController.auth, function *(next){
-        yield collectService.judgeSiteFocused.call(this);
-    });
-
-    router.post('/collect', userController.auth, function *(next) {
-        yield collectService.collected.call(this);
-    });
-
-    router.delete('/collect', userController.auth, function *() {
-        yield collectService.unCollected.call(this);
-    });
-
-    router.post('/collect', methodAuth('delete'), userController.auth, function *(next) {
-        yield collectService.unCollected.call(this);
-    });
 
     router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent)
 
