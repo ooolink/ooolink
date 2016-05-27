@@ -22,3 +22,9 @@ import * as recommendService from '../services/recommend';
     let rs = yield recommendService.getOneRecommend(time);
     this.body = rs;
  }
+
+ export const getSeaGlobalContents = function *(next){
+    let page = this.query.page;
+    let rs = yield recommendService.getSeaGlobalContents(page);
+    this.body = rs;
+ }

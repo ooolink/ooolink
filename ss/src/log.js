@@ -5,7 +5,8 @@ log4js.configure({
         {type: 'file', filename: `${__dirname}/../logs/task.log`, category: 'task', maxLogSize: 2048, backups: 100},
         {type: 'file', filename: `${__dirname}/../logs/service.log`, category: 'service', maxLogSize: 2048, backups: 100},
         {type: 'file', filename: `${__dirname}/../logs/model.log`, category: 'model', maxLogSize: 2048, backups: 100},
-        {type: 'file', filename: `${__dirname}/../logs/app.log`, category: 'app', maxLogSize: 2048, backups: 100}
+        {type: 'file', filename: `${__dirname}/../logs/app.log`, category: 'app', maxLogSize: 2048, backups: 100},
+        {type: 'file', filename: `${__dirname}/../logs/cache.log`, category: 'cache', maxLogSize: 2048, backups: 100}
     ]
 });
 
@@ -18,3 +19,4 @@ global._taskLog = log4js.getLogger('task');
 global._serviceLog = log4js.getLogger('service');
 global._modelLog = log4js.getLogger('model');
 global._appLog = log4js.getLogger('app');
+global._cacheLog = log4js.getLogger('cache');

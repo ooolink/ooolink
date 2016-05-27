@@ -10,6 +10,7 @@
 import crypto from 'crypto';
 
 import * as userService from '../services/user';
+import * as collectService from '../services/collect';
 
 export const auth = function *(next){
 	let {token} = this.request.body.fields;
@@ -90,6 +91,13 @@ export const getUserCollectionTypes = function *(next){
     }
 }
 
+export const getUserCollections = function *(next){
+    let {page, limit} = this.request.body.fields;
+}
+
+export const getUserFocus = function *(next){
+    let {page, limit} = this.request.body.fields;
+}
 
 
 

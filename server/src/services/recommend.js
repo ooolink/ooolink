@@ -25,10 +25,43 @@ export const getOneRecommend = function *(time){
                 resolve(result);
             },
             error: (result)=>{
-                reject(result);
+                reject(result);                     //TODO 错误机制
             }
         });
         producer.sendMessage(message);
     });
     return rs;
 }
+
+export const getSeaGlobalContents = function *(page){
+    let rs = yield new Promise((resolve, reject)=>{
+        let message = producer.createMessage('ss_indexes_getSeaContents');
+        message.setType(producer.MESSAGE_REQUEST);
+        message.setParams('page', page);
+        message.addCallBack({
+            success: (result)=>{
+                resolve(result);
+            },
+            error: (result)=>{
+                reject(result);
+            }
+        });
+        producer.sendMessage(message);
+    });
+
+    let result = [];
+    if (rs){
+        Object.keys(rs.data).forEach(key=>{
+            result[parseInt(key.split('_')[4])] = JSON.parse(rs.data[key]);
+        });
+    }
+    return {
+        result: rs.result,
+        data: result
+    }
+}
+
+
+
+
+

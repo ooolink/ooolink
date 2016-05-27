@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 const ContentCreate = require('../models').Content;
+const producer = require('fibms-node-client').Producer();
 
 export default function(consumer){
 	consumer.onMessage('ss_content_setContent', params=>{
@@ -22,6 +23,11 @@ export default function(consumer){
 				_modelLog.error(_log('content', 'setContent', '添加content失败', __filename, 22));
 			}
 		});
+
+		let message = producer.createMessage('ss_content_new');
+		message.setType(producer.MESSAGE_GROUP);
+		message.setParams('content', params.content);
+		producer.sendMessage(message);
 	});
 
 	consumer.onRequestService('ss_content_getContentByContentId', (params, successFunc, errorFunc)=>{

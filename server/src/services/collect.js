@@ -39,25 +39,9 @@ export const getCollectionContentStatus = function *(collection_userId, collecti
     }
 };
 
-export const getCollections = function *() {
+export const getCollections = function *(collection_userId, page=0, limit=10) {
     "use strict";
-    let user = this._domain.user;
-    let collections = yield Collection.findAll({
-        where: {
-            collection_status: 1,
-            collection_userId: user.id
-        }
-    });
-    if (collections) {
-        this.body = {
-            result: 1,
-            collections: collections
-        }
-    } else {
-        console.error('Error    ' + 0);
-        this.status = 500;
-        this.body = {result: 0}
-    }
+
 };
 
 /** site **/
@@ -88,23 +72,7 @@ export const getFocusSiteStatus = function *(focus_id, focus_userId){
     }
 };
 
-export const getSitefocused = function *() {
+export const getSitefocused = function *(focus_userId, page=0, limit=10) {
     "use strict";
-    let user = this._domain.user;
-    let collections = yield SiteFocus.findAll({
-        where: {
-            collection_status: 1,
-            collection_userId: user.id
-        }
-    });
-    if (collections) {
-        this.body = {
-            result: 1,
-            collections: collections
-        }
-    } else {
-        console.error('Error    ' + 0);
-        this.status = 500;
-        this.body = {result: 0}
-    }
+    let focuses = yield Focus.findAll();
 };

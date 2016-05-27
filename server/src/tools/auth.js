@@ -28,3 +28,10 @@ export const blankAuth = (query, body, params) => {
         }
     }
 }
+
+//http请求头校验
+export const headAuth = ()=>{
+    return function *(next){
+        
+    }
+}

@@ -9,7 +9,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import {blankAuth, methodAuth} from './tools/auth';
+import {blankAuth, methodAuth, headAuth} from './tools/auth';
 import * as siteController from './controllers/site';
 import * as searchController from './controllers/search';
 import * as userController from './controllers/user';
@@ -81,9 +81,15 @@ export default (router)=> {
 
     router.post('/user/sign', userController.sign);
 
+    router.post('/user/collections', blankAuth(null, ['token', 'page', 'limit']), userController.auth, userController.getUserCollections)
+
+    router.post('/user/focus', blankAuth(null, ['token', 'page', 'limit']), userController.auth, userController.getUserFocus);
+
     router.post('/user/collectiontype', blankAuth(null, ['token']), userController.auth, userController.getUserCollectionTypes);
 
-    router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent)
+    router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent);
+
+    router.get('/recommend/seaglobal', blankAuth(['page']), recommendController.getSeaGlobalContents);
 
     return router;
 }
