@@ -145,17 +145,14 @@ class Home extends Component {
     }
 
     onSelectTopic(topicId) {
-        this.props.actions.getTopic(topicId);
-        setTimeout(()=> {
-            this.props.navigator.push({
-                name: 'TopicDetail',
-                index: 1,
-                component: TopicDetail,
-                props: {
-                    topicId
-                }
-            });    
-        }, 200);
+        this.props.navigator.push({
+            name: 'TopicDetail',
+            index: 1,
+            component: TopicDetail,
+            props: {
+                topicId
+            }
+        });    
     }
 }
 
