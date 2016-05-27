@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         top: height - 40,
         height: 40,
         width,
-        backgroundColor: 'rgba(41,44,52,0.7)',
+        backgroundColor: '#65b278dd',
         color: '#fff',
         textAlign: 'center',
         lineHeight: 28,

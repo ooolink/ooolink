@@ -154,7 +154,7 @@ class TopicDetail extends Component {
     render() {
         let topic = this.props.state.content.topic;
         let com, modalCom = null;
-        if (topic) {
+        if (topic && topic.content_id === this.props.topicId) {
             com = <ContentBlock data={topic}/>
         } else {
             com = <LoadingBlock/>
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         top: height - 40,
         height: 40,
         width,
-        backgroundColor: '#2F85A7dd',
+        backgroundColor: '#65b278dd',
         color: '#fff',
         textAlign: 'center',
         lineHeight: 28,

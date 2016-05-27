@@ -91,17 +91,14 @@ class Welcome extends Component{
     onRead(){
         contentService.getWelcomeContent();
         let topicId = this.state.welcomeContent.id;
-        this.props.actions.getTopic(topicId);
-        setTimeout(()=> {
-            this.props.navigator.push({
-                name: 'TopicDetail',
-                index: 1,
-                component: TopicDetail,
-                props: {
-                    topicId
-                }
-            });    
-        }, 200);
+        this.props.navigator.push({
+            name: 'TopicDetail',
+            index: 1,
+            component: TopicDetail,
+            props: {
+                topicId
+            }
+        });    
     }
 
     onUserClick(){
