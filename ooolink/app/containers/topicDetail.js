@@ -190,6 +190,9 @@ class TopicDetail extends Component {
                 this.setState({likeStatus: status});
             });
         });
+        setTimeout(()=>{
+            this.props.actions.getTopic(this.props.topicId);
+        }, 500);
     }
 
     onPublish(){

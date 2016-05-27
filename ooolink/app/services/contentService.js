@@ -36,3 +36,17 @@ export function getWelcomeContent(cb){
             cb && cb(saveData);
         });
 }
+
+export function getSeaGlobalContents(page, cb){
+    fetch(`${SERVER_ADDRESS}recommend/seaglobal?page=${page}`)
+        .then(response=>{
+            if (response.status === 200){
+                return response.json();
+            } else {
+                return null;
+            }
+        })
+        .then(rs=>{
+            cb(rs);
+        });
+}

@@ -18,6 +18,7 @@ import React,{
     View
 } from 'react-native';
 import Classification from './classification';
+import Sea from './sea';
 const Swiper = require('react-native-swiper');
 
 let {height, width} = Dimensions.get('window');
@@ -104,6 +105,10 @@ class Discover extends Component{
                     {p}
                 </Swiper>
                 <View style={styles.operate}>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={this.onOpenSea.bind(this)}
+                    >
                     <View style={styles.o}>
                         <Image 
                             source={require('../images/discover-find.png')}
@@ -111,6 +116,7 @@ class Discover extends Component{
                         />
                         <Text style={styles.otext}>海淘</Text>
                     </View>
+                    </TouchableOpacity>
                     <View style={styles.o}>
                         <Image 
                             source={require('../images/discover-hot.png')}
@@ -139,6 +145,13 @@ class Discover extends Component{
         this.props.navigator.push({
             name: 'classification',
             component: Classification
+        });
+    }
+
+    onOpenSea(){
+        this.props.navigator.push({
+            name: 'sea',
+            component: Sea
         });
     }
 }

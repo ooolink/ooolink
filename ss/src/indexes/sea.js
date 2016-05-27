@@ -16,6 +16,7 @@ function seaGlobalModel(size, pageSize){
     let pidx = redisClient.get('ss_indexes_sea_pidx') || 0;
     return {
         add: (content)=>{
+            content.content = '';                   //索引不需要详细 content
             redisClient.hset(`ss_indexes_sea_contents_${pidx}`, `ss_indexes_sea_contents_${idx}`, JSON.stringify(content));
             idx++;
             if (idx >= pageSize){

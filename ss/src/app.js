@@ -16,7 +16,8 @@ import sea from './indexes/sea'
 require('./tasks/sites/cnode');
 require('./tasks/commons/rss');
 
-// let message = producer.createMessage('ss_task_getSiteAllContents_cnode');
+let message;
+// message = producer.createMessage('ss_task_getSiteAllContents_cnode');
 // message.setParams('site',{site_id:'04be9c7c2e7f7eda6febba12aa579a8d'});
 // producer.sendMessage(message);
 
