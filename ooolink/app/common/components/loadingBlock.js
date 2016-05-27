@@ -29,8 +29,8 @@ class Loading extends Component {
     };
 
     static defaultProps = {
-        loadingGIF: require('../../images/loading-gif.png'),
-        isAnimate: true
+        loadingGIF: require('../../images/loading-gif.gif'),
+        isAnimate: false
     };
 
     constructor(props) {
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     loadingGIF: {
-        height: width / 10,
-        width: width / 10
+        height: 8,
+        width: 50
     }
 });
 
