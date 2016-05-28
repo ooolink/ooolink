@@ -4,6 +4,7 @@
             <li id='lang-logo'>oooLink Admin</li>
 			<li>root管理</li>
 			<li>站点管理</li>
+            <li>主题管理</li>
 			<li>代码热更新</li>
 		</ul>
 	</div>

@@ -87,6 +87,8 @@ export default (router)=> {
 
     router.post('/user/collectiontype', blankAuth(null, ['token']), userController.auth, userController.getUserCollectionTypes);
 
+    router.put('/user/collectiontype', blankAuth(null, ['token', 'type']), userController.auth, userController.createUserCollectionType);
+
     router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent);
 
     router.get('/recommend/seaglobal', blankAuth(['page']), recommendController.getSeaGlobalContents);

@@ -231,3 +231,81 @@ export function judgeSiteFocused(token, site, cb) {
             cb(rs);
         })
 }
+
+export function createUserCollectionType(token, type, cb) {
+    fetch(`${SERVER_ADDRESS}user/collectiontype`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}&type=${type}`
+    })
+        .then(response=>{
+            if (response.status === 200) {
+                return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth(rs=>{
+                    if (rs && rs.result === 401){
+                        cb({result: 401});
+                    } else if (rs && rs.result === 1){
+                        createUserCollectionType(rs.data, type, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
+            }
+            return;
+        })
+        .then(rs=>{
+            rs && cb(rs);
+        });
+}
+
+export function getUserCollectionType(token, cb) {
+    fetch(`${SERVER_ADDRESS}user/collectiontype`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `token=${token}`
+    })
+        .then(response=>{
+            if (response.status === 200) {
+                return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth(rs=>{
+                    if (rs && rs.result === 401){
+                        cb({result: 401});
+                    } else if (rs && rs.result === 1){
+                        getUserCollectionType(rs.data, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
+            }
+            return;
+        })
+        .then(rs=>{
+            rs && setGlobal('userCollectionTypes', rs.data, 1000*60*5);
+            rs && cb(rs);
+        });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

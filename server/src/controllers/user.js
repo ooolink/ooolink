@@ -91,6 +91,21 @@ export const getUserCollectionTypes = function *(next){
     }
 }
 
+export const createUserCollectionType = function *(next){
+    let type = this.request.body.fields.type;
+    let user = this._domain.user;
+    let types = user.user_collection_type.split(',');
+    if (types.indexOf(type) === -1){
+        user.user_collection_type = user.user_collection_type ? user.user_collection_type + `,${type}` : type;
+        yield user.save();
+        this.body = {
+            result: 1
+        };
+    } else {
+        throw new Error('collectiontype operateError 500');
+    }
+}
+
 export const getUserCollections = function *(next){
     let {page, limit} = this.request.body.fields;
 }

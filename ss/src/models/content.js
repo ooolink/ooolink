@@ -32,6 +32,7 @@ let commentSchema = new Schema({
 let quantitySchema = new Schema({
 	content_status: {type: Number, default: 2},    //online dealing review destroy
 	view_count: {type: Number, default: 0},
+	collect_count: {type: Number, default: 0},
 	comment_count: {type: Number, default: 0},
 	view_avetime: {type: Number, default: 0},
 	view_avetime_general: {type: Number, default: 0},

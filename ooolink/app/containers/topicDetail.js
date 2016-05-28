@@ -15,19 +15,22 @@ import React,{
     Text,
     Image,
     Dimensions,
+    TextInput,
     View,
     Picker,
     TouchableOpacity,
-    PropTypes
+    PropTypes,
+    Alert
 } from 'react-native';
 import LoadingBlock from '../common/components/loadingBlock';
 import TopicBar from '../components/topicbar';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
+import OperateLoading from '../common/components/operateLoading'
 import Publish from './publish';
 import Login from './loginContainer';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
-import {getGlobal} from '../store';
+import {getGlobal, setGlobal} from '../store';
 import {TO_PUBLISH_COMMENT} from '../constants/passAgreement';
 import * as collectService from '../services/collectService';
 
@@ -56,11 +59,33 @@ class TypeChooseModal extends Component {
     constructor(props){
         super(props);
         this.state = {
-            itemChoose: 'default'
+            itemChoose: 'default',
+            isCreating: false,
+            createValue: '',
+            isOperating: false,
+            userCollectionTypes: this.props.userCollectionTypes
         }
     }
 
     render(){
+        let createCom = this.state.isCreating ? 
+        <View style={{flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 1}}>
+        <TextInput 
+        placeholder={'输入收藏夹名字'}
+        style={{fontSize: 12, width: 150, height: 30, padding: 5}}
+        onChangeText={(text) => this.setState({createValue: text})}
+        value={this.state.createValue}/>
+        <Text 
+        onPress={this.create.bind(this)}
+        style={{width: 50, height: 30, backgroundColor: '#65b278', color: '#fff', textAlign: 'center', lineHeight: 20}}>确定</Text>
+        </View>
+         : null;
+        let pickerItems = [<Picker.Item key={0} style={styles.typePikerItem} label="default" value="default" />];
+        this.state.userCollectionTypes.forEach((item, idx)=>{
+            pickerItems.push(
+                <Picker.Item key={idx+1} style={styles.typePikerItem} label={`${item}`} value={`${item}`} />
+            );
+        });
         return (
             <View style={styles.wrap}>
                 <View
@@ -77,27 +102,50 @@ class TypeChooseModal extends Component {
                             <Image style={{width: 10, height: 10}} source={require('../images/login-close.png')}/>
                         </TouchableOpacity> 
                         <Text 
+                        onPress={this.onCreateCollectionFolder.bind(this)}
                         style={{position: 'absolute', top: 6, left: 165, backgroundColor:'#00000000', color:'#fff', fontWeight: '900'}}>
-                        新建
+                        {this.state.isCreating ? '取消' : '新建'}
                         </Text>                       
                     </View>
+                    {createCom}
                     <Picker
                         style={{height: 200}}
                         selectedValue={this.state.itemChoose}
                         onValueChange={itemChoose=>this.setState({itemChoose})}
                     >
-                        <Picker.Item style={styles.typePikerItem} label="default" value="default" />
-                        <Picker.Item style={styles.typePikerItem} label="default1" value="default1" />
-                        <Picker.Item style={styles.typePikerItem} label="default2" value="default2" />
-                        <Picker.Item style={styles.typePikerItem} label="default3" value="default3" />
-                        <Picker.Item style={styles.typePikerItem} label="default4" value="default4" />
+                    {pickerItems}
                     </Picker>
                     <Text 
                         onPress={this.props.onCollect.bind(this, this.state.itemChoose)}
                         style={styles.typePickerButton}>收藏</Text>
                 </View>
+                <OperateLoading visible={this.state.isOperating}/>
             </View>
         )
+    }
+
+    onCreateCollectionFolder(){
+        this.setState({isCreating: !this.state.isCreating});
+    }
+
+    create(){
+        if (!this.state.createValue){
+            return;
+        }
+        this.setState({isOperating: true});
+        getGlobal('oooLinkToken', token=>{
+            collectService.createUserCollectionType(token, this.state.createValue, rs=>{
+                if (rs && rs.result === 1){
+                    let uct = this.state.userCollectionTypes;
+                    uct.unshift(this.state.createValue);
+                    setGlobal('userCollectionTypes', uct, 1000*60*5);
+                    this.setState({isOperating: false, createValue: '', userCollectionTypes: uct, isCreating: false});
+                } else if (rs && rs.result === 0) {
+                    Alert.alert('新建失败');
+                    this.setState({isOperating: false});
+                }
+            });
+        });
     }
 }
 
@@ -147,7 +195,9 @@ class TopicDetail extends Component {
         super(props);
         this.state = {
             likeStatus: 'loading',
-            isPressLike: false
+            isPressLike: false,
+            isOperating: false,
+            userCollectionTypes: []
         }
     }
 
@@ -162,8 +212,8 @@ class TopicDetail extends Component {
 
         if (this.state.isPressLike){
             modalCom = <TypeChooseModal 
+                            userCollectionTypes={this.state.userCollectionTypes}
                             onCollect = {this.onCollect.bind(this)}
-                            onCreate = {this.onCreateCollectionFolder.bind(this)}
                             onClose={()=>{this.setState({isPressLike: false})}}
                         />
         }
@@ -179,6 +229,7 @@ class TopicDetail extends Component {
                     跟帖
                 </Text>
                 {modalCom}
+                <OperateLoading visible={this.state.isOperating}/>
             </View>
         );
     }
@@ -212,8 +263,30 @@ class TopicDetail extends Component {
 
     onLike() {
         if (this.state.likeStatus === 'none') {
-            this.setState({
-                isPressLike: true
+            this.setState({operateLoading: true});
+            getGlobal('userCollectionTypes', types=>{
+                if (types !== undefined){
+                    this.setState({
+                        userCollectionTypes: types,
+                        isPressLike: true
+                    });
+                } else {
+                    getGlobal('oooLinkToken', token=>{
+                        collectService.getUserCollectionType(token, rs=>{
+                            if (rs && rs.result === 1){
+                                this.setState({userCollectionTypes: rs.data, operateLoading: false, isPressLike: true});
+                            } else {
+                                this.setState({operateLoading: false});
+                                if (rs && rs.result === 401){
+                                    this.props.navigator.push({
+                                        name: 'Login',
+                                        component: Login
+                                    });
+                                }
+                            }                            
+                        });
+                    });
+                }
             });
         } else if (this.state.likeStatus === 'ok') {
             this.setState({likeStatus: 'loading'});
@@ -243,7 +316,7 @@ class TopicDetail extends Component {
                     this.setState({likeStatus: 'ok'});
                 } else {
                     this.setState({likeStatus: 'none'});
-                    if (rs.result === 401){
+                    if (rs && rs.result === 401){
                         this.props.navigator.push({
                             name: 'Login',
                             component: Login
@@ -252,10 +325,6 @@ class TopicDetail extends Component {
                 }
             });
         });
-    }
-
-    onCreateCollectionFolder(){
-
     }
 }
 

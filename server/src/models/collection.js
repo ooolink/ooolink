@@ -14,7 +14,7 @@ const db = getMysql();
 const Collection = db.define('collection', {
     id: {type: Sequelize.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
     collection_id: {type: Sequelize.STRING(128)},
-    collection_type: {type: Sequelize.STRING(10)},
+    collection_type: {type: Sequelize.STRING(128)},
     collection_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     collection_userId: {type: Sequelize.INTEGER},
     collection_status: {type: Sequelize.INTEGER}
