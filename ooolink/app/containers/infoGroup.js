@@ -49,12 +49,17 @@ class InfoGroup extends Component {
                 });
                 break;
             case TO_INFO_GROUP_COLLECTIONS:
-                this.props.state.content.collections.forEach((item)=> {
+                let collections = this.props.state.content.collections;
+                Object.keys(collections).forEach((cname, idx)=> {
+                    if (collections[cname].count === 0){
+                        return;
+                    }
                     info.push(
                         <InfoWithContentBlock
-                            title={item.collection_title}
-                            time={item.collection_created}
-                            site={item.collection_site_name}
+                            key={idx}
+                            title={cname}
+                            count={collections[cname].count}
+                            list={collections[cname].rows}
                         />
                     );
                 });
@@ -87,11 +92,15 @@ class InfoGroup extends Component {
     componentDidMount() {
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE :
-                this.props.actions.getFocusSite(getGlobal('oooLinkToken'));
+                getGlobal('oooLinkToken', token=>{
+                    this.props.actions.getFocusSite(token);
+                });
                 break;
 
             case TO_INFO_GROUP_COLLECTIONS:
-                this.props.actions.getCollections(getGlobal('oooLinkToken'));
+                getGlobal('oooLinkToken', token=>{
+                    this.props.actions.getCollections(token);
+                });
                 break;
         }
     }

@@ -10,8 +10,9 @@
 import * as app from './app';
 import * as content from './content';
 import * as home from './home';
+import * as collect from './collect';
 
 let actions = {};
-Object.assign(actions, app, content, home);
+Object.assign(actions, app, content, home, collect);
 
 export default actions;

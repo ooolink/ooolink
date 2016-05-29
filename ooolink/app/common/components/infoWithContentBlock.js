@@ -16,39 +16,12 @@ import React,{
     PropTypes
 } from 'react-native';
 
-function timeDeal(time, type) {
-    "use strict";
-
-    function ago(time) {
-        let t = new Date() - new Date(time), tm = [], tms = ['年', '个月', '天', '小时', '分钟', '秒'];
-        tm[0] = t / (365 * 24 * 3600 * 1000);
-        tm[1] = t / (30 * 24 * 3600 * 1000);
-        tm[2] = t / (24 * 3600 * 1000);
-        tm[3] = t / (3600 * 1000);
-        tm[4] = t / (60 * 1000);
-        tm[5] = t / 1000;
-        for (let i = 0, len = tm.length; i < len; i++) {
-            if (tm[i] >= 1) {
-                return parseInt(tm[i]) + tms[i] + '前';
-            }
-        }
-        return t + '毫秒前';
-    }
-
-    switch (type) {
-        case 'ago':
-            return ago(time);
-        default:
-            return ago(time);
-    }
-}
-
 class InfoWithContentBlock extends Component{
 
 	static propTypes = {
 		title: PropTypes.string.isRequired,
-		site: PropTypes.string.isRequired,
-		time: PropTypes.any.isRequired
+		count: PropTypes.number.isRequired,
+		list: PropTypes.array.isRequired
 	};
 
 	constructor(props) {
@@ -56,10 +29,21 @@ class InfoWithContentBlock extends Component{
 	}
 
 	render(){
+        let listCom = [];
+        this.props.list.forEach((item,idx)=>{
+            listCom.push(
+                <Text style={[styles.item, {marginBottom: idx === this.props.list.length - 1 ? 0 : 10}]} key={idx}>{item.title}</Text>
+            );
+        });
 		return (
 			<View style={styles.block}>
-				<Text style={styles.title}>{this.props.title}</Text>
-				<Text style={styles.time}>{timeDeal(this.props.time) + ' from ' + this.props.site}</Text>
+				<View style={{flexDirection: 'row', justifyContent:'space-between', padding: 10}}>
+                    <Text style={styles.title}>{this.props.title}</Text>
+                    <Text style={styles.count}>{this.props.count}</Text>
+                </View>
+                <View style={styles.itemList}>
+                {listCom}
+                </View>
 			</View>
 		);
 	}	
@@ -67,17 +51,30 @@ class InfoWithContentBlock extends Component{
 
 const styles = StyleSheet.create({
 	block: {
-		padding: 10,
-		borderBottomColor: '#eee',
-		borderBottomWidth: 1
+		borderTopColor: '#ddd',
+		borderTopWidth: 1,
+        marginBottom: 20
 	},
 	title: {
-		fontWeight: '900'
+		fontWeight: '900',
+        fontSize: 16,
+        color: '#333'
 	},
-	time: {
-		fontSize: 11,
-		color: '#2F85A7'
-	}
+	count: {
+		fontSize: 13,
+		color: '#65b278'
+	},
+    item:{
+        fontSize: 14,
+        color: '#666'
+    },
+    itemList: {
+        padding: 10,
+        borderBottomColor: '#ddd',
+        borderBottomWidth: 1,
+        borderTopColor: '#ddd',
+        borderTopWidth: 1
+    }
 });
 
 export default InfoWithContentBlock;

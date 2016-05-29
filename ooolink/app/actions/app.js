@@ -49,37 +49,3 @@ export function getSiteInfo(site) {
     }
 }
 
-export function collectSiteFocus(site) {
-    "use strict";
-    return {
-        type: ActionTypes.ADD_SITE_FOCUS,
-        site
-    }
-}
-
-export function unCollectSiteFocus(site) {
-    "use strict";
-    return {
-        type: ActionTypes.RM_SITE_FOCUS,
-        site
-    }
-}
-
-function getFocusSiteFromServer(token) {
-    "use strict";
-    return (dispatch)=> {
-        collectService.getSitefocused(token, (rs)=> {
-            dispatch({
-                type: ActionTypes.GET_SITE_FOCUS,
-                sites: rs.collections
-            })
-        })
-    }
-}
-
-export function getFocusSite(token) {
-    "use strict";
-    return (dispatch, getState)=> {
-        return dispatch(getFocusSiteFromServer(token));
-    }
-}

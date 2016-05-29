@@ -29,7 +29,5 @@ export const RM_COLLECTION = 'RM_COLLECTION';
 export const APP_LOADING = 'APP_LOADING';
 export const SITE_LOADING = 'SITE_LOADING';
 export const GET_SITE_INFO = 'GET_SITE_INFO';
-export const ADD_SITE_FOCUS = 'ADD_SITE_FOCUS';
-export const RM_SITE_FOCUS = 'RM_SITE_FOCUS';
 export const GET_SITE_FOCUS = 'GET_SITE_FOCUS';
 
