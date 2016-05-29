@@ -76,12 +76,28 @@ export function uncollected(contentid, token, cb) {
 
 export function getCollections(token, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}user/collect`, {
-        method: "POST",
+    fetch(`${SERVER_ADDRESS}user/collectionsgeneral`, {
+        method: "GET",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `token=${token}`
+            "x-access-token": token
+        }
+    })
+        .then(response=> {
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .then(rs=> {
+            cb(rs);
+        });
+}
+
+export function getCollectionsDetail(token, type, cb){
+    fetch(`${SERVER_ADDRESS}user/collectionsdetail?type=${type}`, {
+        method: "GET",
+        headers: {
+            "x-access-token": token
+        }
     })
         .then(response=> {
             if (response.status === 200) {
@@ -188,12 +204,11 @@ export function unCollectedSite(site, token, cb) {
 
 export function getSitefocused(token, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}user/sitefocus`, {
-        method: "POST",
+    fetch(`${SERVER_ADDRESS}user/focus`, {
+        method: "GET",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `token=${token}`
+            "x-access-token": token
+        }
     })
         .then(response=> {
             if (response.status === 200) {
