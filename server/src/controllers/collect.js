@@ -37,7 +37,7 @@ export const unCollectSite = function *(next){
 }
 
 export const isCollectedSite = function *(next){
-    let site = this.request.body.fields.site;
+    let site = this.query.site;
     let userId = this._domain.user.id;
     let status = yield collectService.getFocusSiteStatus(site, userId);
     this.body = {
@@ -76,7 +76,7 @@ export const unCollectContent = function *(next){
 }
 
 export const isCollectedContent = function *(next){
-    let contentId = this.request.body.fields.contentid;
+    let contentId = this.query.contentid;
     let userId = this._domain.user.id;
     let status = yield collectService.getCollectionContentStatus(userId, contentId);
     this.body = {
