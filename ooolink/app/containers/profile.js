@@ -94,13 +94,6 @@ class Profile extends Component {
                             <Image style={styles.icon} source={require('../images/profile-up.png')}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={styles.item}>
-                        <Image style={styles.icon} source={require('../images/profile-message.png')}/>
-                        <Text style={styles.itemText}>
-                            我的消息
-                        </Text>
-                        <Image style={styles.icon} source={require('../images/profile-up.png')}/>
-                    </View>
                     {loginOutCom}
                 </View>
             );

@@ -11,6 +11,7 @@ import crypto from 'crypto';
 
 import * as userService from '../services/user';
 import * as collectService from '../services/collect';
+import * as contentService from '../services/content';
 
 export const auth = function *(next){
 	let {token} = this.request.body.fields;
@@ -106,8 +107,26 @@ export const createUserCollectionType = function *(next){
     }
 }
 
-export const getUserCollections = function *(next){
-    let {page, limit} = this.request.body.fields;
+export const getUserAllCollectionsGeneral = function *(next){
+    let userId = this._domain.user.id;
+    let types = this._domain.user.user_collection_type.split(',');
+        types.push('default');          //默认的收藏
+
+    let contentMap = {};
+    for (let i = 0,len = types.length; i < len; i++){
+        let collections = yield collectService.getCollectionsGeneralByType(userId, types[i]);
+        contentMap[types[i]] = {count: collections.count};
+        let ids = [];
+        collections.rows.forEach(row=>{
+            ids.push(row.collection_id);
+        });
+        contentMap[types[i]]['rows'] = ids.length ? yield contentService.getContentByIds(ids) : [];
+    }
+
+    this.body = {
+        result: 1,
+        data: contentMap
+    }
 }
 
 export const getUserFocus = function *(next){

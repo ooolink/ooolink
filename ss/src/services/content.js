@@ -45,6 +45,47 @@ export default function(consumer){
 		});
 	});
 
+	consumer.onRequestService('ss_content_getContentByContentIds', (params, successFunc, errorFunc)=>{
+		let contentIds = params.ids;
+		let query = params.query ? params.query : {site_id: 0};
+		let map = {};
+		contentIds.forEach(id=>{
+			let diffId = id.split('_');
+			if (map[diffId[0]]){
+				map[diffId[0]].push(id);
+			} else {
+				map[diffId[0]] = [id];
+			}
+		});
+
+		let contentGroup = [],
+			sites = Object.keys(map),
+			flag = 0,
+			errorFlag = false;
+
+		sites.forEach(site_id=>{
+			let content_ids = map[site_id];
+			let Content = ContentCreate(site_id.substr(0, 2).toLowerCase());
+			Content.find({}, query, {lean: true})
+				.where('content_id').in(content_ids)
+				.exec((err, contents)=>{
+					if (errorFlag){
+						return;
+					} else if (err){
+						errorFlag = true;
+						_modelLog.error(_log('content', 'getContentByContentIds', err.message, __filename, 75));
+						errorFunc('modelError');
+						return;
+					}
+					contentGroup = contentGroup.concat(contents);
+					flag++;
+					if (flag === sites.length){
+						successFunc({result: 1, data: contentGroup});
+					}
+				});
+		});
+	});
+
 	consumer.onRequestService('ss_content_getContentBySiteId', (params, successFunc, errorFunc)=>{
 		let as = params.site.site_id.substr(0, 2).toLowerCase(),
 			Content = ContentCreate(as);

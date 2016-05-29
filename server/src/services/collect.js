@@ -39,10 +39,21 @@ export const getCollectionContentStatus = function *(collection_userId, collecti
     }
 };
 
-export const getCollections = function *(collection_userId, page=0, limit=10) {
+export const getCollections = function *(collection_userId, page=0, limit=10, fields) {
     "use strict";
-
 };
+
+export const getCollectionsGeneralByType = function *(collection_userId, collection_type){
+    let collections = yield Collection.findAndCountAll({
+        attributes: ['collection_id'], 
+        where: {
+            collection_userId, 
+            collection_type
+        },
+        limit: 3
+    });
+    return collections;
+}
 
 /** site **/
 

@@ -81,7 +81,7 @@ export default (router)=> {
 
     router.post('/user/sign', userController.sign);
 
-    router.post('/user/collections', blankAuth(null, ['token', 'page', 'limit']), userController.auth, userController.getUserCollections)
+    router.post('/user/collections', blankAuth(null, ['token']), userController.auth, userController.getUserAllCollectionsGeneral)
 
     router.post('/user/focus', blankAuth(null, ['token', 'page', 'limit']), userController.auth, userController.getUserFocus);
 
