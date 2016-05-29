@@ -29,19 +29,19 @@ export default (router)=> {
 
     router.post('/search', blankAuth(null, ['type']), searchController.searchEntrance);
 
-    router.post('/collect/site', blankAuth(null, ['site', 'token']), userController.auth, collectController.collectSite);
+    router.post('/collect/site', headAuth(['x-access-token']), blankAuth(null, ['site']), userController.auth, collectController.collectSite);
 
-    router.delete('/collect/site', blankAuth(null, ['site', 'token']), userController.auth, collectController.unCollectSite);
+    router.delete('/collect/site', headAuth(['x-access-token']), blankAuth(null, ['site']), userController.auth, collectController.unCollectSite);
 
-    router.post('/collect/judgesite', blankAuth(null, ['site', 'token']), userController.auth, collectController.isCollectedSite);
+    router.get('/collect/site', headAuth(['x-access-token']), blankAuth(['site']), userController.auth, collectController.isCollectedSite);
 
-    router.post('/collect/content', blankAuth(null, ['contentid', 'token', 'type']), userController.auth, collectController.collectContent);
+    router.post('/collect/content', headAuth(['x-access-token']), blankAuth(null, ['contentid', 'type']), userController.auth, collectController.collectContent);
 
-    router.delete('/collect/content', blankAuth(null, ['contentid', 'token']), userController.auth, collectController.unCollectContent);
+    router.delete('/collect/content', headAuth(['x-access-token']), blankAuth(null, ['contentid']), userController.auth, collectController.unCollectContent);
 
-    router.post('/collect/judgecontent', blankAuth(null, ['contentid', 'token']), userController.auth, collectController.isCollectedContent);
+    router.get('/collect/content', headAuth(['x-access-token']), blankAuth(['contentid']), userController.auth, collectController.isCollectedContent);
 
-    router.post('/sites', blankAuth(['type'],['limit', 'page']), siteController.getSiteByType);
+    router.get('/sites', blankAuth(['type', 'limit', 'page']), siteController.getSiteByType);
 
     router.use('/site', blankAuth(['site']), siteController.siteEntrance);
 
@@ -81,13 +81,13 @@ export default (router)=> {
 
     router.post('/user/sign', userController.sign);
 
-    router.post('/user/collections', blankAuth(null, ['token']), userController.auth, userController.getUserAllCollectionsGeneral)
+    router.get('/user/collections', headAuth(['x-access-token']), userController.auth, userController.getUserCollectionsGeneral);
 
-    router.post('/user/focus', blankAuth(null, ['token', 'page', 'limit']), userController.auth, userController.getUserFocus);
+    router.get('/user/focus', headAuth(['x-access-token']), blankAuth(['page', 'limit']), userController.auth, userController.getUserFocus);
 
-    router.post('/user/collectiontype', blankAuth(null, ['token']), userController.auth, userController.getUserCollectionTypes);
+    router.get('/user/collectiontype', headAuth(['x-access-token']), userController.auth, userController.getUserCollectionTypes);
 
-    router.put('/user/collectiontype', blankAuth(null, ['token', 'type']), userController.auth, userController.createUserCollectionType);
+    router.post('/user/collectiontype', headAuth(['x-access-token']), blankAuth(null, ['type']), userController.auth, userController.createUserCollectionType);
 
     router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent);
 

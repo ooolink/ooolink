@@ -12,12 +12,8 @@ import {getGlobal, setGlobal} from '../store'
 
 export function getSiteByType(type, page, limit, cb){
     "use strict";
-    fetch(`${SERVER_ADDRESS}sites?type=${type}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `page=${page}&limit=${limit}`
+    fetch(`${SERVER_ADDRESS}sites?type=${type}&page=${page}&limit=${limit}`, {
+        method: "GET"
     })
         .then(response=> {
             if (response.status === 200) {

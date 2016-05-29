@@ -15,9 +15,10 @@ export function collected(contentid, token, type, cb) {
     fetch(`${SERVER_ADDRESS}collect/content`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
         },
-        body: `token=${token}&contentid=${contentid}&type=${type}`
+        body: `contentid=${contentid}&type=${type}`
     })
         .then(response=> {
             if (response.status === 200) {
@@ -46,9 +47,10 @@ export function uncollected(contentid, token, cb) {
     fetch(`${SERVER_ADDRESS}collect/content`, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
         },
-        body: `contentid=${contentid}&token=${token}`
+        body: `contentid=${contentid}`
     })
         .then(response=> {
             if (response.status === 200) {
@@ -93,12 +95,11 @@ export function getCollections(token, cb) {
 
 export function judgeCollected(token, contentId, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}collect/judgecontent`, {
-        method: 'POST',
+    fetch(`${SERVER_ADDRESS}collect/content?contentid=${contentId}`, {
+        method: 'GET',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `token=${token}&contentid=${contentId}`
+            "x-access-token": token
+        }
     })
         .then(response=>{
             if (response.status === 200) {
@@ -126,9 +127,10 @@ export function collectedSite(site, token, cb) {
     fetch(`${SERVER_ADDRESS}collect/site`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token':token
         },
-        body: `token=${token}&site=${site}`
+        body: `site=${site}`
     })
         .then(response=> {
             if (response.status === 200) {
@@ -157,9 +159,10 @@ export function unCollectedSite(site, token, cb) {
     fetch(`${SERVER_ADDRESS}collect/site`, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
         },
-        body: `token=${token}&site=${site}`
+        body: `site=${site}`
     })
         .then(response=> {
             if (response.status === 200) {
@@ -204,12 +207,11 @@ export function getSitefocused(token, cb) {
 
 export function judgeSiteFocused(token, site, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}collect/judgesite`, {
-        method: 'POST',
+    fetch(`${SERVER_ADDRESS}collect/site?site=${site}`, {
+        method: 'GET',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `token=${token}&site=${site}`
+            'x-access-token': token
+        }
     })
         .then(response=>{
             if (response.status === 200) {
@@ -234,11 +236,12 @@ export function judgeSiteFocused(token, site, cb) {
 
 export function createUserCollectionType(token, type, cb) {
     fetch(`${SERVER_ADDRESS}user/collectiontype`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
         },
-        body: `token=${token}&type=${type}`
+        body: `type=${type}`
     })
         .then(response=>{
             if (response.status === 200) {
@@ -263,11 +266,10 @@ export function createUserCollectionType(token, type, cb) {
 
 export function getUserCollectionType(token, cb) {
     fetch(`${SERVER_ADDRESS}user/collectiontype`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `token=${token}`
+            'x-access-token': token
+        }
     })
         .then(response=>{
             if (response.status === 200) {

@@ -14,9 +14,9 @@ import * as collectService from '../services/collect';
 import * as contentService from '../services/content';
 
 export const auth = function *(next){
-	let {token} = this.request.body.fields;
+	let token = this.header['x-access-token'];
     let user = yield userService.findUserByToken(token);
-    if (user && Date.now() - user.user_authtime < 600000) {
+    if (user && Date.now() - user.user_authtime < 1000600000) {
         this._domain = this._domain || {};
         this._domain.user = user;
         yield next;
@@ -107,7 +107,7 @@ export const createUserCollectionType = function *(next){
     }
 }
 
-export const getUserAllCollectionsGeneral = function *(next){
+export const getUserCollectionsGeneral = function *(next){
     let userId = this._domain.user.id;
     let types = this._domain.user.user_collection_type.split(',');
         types.push('default');          //默认的收藏

@@ -28,8 +28,7 @@ export const siteEntrance = function *(next){
 
 export const getSiteByType = function *(next){
 
-    let type = this.query.type;
-    let {limit, page} = this.request.body.fields;
+    let {limit, page, type} = this.query;
     let siteEntitys = yield siteService.getSiteByType(type, parseInt(page), parseInt(limit));
     if (siteEntitys){
         this.body = {

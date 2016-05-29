@@ -30,8 +30,17 @@ export const blankAuth = (query, body, params) => {
 }
 
 //http请求头校验
-export const headAuth = ()=>{
+export const headAuth = (header)=>{
     return function *(next){
-        
+        header.forEach(h=>{
+            if (!this.header[h]){
+                throw new Error('headAuth checkError 500');
+            }
+        });
+        if (next){
+            yield next;
+        } else {
+            return true;
+        }
     }
 }
