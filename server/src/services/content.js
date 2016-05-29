@@ -9,13 +9,13 @@
 const consumer = require('fibms-node-client').Consumer();
 const producer = require('fibms-node-client').Producer();
 
-export const getContentByIds = function *(ids){
+export const getContentByIds = function *(ids, query){
     let rs = yield new Promise((resolve, reject)=>{
 
         let message = producer.createMessage('ss_content_getContentByContentIds');
         message.setType(producer.MESSAGE_REQUEST);
         message.setParams('ids', ids);
-        message.setParams('query', {title: 1});
+        message.setParams('query', query);
         message.addCallBack({
             success: (result)=>{
                 resolve(result.data);

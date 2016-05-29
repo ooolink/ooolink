@@ -103,7 +103,7 @@ export const createUserCollectionType = function *(next){
             result: 1
         };
     } else {
-        throw new Error('collectiontype operateError 500');
+        throw new Error('collectiontypeCreate operateError 500');
     }
 }
 
@@ -114,18 +114,36 @@ export const getUserCollectionsGeneral = function *(next){
 
     let contentMap = {};
     for (let i = 0,len = types.length; i < len; i++){
-        let collections = yield collectService.getCollectionsGeneralByType(userId, types[i]);
+        let collections = yield collectService.getCollectionsGeneralByType(userId, types[i], 3);
         contentMap[types[i]] = {count: collections.count};
         let ids = [];
         collections.rows.forEach(row=>{
             ids.push(row.collection_id);
         });
-        contentMap[types[i]]['rows'] = ids.length ? yield contentService.getContentByIds(ids) : [];
+        contentMap[types[i]]['rows'] = ids.length ? yield contentService.getContentByIds(ids, {title: 1}) : [];
     }
 
     this.body = {
         result: 1,
         data: contentMap
+    }
+}
+
+export const getUserCollectionsDetail = function *(next){
+    let userId = this._domain.user.id;
+    let type = this.query.type;
+    if (type === 'default' || this._domain.user.user_collection_type.includes(type)){       //包括默认收藏
+        let collections = yield collectService.getCollectionsDetailByType(userId, type);
+        let ids = [];
+        collections.forEach(row=>{
+            ids.push(row.collection_id);
+        });
+        this.body = {
+            result: 1,
+            data: ids.length ? yield contentService.getContentByIds(ids, {content: 0}) : []
+        }
+    } else {
+        throw new Error('getUserCollectionsDetail paramsError 500');
     }
 }
 
