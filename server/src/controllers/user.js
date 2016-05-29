@@ -93,21 +93,6 @@ export const getUserCollectionTypes = function *(next){
     }
 }
 
-export const createUserCollectionType = function *(next){
-    let type = this.request.body.fields.type;
-    let user = this._domain.user;
-    let types = user.user_collection_type.split(',');
-    if (types.indexOf(type) === -1){
-        user.user_collection_type = user.user_collection_type ? user.user_collection_type + `,${type}` : type;
-        yield user.save();
-        this.body = {
-            result: 1
-        };
-    } else {
-        throw new Error('collectiontypeCreate operateError 500');
-    }
-}
-
 export const getUserCollectionsGeneral = function *(next){
     let userId = this._domain.user.id;
     let types = this._domain.user.user_collection_type.split(',');
@@ -160,6 +145,52 @@ export const getUserFocus = function *(next){
         data: ids.length ? yield siteService.getSiteInfo(ids) : []
     }
 }
+
+export const createUserCollectionType = function *(next){
+    let type = this.request.body.fields.type;
+    let user = this._domain.user;
+    let types = user.user_collection_type.split(',');
+    if (types.indexOf(type) === -1){
+        user.user_collection_type = user.user_collection_type ? user.user_collection_type + `,${type}` : type;
+        yield user.save();
+        this.body = {
+            result: 1
+        };
+    } else {
+        throw new Error('collectiontypeCreate operateError 500');
+    }
+}
+
+export const deleteUserCollectionType = function *(next){
+    let type = this.query.type;
+    let types = this._domain.user.user_collection_type.split(','),
+        idx = types.indexOf(type);
+    if (idx === -1){
+        throw new Error('deleteUserCollectionType paramsError 500');
+    }
+    types.splice(idx, 1);
+    this._domain.user.user_collection_type = types.join(',');
+    yield this._domain.user.save();
+    this.body = {
+        result: 1
+    }
+}
+
+export const updateUserCollectionType = function *(next){
+    let {otype, ntype} = this.query;
+    let types = this._domain.user.user_collection_type.split(','),
+    idx = types.indexOf(otype);
+    if (idx === -1){
+        throw new Error('updateUserCollectionType paramsError 500');
+    }
+    types.splice(idx, 1, ntype);
+    this._domain.user.user_collection_type = types.join(',');
+    yield this._domain.user.save();
+    this.body = {
+        result: 1
+    }    
+}
+
 
 
 

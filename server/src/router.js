@@ -91,6 +91,10 @@ export default (router)=> {
 
     router.post('/user/collectiontype', headAuth(['x-access-token']), blankAuth(null, ['type']), userController.auth, userController.createUserCollectionType);
 
+    router.delete('/user/collectiontype', headAuth(['x-access-token']), blankAuth(null, ['type']), userController.auth, userController.deleteUserCollectionType);
+
+    router.put('/user/collectiontype', headAuth(['x-access-token']), blankAuth(null, ['otype', 'ntype']), userController.auth, userController.updateUserCollectionType);
+
     router.get('/recommend/welcome', blankAuth(['time']), recommendController.getWelcomeContent);
 
     router.get('/recommend/seaglobal', blankAuth(['page']), recommendController.getSeaGlobalContents);
