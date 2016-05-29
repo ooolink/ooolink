@@ -30,16 +30,21 @@ export const getSiteInfo = function *(siteid){
 		if (memrs){
 			return memrs;
 		}
-		let sites = yield Sites.findOne({
-			where: {
-				site_id: siteid
-			}
-		});
-		if (!sites){
-			return false;
-		}
-		getFastCache().set(key, sites);
-		return sites;
+        let doc = Array.isArray(siteid) ? {where: {site_id: {in: siteid}}} : {where: {site_id: siteid}};
+		
+        let sites = yield Sites.findAll(doc);
+        if (!sites.length){
+            return false;
+        }
+        sites.forEach(site=>{
+            getFastCache().set(`site_getSiteInfo_${site.site_id}`, site);
+        });
+
+        if (!Array.isArray(siteid)){
+            return sites[0];
+        } else {
+            return sites;
+        }
 };
 
 export const siteThemesGet = function *(){

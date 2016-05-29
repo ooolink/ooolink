@@ -12,6 +12,7 @@ import crypto from 'crypto';
 import * as userService from '../services/user';
 import * as collectService from '../services/collect';
 import * as contentService from '../services/content';
+import * as siteService from '../services/site';
 
 export const auth = function *(next){
 	let token = this.header['x-access-token'];
@@ -148,7 +149,16 @@ export const getUserCollectionsDetail = function *(next){
 }
 
 export const getUserFocus = function *(next){
-    let {page, limit} = this.request.body.fields;
+    let {page, limit} = this.query;
+    let focuses = yield collectService.getSitefocused(this._domain.user.id);
+    let ids = [];
+    focuses.forEach(f=>{
+        ids.push(f.focus_id);
+    });
+    this.body = {
+        result: 1,
+        data: ids.length ? yield siteService.getSiteInfo(ids) : []
+    }
 }
 
 

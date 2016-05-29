@@ -48,7 +48,8 @@ export const getCollectionsGeneralByType = function *(collection_userId, collect
         attributes: ['collection_id'], 
         where: {
             collection_userId, 
-            collection_type
+            collection_type,
+            collection_status: 1
         },
         limit
     });
@@ -60,7 +61,8 @@ export const getCollectionsDetailByType = function *(collection_userId, collecti
         attributes: ['collection_id'],
         where: {
             collection_userId,
-            collection_type
+            collection_type,
+            collection_status: 1
         }
     });
     return collections;
@@ -96,5 +98,18 @@ export const getFocusSiteStatus = function *(focus_id, focus_userId){
 
 export const getSitefocused = function *(focus_userId, page=0, limit=10) {
     "use strict";
-    let focuses = yield Focus.findAll();
+    let focuses = yield Focus.findAll({
+        attributes: ['focus_id'],
+        where: {
+            focus_type: 'site',
+            focus_userId,
+            focus_status: 1
+        },
+        limit: 10,
+        offset: page * limit
+    });
+    return focuses;
 };
+
+
+
