@@ -23,6 +23,18 @@ export const changeCollectionContentStatus = function *(collection_id, collectio
     return collection;
 };
 
+export const changeCollectionContentStatusByType = function *(collection_userId, collection_type, collection_status){
+    let collections = yield Collection.update({
+        collection_status
+    }, {
+        where:{
+            collection_userId,
+            collection_type
+        }
+    });
+    return collections;
+}
+
 export const getCollectionContentStatus = function *(collection_userId, collection_id) {
     "use strict";
     let collection = yield Collection.findOne({
@@ -72,13 +84,28 @@ export const getCollectionsDetailByType = function *(collection_userId, collecti
 
 export const changeFocusSiteStatus = function *(focus_id, focus_userId, status) {
     "use strict";
-    let focus = yield Focus.upsert({
-        focus_id,
-        focus_type: 'site',
-        focus_userId,
-        focus_status: status
-    });
-    return focus;
+    if (!Array.isArray(focus_id)){
+        let focus = yield Focus.upsert({
+            focus_id,
+            focus_type: 'site',
+            focus_userId,
+            focus_status: status
+        });
+        return focus;
+    } else {
+        let focus = yield Focus.update({
+            focus_status: status
+        }, {
+            where: {
+                focus_id: {
+                    in: focus_id
+                },
+                focus_userId,
+                focus_type: 'site'
+            }
+        });
+        return focus;
+    }
 };
 
 export const getFocusSiteStatus = function *(focus_id, focus_userId){

@@ -176,6 +176,7 @@ export const deleteUserCollectionType = function *(next){
     
     types.splice(idx, 1);
     this._domain.user.user_collection_type = JSON.stringify(types);
+    yield collectService.changeCollectionContentStatusByType(this._domain.user.id, type, 0);
     yield this._domain.user.save();
     this.body = {
         result: 1
