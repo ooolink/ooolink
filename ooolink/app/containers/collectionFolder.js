@@ -65,11 +65,14 @@ class CollectionFolder extends Component{
         </View> :
         null;
         let updateOperateCom = this.state.showUpdateBlock ? 
-        <View style={styles.wrap}>
+        <View 
+            onStartShouldSetResponder={()=>{this.setState({showUpdateBlock: false})}}
+            style={styles.wrap}>
             <View style={styles.updateBlock}>
                 <Text style={styles.updateTitle}>更新收藏夹</Text>
                 <View style={styles.updateTextInputWrap}>
                     <TextInput 
+                        autoFocus={true}
                         style={styles.updateTextInput}
                         value={this.state.updateValue} 
                         onChangeText={(text) => this.setState({updateValue: text})}/>
