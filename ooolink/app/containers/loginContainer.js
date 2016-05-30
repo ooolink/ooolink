@@ -71,16 +71,15 @@ class LoginContainer extends Component{
     }
 
     onLogin(name, pwd) {
-        loginService.session(name, (data)=> {
-            if (data.result) {
-                loginService.login(name, pwd, data.data, (data)=> {
-                    if (data.result) {
-                        setGlobal('oooLinkToken', data.data);
-                        setGlobal('userName', name);
-                        setGlobal('passWord', pwd);
-                        setGlobal('isLogin', true);
+        loginService.session(name, (rs)=> {
+            if (rs.result) {
+                loginService.login(name, pwd, rs.data, (rs)=> {
+                    if (rs && rs.result) {
+                        this.props.actions.setUserInfoAfterLogin(name, pwd, rs.data);
                         Alert.alert('登陆成功');
                         this.onLoginClose();
+                    } else {
+                        Alert.alert('登陆名或密码错误');
                     }
                 })
             }
@@ -88,14 +87,13 @@ class LoginContainer extends Component{
     }
 
     onRegister(name, pwd) {
-        loginService.sign(name, pwd, (data=> {
-            if (data.result) {
-                setGlobal('oooLinkToken', data.token);
-                setGlobal('userName', name);
-                setGlobal('passWord', pwd);
-                setGlobal('isLogin', true);
+        loginService.sign(name, pwd, (rs=> {
+            if (rs && rs.result) {
+                this.props.actions.setUserInfoAfterLogin(name, pwd, rs.data);
                 Alert.alert('注册成功');
                 this.onLoginClose();
+            } else {
+                Alert.alert('注册失败');
             }
         }));
     }

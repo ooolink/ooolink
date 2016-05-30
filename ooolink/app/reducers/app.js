@@ -12,9 +12,8 @@ const initialState = {
     currentSite: '',
     siteFocus: [],
     siteInfo: {},
-    appLoaded: true,
+    appLoaded: null,
     siteLoaded: true,
-    isAppLogined: false
 };
 
 export default function(state = initialState, action) {
@@ -25,9 +24,9 @@ export default function(state = initialState, action) {
             return Object.assign({}, state, {
                 siteLoaded: false
             });
-        case types.APP_LOADING:
+        case types.UPDATE_APP_LOAD_STATUS:
             return Object.assign({}, state, {
-                appLoaded: false
+                appLoaded: action.status
             });
         case types.GET_SITE_INFO:
             state.siteInfo[action.site] = action.info;

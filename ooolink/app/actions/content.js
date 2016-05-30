@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 import * as collectService from '../services/collectService';
+import * as contentService from '../services/contentService'
 import * as ActionTypes from '../constants/actionTypes';
 import {SERVER_ADDRESS} from '../constants/config';
 import {setGlobal, getGlobal} from '../store';
@@ -97,6 +98,32 @@ export function getTopic(id) {
             loadingTopicIdNow: id
         });
         return dispatch(getTopicFromServer(id.split('_')[0], id));                              //content_id = site_id + '_' + flag
+    }
+}
+
+export function getContentAllInfoFromNativeCache(cb){
+    return (dispatch, getState)=>{
+        getGlobal('welcomeContent', content=>{
+            if (content){
+                dispatch({
+                    type: ActionTypes.SET_WELCOME_CONTENT,
+                    content
+                });
+                cb && cb();
+            } else {
+                contentService.getWelcomeContent(content=>{
+                    if (content){
+                        dispatch({
+                            type: ActionTypes.SET_WELCOME_CONTENT,
+                            content
+                        });
+                    } else {
+                        console.log('没有获取到 welcomeContent 数据');
+                    }
+                    cb && cb();
+                });
+            }
+        });
     }
 }
 

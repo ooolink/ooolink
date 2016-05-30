@@ -26,8 +26,18 @@ export const ADD_COLLECTION = 'ADD_COLLECTION';
 export const RM_COLLECTION = 'RM_COLLECTION';
 
 /** SITE **/
-export const APP_LOADING = 'APP_LOADING';
 export const SITE_LOADING = 'SITE_LOADING';
 export const GET_SITE_INFO = 'GET_SITE_INFO';
 export const GET_SITE_FOCUS = 'GET_SITE_FOCUS';
 
+/** User **/
+export const UPDATE_USER_LOGIN_STATUS = 'UPDATE_USER_LOGIN_STATUS';
+export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
+export const UPDATE_USER_TOKEN = 'UPDATE_USER_TOKEN';
+export const UPDATE_USER_LOGIN_INFO = 'UPDATE_USER_LOGIN_INFO';
+
+/** Content **/
+export const SET_WELCOME_CONTENT = 'SET_WELCOME_CONTENT';
+
+/** App **/
+export const UPDATE_APP_LOAD_STATUS = 'UPDATE_APP_LOAD_STATUS';

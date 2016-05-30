@@ -16,12 +16,18 @@ const initialState = {
     loadingTopicIdNow: null,
     getTopicLoading: false,
     topic: null,
-    collections: []
+    collections: [],
+    welcomeContent: null
 };
 
 export default function(state = initialState, action) {
 
     switch (action.type) {
+        case types.SET_WELCOME_CONTENT:
+            return Object.assign({}, state, {
+                welcomeContent: action.content
+            });
+
         case types.GET_TOPICS_LOADING:
             state.getTopicsLoading = true;
             state.topics = {};

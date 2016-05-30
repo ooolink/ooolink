@@ -63,7 +63,15 @@ export function login(name, pwd, token, cb) {
     })
         .then(response=>response.json())
         .then(rs=> {
-            cb(rs);
+            if (rs.result === 1){
+                setGlobal('oooLinkToken', rs.data);
+                setGlobal('userName', name);
+                setGlobal('passWord', pwd);
+                setGlobal('isLogin', true);
+                cb(rs);
+            } else {
+                cb(null);
+            }
         })
 }
 
@@ -79,7 +87,15 @@ export function sign(name, pwd, cb) {
     })
         .then(response=>response.json())
         .then(rs=> {
-            cb(rs);
+            if (rs.result === 1){
+                setGlobal('oooLinkToken', rs.data);
+                setGlobal('userName', name);
+                setGlobal('passWord', pwd);
+                setGlobal('isLogin', true);
+                cb(rs);
+            } else {
+                cb(null);
+            }
         })
 }
 

@@ -48,4 +48,3 @@ export function getSiteInfo(site) {
         return dispatch(getSiteInfoFromServer(site));
     }
 }
-

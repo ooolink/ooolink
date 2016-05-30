@@ -19,28 +19,18 @@ import React,{
 import Root from './root'
 import Login from './loginContainer'
 import TopicDetail from './topicDetail'
-import LoadingBlock from '../common/components/loadingBlock'
 import * as contentService from '../services/contentService'
-import {getGlobal} from '../store'
 const {width, height} = Dimensions.get('window');
 
 class Welcome extends Component{
 
     constructor(props){
         super(props);
-        this.state={
-            welcomeContent: null,
-            isLogin: null,
-            isSync: false
-        }
     }
 
     render(){
-        let welcomeContent = this.state.welcomeContent;
-        let userText = this.state.isLogin ? '我的' : '登陆 / 注册';
-        if (!this.state.isSync){
-            return <LoadingBlock/>;
-        } else {
+        let welcomeContent = this.props.state.content.welcomeContent;
+        let userText = this.props.state.user.userIsLogon ? '我的' : '登陆 / 注册';
             return (
                 <View>
                     <Image 
@@ -67,42 +57,23 @@ class Welcome extends Component{
                     </View>
                 </View>
             );
-        }
-    }
-
-    componentDidMount() {
-        getGlobal('welcomeContent', (ret)=>{
-            if (ret){
-                this.setState({welcomeContent: ret});
-                getGlobal('isLogin', (ret)=>{
-                    this.setState({isLogin: ret, isSync: true});
-                }); 
-            } else {
-                contentService.getWelcomeContent((ret)=>{
-                    this.setState({welcomeContent: ret});
-                    getGlobal('isLogin', (ret)=>{
-                        this.setState({isLogin: ret, isSync: true});
-                    });        
-                });
-            }
-        });  
     }
 
     onRead(){
+        let welcomeContent = this.props.state.content.welcomeContent;
         contentService.getWelcomeContent();
-        let topicId = this.state.welcomeContent.id;
         this.props.navigator.push({
             name: 'TopicDetail',
             index: 1,
             component: TopicDetail,
             props: {
-                topicId
+                topicId: welcomeContent.id
             }
         });    
     }
 
     onUserClick(){
-        if (this.state.isLogin){
+        if (this.props.state.user.userIsLogon){
             this.props.navigator.replace({
                 name: 'Root',
                 component: Root,

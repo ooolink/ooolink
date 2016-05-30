@@ -8,8 +8,9 @@
  */
 
 import thunkMiddleware from 'redux-thunk'
-import rootReducer from './reducers'
 import Storage from 'react-native-storage'
+import rootReducer from './reducers'
+import {DEBUG} from './constants/config'
 import { createStore, applyMiddleware } from 'redux'
 
 const createStoreWithMiddleware = applyMiddleware(
@@ -58,9 +59,9 @@ export function getGlobal(key, id, cb) {
     storage.load(obj).then(ret=>{
         callback && callback(ret);
     }).catch(err=>{
-        console.log(`null rs key:${key} id:${id}`);
+        DEBUG && console.log(`null rs key:${key} id:${id}`);
         if (err){
-            console.log(err);
+            DEBUG && console.log(err);
         }
         callback(undefined);
     });

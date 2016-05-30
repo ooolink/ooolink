@@ -38,7 +38,8 @@ class App extends Component {
     }
 
     render() {
-        let com = {name: 'welcome', index: 0, component: Welcome};
+        //以欢迎页为起始页面
+        let com = {name: 'Welcome', component: Welcome};
         if (this.props.isLoaded) {
             return (
                 <Navigator
@@ -71,18 +72,19 @@ class App extends Component {
 
     componentDidMount() {
         this.actions = bindActionCreators(oooLinkActions, this.props.dispatch);
+        //app打开时加载本地缓存的数据
+        this.actions.getContentAllInfoFromNativeCache(
+            this.actions.getUserAllInfoFromNativeCache
+        );
     }
 }
 
 
 function app(state) {
-    "use strict";
     let isLoaded = state.app.appLoaded;
-    let indexComponent = state.app.indexComponent;
     return {
         isLoaded,
         state,
-        indexComponent
     }
 }
 

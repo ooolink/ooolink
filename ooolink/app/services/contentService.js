@@ -22,7 +22,7 @@ export function getWelcomeContent(cb){
         })
         .then(rs=> {
             if (!rs || rs.result!=1){
-                return cb({result: 0});             //TODO 容错处理
+                return cb(null);             //TODO 容错处理
             }
             rs = rs.data;
             let saveData = {

@@ -9,3 +9,4 @@
 
 export const SERVER_ADDRESS = "http://localhost:3070/";
 export const USER_DEFAULT_HEAD = 'http://gravatar.com/avatar/a0892cf4b7ff2828c00aa3f91ba51724?size=48';
+export const DEBUG = true;
