@@ -22,6 +22,7 @@ import React,{
 import TopBar from '../common/components/topBar';
 import InfoWithImageBlock from '../common/components/infoWithImageBlock';
 import InfoWithContentBlock from '../common/components/infoWithContentBlock';
+import CollectionFolder from './collectionFolder';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
 import {setGlobal, getGlobal} from '../store';
 
@@ -56,6 +57,7 @@ class InfoGroup extends Component {
                     }
                     info.push(
                         <InfoWithContentBlock
+                            onSelectInfo={this.onSelectCollection.bind(this)}
                             key={idx}
                             title={cname}
                             count={collections[cname].count}
@@ -76,6 +78,17 @@ class InfoGroup extends Component {
                 </ScrollView>   
             </View>
         )
+    }
+
+    onSelectCollection(type, count){
+        this.props.navigator.push({
+            name: 'CollectionFolder',
+            component: CollectionFolder,
+            props:{
+                type,
+                count
+            }
+        });
     }
 
     onBack() {

@@ -27,7 +27,12 @@ class TopBar extends Component {
     static propTypes = {
         style: View.propTypes.style,
         onBack: PropTypes.func,
-        backText: PropTypes.string
+        backText: PropTypes.string,
+        child: PropTypes.any
+    };
+
+    static defaultProps = {
+        child: null
     };
 
     render() {
@@ -47,6 +52,7 @@ class TopBar extends Component {
                         {this.props.backText}
                     </Text>
                 </TouchableOpacity>
+                {this.props.child}
             </View>
         )
     }

@@ -12,6 +12,7 @@ import React,{
     StyleSheet,
     View,
     Text,
+    TouchableOpacity,
     Animated,
     PropTypes
 } from 'react-native';
@@ -21,7 +22,8 @@ class InfoWithContentBlock extends Component{
 	static propTypes = {
 		title: PropTypes.string.isRequired,
 		count: PropTypes.number.isRequired,
-		list: PropTypes.array.isRequired
+		list: PropTypes.array.isRequired,
+        onSelectInfo: PropTypes.func.isRequired
 	};
 
 	constructor(props) {
@@ -36,15 +38,19 @@ class InfoWithContentBlock extends Component{
             );
         });
 		return (
-			<View style={styles.block}>
-				<View style={{flexDirection: 'row', justifyContent:'space-between', padding: 10}}>
-                    <Text style={styles.title}>{this.props.title}</Text>
-                    <Text style={styles.count}>{this.props.count}</Text>
-                </View>
-                <View style={styles.itemList}>
-                {listCom}
-                </View>
-			</View>
+            <TouchableOpacity
+                onPress={()=>{this.props.onSelectInfo(this.props.title, this.props.count)}}
+            >
+    			<View style={styles.block}>
+    				<View style={{flexDirection: 'row', justifyContent:'space-between', padding: 10}}>
+                        <Text style={styles.title}>{this.props.title}</Text>
+                        <Text style={styles.count}>{this.props.count}</Text>
+                    </View>
+                    <View style={styles.itemList}>
+                    {listCom}
+                    </View>
+    			</View>
+            </TouchableOpacity>
 		);
 	}	
 }
