@@ -89,24 +89,23 @@ export const getUserCollectionTypes = function *(next){
     let d = this._domain.user.user_collection_type;
     this.body = {
         result: 1,
-        data: d ? d.split(',') : []
+        data: JSON.parse(d)
     }
 }
 
 export const getUserCollectionsGeneral = function *(next){
     let userId = this._domain.user.id;
-    let types = this._domain.user.user_collection_type.split(',');
-        types.push('default');          //默认的收藏
+    let types = JSON.parse(this._domain.user.user_collection_type);
 
     let contentMap = {};
     for (let i = 0,len = types.length; i < len; i++){
-        let collections = yield collectService.getCollectionsGeneralByType(userId, types[i], 3);
-        contentMap[types[i]] = {count: collections.count};
+        let collections = yield collectService.getCollectionsGeneralByType(userId, types[i].id, 3);
+        contentMap[types[i].name] = {count: collections.count, id: types[i].id};
         let ids = [];
         collections.rows.forEach(row=>{
             ids.push(row.collection_id);
         });
-        contentMap[types[i]]['rows'] = ids.length ? yield contentService.getContentByIds(ids, {title: 1}) : [];
+        contentMap[types[i].name]['rows'] = ids.length ? yield contentService.getContentByIds(ids, {title: 1}) : [];
     }
 
     this.body = {
@@ -118,7 +117,9 @@ export const getUserCollectionsGeneral = function *(next){
 export const getUserCollectionsDetail = function *(next){
     let userId = this._domain.user.id;
     let type = this.query.type;
-    if (type === 'default' || this._domain.user.user_collection_type.includes(type)){       //包括默认收藏
+    let types = JSON.parse(this._domain.user.user_collection_type);
+
+    if (typeIdIsExists(types, type) !== -1){       
         let collections = yield collectService.getCollectionsDetailByType(userId, type);
         let ids = [];
         collections.forEach(row=>{
@@ -149,12 +150,16 @@ export const getUserFocus = function *(next){
 export const createUserCollectionType = function *(next){
     let type = this.request.body.fields.type;
     let user = this._domain.user;
-    let types = user.user_collection_type.split(',');
-    if (types.indexOf(type) === -1){
-        user.user_collection_type = user.user_collection_type ? user.user_collection_type + `,${type}` : type;
+    let types = JSON.parse(user.user_collection_type);
+
+    if (typeNameIsExists(types, type) === -1){
+        let id = crypto.createHash('md5').update(type + new Date()).digest('hex').toString();
+        types.push({name: type, id});
+        user.user_collection_type = JSON.stringify(types);
         yield user.save();
         this.body = {
-            result: 1
+            result: 1,
+            data: id
         };
     } else {
         throw new Error('collectiontypeCreate operateError 500');
@@ -162,14 +167,15 @@ export const createUserCollectionType = function *(next){
 }
 
 export const deleteUserCollectionType = function *(next){
-    let type = this.query.type;
-    let types = this._domain.user.user_collection_type.split(','),
-        idx = types.indexOf(type);
+    let type = this.request.body.fields.type;
+    let types = JSON.parse(this._domain.user.user_collection_type);
+    let idx = typeIdIsExists(types, type);
     if (idx === -1){
         throw new Error('deleteUserCollectionType paramsError 500');
     }
+    
     types.splice(idx, 1);
-    this._domain.user.user_collection_type = types.join(',');
+    this._domain.user.user_collection_type = JSON.stringify(types);
     yield this._domain.user.save();
     this.body = {
         result: 1
@@ -177,20 +183,37 @@ export const deleteUserCollectionType = function *(next){
 }
 
 export const updateUserCollectionType = function *(next){
-    let {otype, ntype} = this.query;
-    let types = this._domain.user.user_collection_type.split(','),
-    idx = types.indexOf(otype);
+    let {otype, ntype} = this.request.body.fields;
+    let types = JSON.parse(this._domain.user.user_collection_type),
+    idx = typeNameIsExists(types, otype);
     if (idx === -1){
         throw new Error('updateUserCollectionType paramsError 500');
     }
-    types.splice(idx, 1, ntype);
-    this._domain.user.user_collection_type = types.join(',');
+    types.splice(idx, 1, {name: ntype, id: types[idx].id});
+    this._domain.user.user_collection_type = JSON.stringify(types);
     yield this._domain.user.save();
     this.body = {
         result: 1
     }    
 }
 
+function typeIdIsExists(types, typeId){
+    for (let i = 0, len = types.length; i < len; i++){
+        if (types[i].id === typeId){
+            return i;
+        }
+    }
+    return -1;
+}
+
+function typeNameIsExists(types, typeName){
+    for (let i =0, len = types.length; i < len; i++){
+        if (types[i].name === typeName){
+            return i;
+        }
+    }
+    return -1;
+}
 
 
 

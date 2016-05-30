@@ -62,6 +62,7 @@ class InfoGroup extends Component {
                             title={cname}
                             count={collections[cname].count}
                             list={collections[cname].rows}
+                            id={collections[cname].id}
                         />
                     );
                 });
@@ -80,12 +81,13 @@ class InfoGroup extends Component {
         )
     }
 
-    onSelectCollection(type, count){
+    onSelectCollection(type, typeName, count){
         this.props.navigator.push({
             name: 'CollectionFolder',
             component: CollectionFolder,
             props:{
                 type,
+                typeName,
                 count
             }
         });

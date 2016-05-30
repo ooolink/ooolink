@@ -20,6 +20,7 @@ import React,{
 class InfoWithContentBlock extends Component{
 
 	static propTypes = {
+        id: PropTypes.string.isRequired,
 		title: PropTypes.string.isRequired,
 		count: PropTypes.number.isRequired,
 		list: PropTypes.array.isRequired,
@@ -39,7 +40,7 @@ class InfoWithContentBlock extends Component{
         });
 		return (
             <TouchableOpacity
-                onPress={()=>{this.props.onSelectInfo(this.props.title, this.props.count)}}
+                onPress={()=>{this.props.onSelectInfo(this.props.id, this.props.title, this.props.count)}}
             >
     			<View style={styles.block}>
     				<View style={{flexDirection: 'row', justifyContent:'space-between', padding: 10}}>

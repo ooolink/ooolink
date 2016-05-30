@@ -279,6 +279,66 @@ export function createUserCollectionType(token, type, cb) {
         });
 }
 
+export function deleteUserCollectionType(token, type, cb){
+    fetch(`${SERVER_ADDRESS}user/collectiontype`, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
+        },
+        body: `type=${type}`
+    })
+        .then(response=>{
+            if (response.status === 200) {
+                return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth(rs=>{
+                    if (rs && rs.result === 401){
+                        cb({result: 401});
+                    } else if (rs && rs.result === 1){
+                        deleteUserCollectionType(rs.data, type, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
+            }
+            return;
+        })
+        .then(rs=>{
+            rs && cb(rs);
+        });
+}
+
+export function updateUserCollectionType(token, ntype, otype, cb){
+    fetch(`${SERVER_ADDRESS}user/collectiontype`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
+        },
+        body: `ntype=${ntype}&otype=${otype}`
+    })
+        .then(response=>{
+            if (response.status === 200) {
+                return response.json();
+            } else if (response.status === 401){
+                loginService.reAuth(rs=>{
+                    if (rs && rs.result === 401){
+                        cb({result: 401});
+                    } else if (rs && rs.result === 1){
+                        updateUserCollectionType(rs.data, type, cb);
+                    }
+                });
+            } else {
+                cb({result: 0});
+            }
+            return;
+        })
+        .then(rs=>{
+            rs && cb(rs);
+        });
+}
+
 export function getUserCollectionType(token, cb) {
     fetch(`${SERVER_ADDRESS}user/collectiontype`, {
         method: 'GET',

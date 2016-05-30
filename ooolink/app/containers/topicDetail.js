@@ -36,6 +36,14 @@ import * as collectService from '../services/collectService';
 
 let {height, width} = Dimensions.get('window');
 
+function getId(arr, name){
+    for (let i = 0, len = arr.length; i < len; i++){
+        if (arr[i].name === name){
+            return arr[i].id;
+        }
+    }
+}
+
 class ContentBlock extends Component {
     render() {
         let data = this.props.data,
@@ -70,20 +78,20 @@ class TypeChooseModal extends Component {
     render(){
         let createCom = this.state.isCreating ? 
         <View style={{flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 1}}>
-        <TextInput 
-        placeholder={'输入收藏夹名字'}
-        style={{fontSize: 12, width: 150, height: 30, padding: 5}}
-        onChangeText={(text) => this.setState({createValue: text})}
-        value={this.state.createValue}/>
-        <Text 
-        onPress={this.create.bind(this)}
-        style={{width: 50, height: 30, backgroundColor: '#65b278', color: '#fff', textAlign: 'center', lineHeight: 20}}>确定</Text>
+            <TextInput 
+            placeholder={'输入收藏夹名字'}
+            style={{fontSize: 12, width: 150, height: 30, padding: 5}}
+            onChangeText={(text) => this.setState({createValue: text})}
+            value={this.state.createValue}/>
+            <Text 
+            onPress={this.create.bind(this)}
+            style={{width: 50, height: 30, backgroundColor: '#65b278', color: '#fff', textAlign: 'center', lineHeight: 20}}>确定</Text>
         </View>
          : null;
-        let pickerItems = [<Picker.Item key={0} style={styles.typePikerItem} label="default" value="default" />];
+        let pickerItems = [];
         this.state.userCollectionTypes.forEach((item, idx)=>{
             pickerItems.push(
-                <Picker.Item key={idx+1} style={styles.typePikerItem} label={`${item}`} value={`${item}`} />
+                <Picker.Item key={idx+1} style={styles.typePikerItem} label={`${item.name}`} value={`${item.name}`} />
             );
         });
         return (
@@ -116,7 +124,7 @@ class TypeChooseModal extends Component {
                     {pickerItems}
                     </Picker>
                     <Text 
-                        onPress={this.props.onCollect.bind(this, this.state.itemChoose)}
+                        onPress={this.props.onCollect.bind(this, getId(this.state.userCollectionTypes, this.state.itemChoose))}
                         style={styles.typePickerButton}>收藏</Text>
                 </View>
                 <OperateLoading visible={this.state.isOperating}/>
@@ -137,7 +145,7 @@ class TypeChooseModal extends Component {
             collectService.createUserCollectionType(token, this.state.createValue, rs=>{
                 if (rs && rs.result === 1){
                     let uct = this.state.userCollectionTypes;
-                    uct.unshift(this.state.createValue);
+                    uct.unshift({name: this.state.createValue, id: rs.data});
                     setGlobal('userCollectionTypes', uct, 1000*60*5);
                     this.setState({isOperating: false, createValue: '', userCollectionTypes: uct, isCreating: false});
                 } else if (rs && rs.result === 0) {
@@ -148,40 +156,6 @@ class TypeChooseModal extends Component {
         });
     }
 }
-
-class CreatedTypeModal extends Component{
-    constructor(props){
-        super(props);
-    }
-
-    render(){
-        return (
-            <View style={styles.wrap}>
-            </View>
-        );
-    }
-}
-
-// class CommentBlock extends Component {
-//     render() {
-//         let data = this.props.data, avatar = UriDeal(data.author.avatar_url);
-//         return (
-//             <View style={styles.commentBlock}>
-//                 <Text style={styles.rowNumber}>{(parseInt(this.props.rowID) + 1) + '楼'}</Text>
-//                 <HtmlComponent
-//                     content={data.content}
-//                 />
-//                 <View style={styles.commentInfo}>
-//                     <Image
-//                         style={styles.authorHead}
-//                         source={{uri: avatar ? avatar : USER_DEFAULT_HEAD }}/>
-//                     <Text style={styles.authorName}>{data.author.loginname}</Text>
-//                     <Text style={styles.createTime}>{timeDeal(data.create_at)}</Text>
-//                 </View>
-//             </View>
-//         );
-//     }
-// }
 
 class TopicDetail extends Component {
 
@@ -222,7 +196,7 @@ class TopicDetail extends Component {
             <View style={styles.container}>
                 <TopicBar
                     likeStatus={this.state.likeStatus}
-                  onLike={this.onLike.bind(this)}
+                     onLike={this.onLike.bind(this)}
                     onBack={this.onBack.bind(this)}/>
                 {com}
                 <Text style={styles.publishButton} onPress={this.onPublish.bind(this)}>
