@@ -10,6 +10,7 @@
 import crypto from 'crypto';
 import co from 'co';
 import User from '../models/user';
+import UserInfo from '../models/userInfo';
 
 export const addUser = function *(name, password, salt, token) {
     "use strict";
@@ -50,3 +51,21 @@ export const findUserByToken = function *(token){
     let user = yield User.findOne({where: {user_token: token}});
     return user;
 }
+
+export const createUserInfo = function *(user_id, user_realname){
+    let userInfo = yield UserInfo.create({
+        user_realname,
+        user_id
+    });
+    return userInfo;
+}
+
+export const updateUserInfo = function *(value, where){
+    let userInfo = yield UserInfo.update(value, where);
+    return userInfo;
+}
+
+
+
+
+

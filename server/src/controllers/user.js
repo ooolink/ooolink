@@ -36,6 +36,7 @@ export const sign = function *(next){
         token = crypto.createHmac('sha256', salt).update(password + new Date()).digest('hex').toString(),
         u_password = crypto.createHmac('sha256', salt).update(password).digest('hex').toString();
     let user = yield userService.addUser(name, u_password, salt, token);
+    let userInfo = yield userService.createUserInfo(user.id, name);
     if (user.user_token){
         this.body = {
             result: 1,
