@@ -19,8 +19,8 @@ const User = db.define('user', {
     user_created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     user_token: {type: Sequelize.STRING(64)},
     user_authtime: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-    user_collection_type: {type: Sequelize.STRING(512)},
-    user_focus_type: {type: Sequelize.STRING(1024), defaultValue: JSON.stringify([{name:'default', id: 'default'}])},
+    user_collection_type: {type: Sequelize.STRING(1024), defaultValue: JSON.stringify([{name:'default', id: 'default'}])},
+    user_focus_type: {type: Sequelize.STRING(1024)},
     site_id: {type: Sequelize.STRING(64)},                                          //是哪个站点的子账号
     site_user: {type: Sequelize.STRING(512)}                                        //子账号相关信息
 }, {

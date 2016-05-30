@@ -24,7 +24,6 @@ import InfoWithImageBlock from '../common/components/infoWithImageBlock';
 import InfoWithContentBlock from '../common/components/infoWithContentBlock';
 import CollectionFolder from './collectionFolder';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
-import {setGlobal, getGlobal} from '../store';
 
 class InfoGroup extends Component {
 
@@ -105,17 +104,14 @@ class InfoGroup extends Component {
     }
 
     componentDidMount() {
+        let token = this.props.state.user.userToken;
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE :
-                getGlobal('oooLinkToken', token=>{
-                    this.props.actions.getFocusSite(token);
-                });
+                this.props.actions.getFocusSite(token);
                 break;
 
             case TO_INFO_GROUP_COLLECTIONS:
-                getGlobal('oooLinkToken', token=>{
-                    this.props.actions.getCollections(token);
-                });
+                this.props.actions.getCollections(token);
                 break;
         }
     }

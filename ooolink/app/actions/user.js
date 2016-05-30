@@ -51,7 +51,7 @@ export function getUserAllInfoFromNativeCache(){
     }
 }
 
-export function setUserInfoAfterLogin(userName, userPasswd, token){
+export function setUserInfoAfterLoginStatusChange(userName, userPasswd, token, status, info){
     return (dispatch, getState)=>{
         dispatch({
             type: ActionTypes.UPDATE_USER_TOKEN,
@@ -60,7 +60,7 @@ export function setUserInfoAfterLogin(userName, userPasswd, token){
 
         dispatch({
             type: ActionTypes.UPDATE_USER_LOGIN_STATUS,
-            status: true
+            status
         });
 
         dispatch({
@@ -68,6 +68,13 @@ export function setUserInfoAfterLogin(userName, userPasswd, token){
             userName,
             userPasswd
         });
+
+        if (info || info === 'infoClear'){
+            dispatch({
+                type: ActionTypes.UPDATE_USER_INFO,
+                info: info === 'infoClear' ? null : info
+            });
+        }
     }
 }
 
@@ -89,7 +96,23 @@ export function updateUserToken(token){
     }
 }
 
-
+export function updateUserInfo(info){
+    if (info){
+        return {
+            type: ActionTypes.UPDATE_USER_INFO,
+            info
+        }
+    } else {
+        return (dispatch, getState)=>{
+            getGlobal('userInfo', info=>{
+                dispatch({
+                    type: ActionTypes.UPDATE_USER_INFO,
+                    info
+                });
+            });
+        }
+    }
+}
 
 
 

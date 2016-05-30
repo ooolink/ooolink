@@ -131,11 +131,11 @@ class CollectionFolder extends Component{
 
     onDeleteFolder(){
         this.setState({showMore: false});
+        let token = this.props.state.user.userToken;
         Alert.alert('Tip', `您是否要删除收藏夹 ${this.props.typeName}`, [
         {text: '取消'},
         {text: '删除', onPress: ()=>{
             this.setState({isOperating: true});
-            getGlobal('oooLinkToken', token=>{
                 collectService.deleteUserCollectionType(token, this.props.type, rs=>{
                     if (rs && rs.result === 1){
                         Alert.alert('删除成功');
@@ -147,14 +147,13 @@ class CollectionFolder extends Component{
                     }
                     this.setState({isOperating: false});
                 });
-            });
         }}
         ]);
     }
 
     onUpdateFolder(){
         this.setState({showUpdateBlock: false, isOperating: true});
-        getGlobal('oooLinkToken', token=>{
+        let token = this.props.state.user.userToken;
             collectService.updateUserCollectionType(token, this.state.updateValue, this.props.typeName, rs=>{
                 if (rs && rs.result === 1){
                     Alert.alert('更新成功');
@@ -164,15 +163,13 @@ class CollectionFolder extends Component{
                     this.setState({updateValue: this.props.typeName, isOperating: false})
                 }
             });
-        });
     }
 
     componentDidMount() {
-        getGlobal('oooLinkToken', token=>{
+        let token = this.props.state.user.userToken;
             collectService.getCollectionsDetail(token, this.props.type, rs=>{
                 this.setState({collections: rs.data});
             });
-        });
     }
 }
 

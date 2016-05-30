@@ -8,7 +8,7 @@
  */
 
 import {SERVER_ADDRESS} from '../constants/config';
-import {getGlobal, setGlobal} from '../store'
+import {getGlobal, setGlobal, removeGlobal} from '../store'
 
 export function reAuth(cb){
     getGlobal('userName', (name)=>{
@@ -97,5 +97,12 @@ export function sign(name, pwd, cb) {
                 cb(null);
             }
         })
+}
+
+export function loginOut(){
+    removeGlobal('oooLinkToken');
+    removeGlobal('userName');
+    removeGlobal('passWord');
+    setGlobal('isLogin', false);
 }
 

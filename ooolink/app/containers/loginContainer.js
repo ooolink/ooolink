@@ -75,7 +75,7 @@ class LoginContainer extends Component{
             if (rs.result) {
                 loginService.login(name, pwd, rs.data, (rs)=> {
                     if (rs && rs.result) {
-                        this.props.actions.setUserInfoAfterLogin(name, pwd, rs.data);
+                        this.props.actions.setUserInfoAfterLoginStatusChange(name, pwd, rs.data, true);
                         Alert.alert('登陆成功');
                         this.onLoginClose();
                     } else {
@@ -89,7 +89,7 @@ class LoginContainer extends Component{
     onRegister(name, pwd) {
         loginService.sign(name, pwd, (rs=> {
             if (rs && rs.result) {
-                this.props.actions.setUserInfoAfterLogin(name, pwd, rs.data);
+                this.props.actions.setUserInfoAfterLoginStatusChange(name, pwd, rs.data, true);
                 Alert.alert('注册成功');
                 this.onLoginClose();
             } else {
