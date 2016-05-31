@@ -31,7 +31,7 @@ export function computeThemeBlockHeight(themes) {
 export function UriDeal(uri) {
     "use strict";
 
-    if (uri.substr(uri.length - 3) === 'gif'){
+    if (!uri || uri.substr(uri.length - 3) === 'gif'){
         return null;
     }
 

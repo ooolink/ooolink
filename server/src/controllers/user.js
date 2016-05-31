@@ -210,8 +210,8 @@ export const getUserInfo = function *(next){
 
 export const updateUserInfo = function *(next){
     let userId = this._domain.user.id;
-    let infos = this.request.body.infos,
-        values = JSON.parse(infos),
+    let infos = decodeURIComponent(this.request.body.fields.infos);
+    let values = JSON.parse(infos),
         where = {where: {user_id: userId}};
 
     let userinfo = yield userService.updateUserInfo(values, where);

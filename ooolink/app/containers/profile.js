@@ -45,8 +45,21 @@ class Profile extends Component {
     render() {
         let {userIsLogon, userName, userInfo} = this.props.state.user;
 
-        let userRealName = userInfo && userInfo.user_realname ? userInfo.user_realname : '...';
-        let userHeadImage = userInfo && userInfo.user_image ? UriDeal(userInfo.user_image) : USER_DEFAULT_HEAD;
+        let userRealName = userInfo && userInfo.user_realname ? userInfo.user_realname : '...',
+            userHeadImage = userInfo && userInfo.user_image ? UriDeal(userInfo.user_image) : USER_DEFAULT_HEAD,
+            userDesc = userInfo && userInfo.user_desc ? userInfo.user_desc : '',
+            userLiving = userInfo && userInfo.user_living ? userInfo.user_living: '未知',
+            userWork = userInfo && userInfo.user_work ? userInfo.user_work: '未知',
+            userEducation = userInfo && userInfo.user_education ? userInfo.user_education: '未知';
+        
+        let seximg = null;
+        if (userInfo){
+            if (userInfo.user_sex === 0){
+                seximg = <Image source={require('../images/profile-sex-girl.png')} style={styles.smallIcon}/>;
+            } else if (userInfo.user_sex === 1){
+                seximg = <Image source={require('../images/profile-sex-boy.png')} style={styles.smallIcon}/>;
+            }
+        } 
 
         let that = this;
         let loginOutCom = userIsLogon ? 
@@ -65,10 +78,30 @@ class Profile extends Component {
                             source={{uri: userHeadImage}}
                             style={styles.userHead}
                         />
-                        <Text style={styles.userInfoText} onPress={this.onClickUserInfo.bind(this)}>
-                            {userIsLogon ? `用户 : ${userRealName} (子账号数 : 3)` : '登录/注册'}
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.userInfoText} onPress={this.onClickUserInfo.bind(this)}>
+                                {userIsLogon ? `${userRealName}` : '登录/注册'}
+                            </Text>
+                            {seximg}
+                        </View>
+                        <Text style={styles.userDescText}>
+                            {userDesc}
                         </Text>
                     </Image>
+                    <View style={styles.userDetailInfo}>
+                        <View style={styles.userDetailInfoItem}>
+                            <Image style={styles.smallIcon} source={require('../images/profile-address.png')}/>
+                            <Text style={styles.userDetailInfoText}>{userLiving}</Text>
+                        </View>
+                         <View style={styles.userDetailInfoItem}>
+                            <Image style={styles.smallIcon} source={require('../images/profile-work.png')}/>
+                            <Text style={styles.userDetailInfoText}>{userWork}</Text>
+                        </View>
+                         <View style={styles.userDetailInfoItem}>
+                            <Image style={styles.smallIcon} source={require('../images/profile-education.png')}/>
+                            <Text style={styles.userDetailInfoText}>{userEducation}</Text>
+                        </View>
+                    </View>
                     <TouchableOpacity
                         onPress={this.onGetFocusSite.bind(this)}
                     >
@@ -174,7 +207,7 @@ const styles = StyleSheet.create({
     },
     userInfoItem: {
         width,
-        height: 100,
+        height: 110,
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center"
@@ -185,6 +218,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 10
     },
+    userDescText: {
+        fontSize: 12,
+        color: '#fff',
+        backgroundColor: '#00000000',
+        fontWeight: '600'
+    },
     searchItem: {
         flexDirection: "row",
         alignItems: "center",
@@ -193,16 +232,37 @@ const styles = StyleSheet.create({
     userInfoText: {
         color: '#fff',
         backgroundColor: '#00000000',
-        fontWeight: '900'
+        fontWeight: '900',
+        marginBottom: 6
     },
     itemText: {
         width: width - 100,
         marginLeft: 20,
         textAlign: 'left'
     },
+    userDetailInfo:{
+        width,
+        padding: 3,
+        borderColor: '#eee',
+        borderWidth: 12,
+        opacity: 0.9
+    },
+    userDetailInfoItem:{
+        flexDirection: 'row',
+        padding: 5
+    },
+    userDetailInfoText:{
+        marginLeft: 5,
+        fontSize: 13,
+        color: '#222'
+    },
     icon: {
         width: 30,
         height: 30
+    },
+    smallIcon: {
+        width: 15,
+        height: 15
     },
     searchInput: {
         paddingLeft: 10,

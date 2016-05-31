@@ -19,6 +19,7 @@ import React,{
     TouchableOpacity,
     View
 } from 'react-native';
+import ProfileEdit from '../containers/profileEdit';
 
 const {width, height} = Dimensions.get('window');
 
@@ -49,7 +50,10 @@ class IndexTopBar extends Component{
     }
 
     onOpenProfileEdit(){
-        
+        this.props.navigator.push({
+            name: 'ProfileEdit',
+            component: ProfileEdit
+        });
     }
 }
 

@@ -84,6 +84,8 @@ class Root extends Component{
         return (
             <View>
                 <IndexTopBar
+                    navigator={this.props.navigator}
+                    state={this.props.state}
                     idx={this.state.idx}
                 />
                 <ScrollableTabView

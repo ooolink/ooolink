@@ -23,6 +23,7 @@ import React,{
 import Login from '../components/login';
 import Register from '../components/register';
 import * as loginService from '../services/loginService';
+import * as userService from '../services/userService';
 import {getGlobal, setGlobal} from '../store';
 
 class LoginContainer extends Component{
@@ -76,6 +77,12 @@ class LoginContainer extends Component{
                 loginService.login(name, pwd, rs.data, (rs)=> {
                     if (rs && rs.result) {
                         this.props.actions.setUserInfoAfterLoginStatusChange(name, pwd, rs.data, true);
+                        //登陆后获取用户信息
+                        userService.getUserInfo(rs.data, rs=>{
+                            if (rs && rs.result === 1){
+                                this.props.actions.updateUserInfo(rs.data);
+                            } 
+                        });
                         Alert.alert('登陆成功');
                         this.onLoginClose();
                     } else {

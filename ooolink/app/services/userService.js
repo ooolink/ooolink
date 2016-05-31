@@ -26,3 +26,22 @@ export function getUserInfo(token, cb){
             cb(rs);
         });
 }
+
+export function updateUserInfo(token, infos, cb){
+    let infosBody = encodeURIComponent(JSON.stringify(infos));
+    fetch(`${SERVER_ADDRESS}user/profile`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            'x-access-token': token
+        },
+        body: `infos=${infosBody}`
+    })
+        .then(responseAuth(token=>{
+            updateUserInfo(token, infos, cb);
+        }, cb))
+        .then(rs=>{
+            rs.result === 1 && setGlobal('userInfo', infos);
+            cb(rs);
+        })
+}
