@@ -166,7 +166,7 @@ class CollectionFolder extends Component{
     onUpdateFolder(){
         let updateValue = this.state.updateValue,
             typeId = this.props.type,
-            typeName = this.props.typeName;
+            typeName = this.state.typeName;
 
         this.setState({showUpdateBlock: false, isOperating: true});
         let token = this.props.state.user.userToken;
