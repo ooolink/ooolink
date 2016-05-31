@@ -95,7 +95,7 @@ class CollectionFolder extends Component{
         null;
 
         return (
-            <View>
+            <View style={{flex:1}}>
             <View style={{flex: 1}}>
                 <View 
                 accessible={true}
