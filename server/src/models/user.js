@@ -22,7 +22,8 @@ const User = db.define('user', {
     user_collection_type: {type: Sequelize.STRING(1024), defaultValue: JSON.stringify([{name:'default', id: 'default'}])},
     user_focus_type: {type: Sequelize.STRING(1024)},
     site_id: {type: Sequelize.STRING(64)},                                          //是哪个站点的子账号
-    site_user: {type: Sequelize.STRING(512)}                                        //子账号相关信息
+    site_user: {type: Sequelize.STRING(512)},                                        //子账号相关信息
+    site_user_belong: {type: Sequelize.INTEGER}                                     //与子账号关联的父账户
 }, {
     freezeTableName: true,
     timestamps: false

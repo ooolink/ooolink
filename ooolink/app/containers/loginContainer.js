@@ -97,6 +97,12 @@ class LoginContainer extends Component{
         loginService.sign(name, pwd, (rs=> {
             if (rs && rs.result) {
                 this.props.actions.setUserInfoAfterLoginStatusChange(name, pwd, rs.data, true);
+                //登陆后获取用户信息
+                userService.getUserInfo(rs.data, rs=>{
+                    if (rs && rs.result === 1){
+                        this.props.actions.updateUserInfo(rs.data);
+                    } 
+                });
                 Alert.alert('注册成功');
                 this.onLoginClose();
             } else {

@@ -42,8 +42,11 @@ class ProfileEdit extends Component{
                 user_work: '',
                 user_education: '',
                 user_living: '',
+                user_desc: '',
                 user_sex: -1
             }
+        } else {
+            userInfo.user_image = userInfo.user_image || USER_DEFAULT_HEAD;
         }
         this.state = Object.assign({}, userInfo, {isOperating: false, isPick: false});
     }
@@ -80,9 +83,18 @@ class ProfileEdit extends Component{
                         <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>昵称</Text>
                             <TextInput 
-                                autoFocus={true} style={styles.textInput}
+                                style={styles.textInput}
                                 value={this.state.user_realname} onChangeText={(user_realname)=>{
                                     this.setState({user_realname})
+                                }}/>
+                        </View>
+                        <View style={[styles.itemView]}>
+                            <Text style={styles.itemText}>自我介绍</Text>
+                            <TextInput
+                                autoFocus={true}  
+                                style={styles.textInput}
+                                value={this.state.user_desc} onChangeText={(user_desc)=>{
+                                    this.setState({user_desc})
                                 }}/>
                         </View>
                         <View style={[styles.itemView]}>
@@ -97,7 +109,7 @@ class ProfileEdit extends Component{
                         <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>住址</Text>
                             <TextInput 
-                                autoFocus={true} style={styles.textInput}
+                                style={styles.textInput}
                                 value={this.state.user_living} onChangeText={(user_living)=>{
                                     this.setState({user_living})
                                 }}/>
@@ -105,7 +117,7 @@ class ProfileEdit extends Component{
                        <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>工作情况</Text>
                             <TextInput 
-                                autoFocus={true} style={styles.textInput}
+                                style={styles.textInput}
                                 value={this.state.user_work} onChangeText={(user_work)=>{
                                     this.setState({user_work})
                                 }}/>
@@ -113,7 +125,7 @@ class ProfileEdit extends Component{
                        <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>教育情况</Text>
                             <TextInput 
-                                autoFocus={true} style={styles.textInput}
+                                style={styles.textInput}
                                 value={this.state.user_education} onChangeText={(user_education)=>{
                                     this.setState({user_education})
                                 }}/>
@@ -134,7 +146,8 @@ class ProfileEdit extends Component{
             user_image: this.state.user_image,
             user_living: this.state.user_living,
             user_realname: this.state.user_realname,
-            user_work: this.state.user_work
+            user_work: this.state.user_work,
+            user_desc: this.state.user_desc
         }
 
         this.setState({isOperating: true});
