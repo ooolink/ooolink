@@ -52,7 +52,9 @@ export default (router)=> {
 
     router.get('/site/topic/:id', blankAuth(['site'], null, ['id']), siteController.getSiteContentByContentId);
 
-    //router.post('/comment', headAuth(['x-access-token']), blankAuth(null, ['content', 'contentid', 'replyid']));
+    router.post('/comment', headAuth(['x-access-token']), blankAuth(null, ['content', 'contentid', 'replyid']), userController.auth, commentController.publishComment);
+
+    router.get('/comments/:contentid', blankAuth(['page', 'limit'], null, ['contentid']), commentController.getComments);
 
     router.post('/user/login', userController.login);
 

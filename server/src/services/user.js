@@ -52,6 +52,22 @@ export const findUserByToken = function *(token){
     return user;
 }
 
+export const findUserById = function *(ids){
+    if (Array.isArray(ids)){
+        let users = yield User.findAll({
+            where: {
+                id: {
+                    $in: ids
+                }
+            }
+        });
+        return users;
+    } else {
+        let user = yield User.findById(ids);
+        return user;
+    }
+}
+
 export const createUserInfo = function *(user_id, user_realname){
     let userInfo = yield UserInfo.create({
         user_realname,
@@ -61,6 +77,16 @@ export const createUserInfo = function *(user_id, user_realname){
 }
 
 export const getUserInfo = function *(user_id){
+    if (Array.isArray(user_id)){
+        let userInfos = yield UserInfo.findAll({
+            where:{
+                user_id: {
+                    $in: user_id
+                }
+            }
+        });
+        return userInfos;
+    }
     let userInfo = yield UserInfo.findOne({where: {user_id}});
     return userInfo;
 }

@@ -7,7 +7,45 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 "use strict";
+import * as commentService from '../services/comment';
+import * as userService from '../services/user';
 
 export const publishComment = function *(next){
+    let {content, contentid, replyid} = this.request.body.fields;
+    let comment = yield commentService.addComment(content, replyid, contentid, this._domain.user.id);
+    this.body = {
+        result: 1,
+        data: comment.id
+    }
+}
 
+export const getComments = function *(next){
+    let {page, limit} = this.query,
+        contentid = this.params.contentid;
+
+    page = parseInt(page);
+    limit = parseInt(limit);
+    limit = limit > 10 ? 10 : limit;
+    
+    let comments = yield commentService.getComments(contentid, page, limit);
+    let ids = comments.map(comment=>{
+        return comment.id;
+    });
+
+    let map = {}; 
+    let userInfos = yield userService.getUserInfo(ids);
+    userInfos.forEach(userInfo=>{
+        map[userInfo.user_id] = userInfo;
+    });
+
+    let commentsRs = comments.map(comment=>{
+        let commentRs = comment.dataValues;
+        commentRs['userInfo'] = map[comment.user_id];
+        return commentRs;
+    });
+
+    this.body = {
+        result: 1,
+        data: commentsRs
+    }
 }

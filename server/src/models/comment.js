@@ -17,7 +17,7 @@ const Comment = db.define('comment', {
     content_id: {type: Sequelize.STRING(128)},
     user_id: {type: Sequelize.INTEGER},
     reply_id: {type: Sequelize.INTEGER},
-    deleted: {type: Sequelize.BOOLEAN},
+    deleted: {type: Sequelize.BOOLEAN, defaultValue: false},
     created: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 }, {
