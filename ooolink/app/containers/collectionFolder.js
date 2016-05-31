@@ -25,10 +25,13 @@ import TopBar from '../common/components/topBar';
 import OperateLoading from '../common/components/operateLoading';
 import TopicsList from '../components/topicslistWithoutBg'
 import TopicDetail from './topicDetail';
+import Login from './loginContainer';
 import * as collectService from '../services/collectService';
 import {setGlobal, getGlobal} from '../store';
 let {height, width} = Dimensions.get('window');
 
+
+//important! this.props.type 为 typeid, this.props.typeName 为 type 的名字
 class CollectionFolder extends Component{
     static propTypes = {
         type: PropTypes.string.isRequired,
@@ -38,23 +41,28 @@ class CollectionFolder extends Component{
     constructor(props){
         super(props);
         this.state = {
-            collections: null,
             showMore: false,
             showUpdateBlock: false,
             isOperating: false,
-            updateValue: this.props.typeName
+            updateValue: this.props.typeName,
+            typeName: this.props.typeName
         }
     }
 
     render(){
 
-        let cfCom = this.state.collections ? 
-        <TopicsList
-            data={this.state.collections}
-            onSelectTopic={this.onSelectTopic.bind(this)}
-        /> :
-        <LoadingBlock/>
+        let cfCom = null,
+            typeId = this.props.type,
+            typeName = this.props.typeName,
+            userCollectionsDetail = this.props.state.collect.userCollectionsDetail;
 
+        if (userCollectionsDetail[typeId]){
+            cfCom = <TopicsList
+                data={userCollectionsDetail[typeId].collections}
+                onSelectTopic={this.onSelectTopic.bind(this)}
+            />
+        }
+        
         let moreCom = <TouchableOpacity onPress={this.onMore.bind(this)} style={styles.more}> 
                         <Image source={require('../images/topbar-more.png')} style={{width: 20, height: 20}}/>
                     </TouchableOpacity>
@@ -64,6 +72,7 @@ class CollectionFolder extends Component{
             <Text onPress={()=>{this.setState({showMore: false, showUpdateBlock: true})}} style={styles.moreOperateText}>编辑收藏夹</Text>
         </View> :
         null;
+        
         let updateOperateCom = this.state.showUpdateBlock ? 
         <View 
             onStartShouldSetResponder={()=>{this.setState({showUpdateBlock: false})}}
@@ -93,12 +102,12 @@ class CollectionFolder extends Component{
                 onStartShouldSetResponder={()=>{this.setState({showMore: false})}}
                 style={{flex: 1}}>
                     <TopBar
-                        backText={`收藏夹-${this.props.typeName}`}
+                        backText={`收藏夹-${this.state.typeName}`}
                         onBack={()=>{this.props.navigator.pop()}}
                         child={moreCom}
                     />
                     <View style={styles.titleContainer}>
-                        <Text style={styles.typeText}>{this.props.typeName}</Text>
+                        <Text style={styles.typeText}>{this.state.typeName}</Text>
                         <Text style={styles.countText}>{`共 ${this.props.count} 篇收藏`}</Text>
                     </View>
                     {cfCom}
@@ -131,17 +140,18 @@ class CollectionFolder extends Component{
 
     onDeleteFolder(){
         this.setState({showMore: false});
-        let token = this.props.state.user.userToken;
+        let token = this.props.state.user.userToken,
+            typeId = this.props.type;
+
         Alert.alert('Tip', `您是否要删除收藏夹 ${this.props.typeName}`, [
         {text: '取消'},
         {text: '删除', onPress: ()=>{
             this.setState({isOperating: true});
-                collectService.deleteUserCollectionType(token, this.props.type, rs=>{
+                collectService.deleteUserCollectionType(token, typeId, rs=>{
                     if (rs && rs.result === 1){
+                        this.props.actions.deleteUserCollectionTypeById(typeId);
                         Alert.alert('删除成功');
-                        if (this.props.count === 1){
-                            this.props.navigator.pop();
-                        }
+                        this.props.navigator.pop();
                     } else {
                         Alert.alert('删除失败');
                     }
@@ -152,12 +162,17 @@ class CollectionFolder extends Component{
     }
 
     onUpdateFolder(){
+        let updateValue = this.state.updateValue,
+            typeId = this.props.type,
+            typeName = this.props.typeName;
+
         this.setState({showUpdateBlock: false, isOperating: true});
         let token = this.props.state.user.userToken;
-            collectService.updateUserCollectionType(token, this.state.updateValue, this.props.typeName, rs=>{
+            collectService.updateUserCollectionType(token, updateValue, typeName, rs=>{
                 if (rs && rs.result === 1){
                     Alert.alert('更新成功');
-                    this.setState({isOperating: false});
+                    this.props.actions.updateUserCollectionTypeName(typeId, updateValue);
+                    this.setState({isOperating: false, typeName: updateValue});
                 } else {
                     Alert.alert('更新失败');
                     this.setState({updateValue: this.props.typeName, isOperating: false})
@@ -166,10 +181,26 @@ class CollectionFolder extends Component{
     }
 
     componentDidMount() {
-        let token = this.props.state.user.userToken;
-            collectService.getCollectionsDetail(token, this.props.type, rs=>{
-                this.setState({collections: rs.data});
-            });
+        let token = this.props.state.user.userToken,
+            typeId = this.props.type,
+            count = this.props.count;
+
+        this.setState({isOperating: true});
+        collectService.getCollectionsDetail(token, typeId, rs=>{
+            if (rs && rs.result === 1){
+                this.props.actions.updateUserCollectionDetail(typeId, count, rs.data);
+            } else if (rs && rs.result === 401) {
+                this.goToLogin();
+            } 
+            this.setState({isOperating: false});
+        });
+    }
+
+    goToLogin(){
+        this.props.navigator.push({
+            name: 'login',
+            component: Login
+        });
     }
 }
 

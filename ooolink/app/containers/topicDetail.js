@@ -28,6 +28,7 @@ import HtmlComponent from '../common/htmlRender/htmlComponent';
 import OperateLoading from '../common/components/operateLoading'
 import Publish from './publish';
 import Login from './loginContainer';
+import {updateUserCollectionType} from '../actions/user';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import {UriDeal, WordLineDeal, timeDeal} from '../utils';
 import {getGlobal, setGlobal} from '../store';
@@ -141,19 +142,18 @@ class TypeChooseModal extends Component {
             return;
         }
         this.setState({isOperating: true});
-        getGlobal('oooLinkToken', token=>{
+        let token = this.props.state.user.userToken;
             collectService.createUserCollectionType(token, this.state.createValue, rs=>{
                 if (rs && rs.result === 1){
                     let uct = this.state.userCollectionTypes;
                     uct.unshift({name: this.state.createValue, id: rs.data});
-                    setGlobal('userCollectionTypes', uct, 1000*60*5);
+                    updateUserCollectionType(uct, true);    //更新 redux
                     this.setState({isOperating: false, createValue: '', userCollectionTypes: uct, isCreating: false});
                 } else if (rs && rs.result === 0) {
                     Alert.alert('新建失败');
                     this.setState({isOperating: false});
                 }
             });
-        });
     }
 }
 
@@ -170,8 +170,7 @@ class TopicDetail extends Component {
         this.state = {
             likeStatus: 'loading',
             isPressLike: false,
-            isOperating: false,
-            userCollectionTypes: []
+            isOperating: false
         }
     }
 
@@ -186,7 +185,8 @@ class TopicDetail extends Component {
 
         if (this.state.isPressLike){
             modalCom = <TypeChooseModal 
-                            userCollectionTypes={this.state.userCollectionTypes}
+                            state={this.props.state}
+                            userCollectionTypes={this.props.state.user.userCollectionTypes}
                             onCollect = {this.onCollect.bind(this)}
                             onClose={()=>{this.setState({isPressLike: false})}}
                         />
@@ -209,11 +209,10 @@ class TopicDetail extends Component {
     }
 
     componentDidMount() {
-        getGlobal('oooLinkToken', token=>{
-            collectService.judgeCollected(token, this.props.topicId, rs=>{
-                let status = rs && rs.result === 1 && rs.data === 1 ? 'ok' : 'none';
-                this.setState({likeStatus: status});
-            });
+        let token = this.props.state.user.userToken;
+        collectService.judgeCollected(token, this.props.topicId, rs=>{
+            let status = rs && rs.result === 1 && rs.data === 1 ? 'ok' : 'none';
+            this.setState({likeStatus: status});
         });
         setTimeout(()=>{
             this.props.actions.getTopic(this.props.topicId);
@@ -236,19 +235,26 @@ class TopicDetail extends Component {
     }
 
     onLike() {
+        let token = this.props.state.user.userToken,
+            userIsLogon = this.props.state.user.userIsLogon;
+        //未登陆直接跳出
+        if (!token || !userIsLogon){    
+            this.goToLogin();
+        }
+
+        let types = this.props.state.user.userCollectionTypes;
         if (this.state.likeStatus === 'none') {
             this.setState({operateLoading: true});
-            getGlobal('userCollectionTypes', types=>{
-                if (types !== undefined){
+                if (types){
                     this.setState({
-                        userCollectionTypes: types,
-                        isPressLike: true
+                        isPressLike: true,
+                        operateLoading: false
                     });
                 } else {
-                    getGlobal('oooLinkToken', token=>{
                         collectService.getUserCollectionType(token, rs=>{
                             if (rs && rs.result === 1){
-                                this.setState({userCollectionTypes: rs.data, operateLoading: false, isPressLike: true});
+                                this.props.actions.updateUserCollectionType(rs.data);
+                                this.setState({operateLoading: false, isPressLike: true});
                             } else {
                                 this.setState({operateLoading: false});
                                 if (rs && rs.result === 401){
@@ -259,46 +265,42 @@ class TopicDetail extends Component {
                                 }
                             }                            
                         });
-                    });
                 }
-            });
         } else if (this.state.likeStatus === 'ok') {
             this.setState({likeStatus: 'loading'});
-            getGlobal('oooLinkToken', token=>{
                 collectService.uncollected(this.props.topicId, token, rs=>{
                     if (rs && rs.result === 1){
                         this.setState({likeStatus: 'none'});
                     } else {
                         this.setState({likeStatus: 'ok'});
                         if (rs && rs.result === 401){
-                            this.props.navigator.push({
-                                name: 'Login',
-                                component: Login
-                            });
+                            this.goToLogin();
                         }
                     }
                 });
-            });
         }
     }
 
     onCollect(type){
-        this.setState({likeStatus: 'loading', isPressLike: false})
-        getGlobal('oooLinkToken', token=>{
+        this.setState({likeStatus: 'loading', isPressLike: false});
+        let token = this.props.state.user.userToken;
             collectService.collected(this.props.topicId, token, type, rs=>{
                 if (rs && rs.result === 1) {
                     this.setState({likeStatus: 'ok'});
                 } else {
                     this.setState({likeStatus: 'none'});
                     if (rs && rs.result === 401){
-                        this.props.navigator.push({
-                            name: 'Login',
-                            component: Login
-                        });
+                        this.goToLogin();
                     }
                 }
             });
-        });
+    }
+
+    goToLogin(){
+        this.props.navigator.push({
+            name: 'Login',
+            component: Login
+        });  
     }
 }
 

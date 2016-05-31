@@ -14,7 +14,8 @@ const initialState = {
     userInfo: null,                        //用户信息 JSON 格式
     userToken: null,                       //用于验证的 token
     userName: null,
-    userPasswd: null
+    userPasswd: null,
+    userCollectionTypes: null              //用户收藏夹
 };
 
 export default function(state = initialState, action) {
@@ -35,6 +36,10 @@ export default function(state = initialState, action) {
             if (action.token){
                 state.userToken = token;
             }
+            break;
+        case types.UPDATE_USER_COLLECTION_TYPE:
+            state.userCollectionTypes = action.types;
+            break;
     }
 
     return Object.assign({}, state);

@@ -21,14 +21,21 @@ import React,{
 } from 'react-native';
 import TopBar from '../common/components/topBar';
 import InfoWithImageBlock from '../common/components/infoWithImageBlock';
+import OperateLoading from '../common/components/operateLoading';
 import InfoWithContentBlock from '../common/components/infoWithContentBlock';
 import CollectionFolder from './collectionFolder';
+import Login from './loginContainer';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
+import * as collectService from '../services/collectService';
+let {height, width} = Dimensions.get('window');
 
 class InfoGroup extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            isOperating: false
+        }
     }
 
     render() {
@@ -49,8 +56,8 @@ class InfoGroup extends Component {
                 });
                 break;
             case TO_INFO_GROUP_COLLECTIONS:
-                let collections = this.props.state.content.collections;
-                Object.keys(collections).forEach((cname, idx)=> {
+                let collections = this.props.state.collect.userCollections;
+                collections && Object.keys(collections).forEach((cname, idx)=> {
                     if (collections[cname].count === 0){
                         return;
                     }
@@ -65,6 +72,11 @@ class InfoGroup extends Component {
                         />
                     );
                 });
+                if (info.length === 0 && !this.state.isOperating){
+                    info=<Text style={{
+                        width, textAlign: 'center', color: '#999', marginTop: 20
+                    }}>{'没有收藏 或 获取失败~'}</Text>
+                }
                 break;
         }
         return (
@@ -76,6 +88,7 @@ class InfoGroup extends Component {
                 <ScrollView>
                     {info}
                 </ScrollView>   
+                <OperateLoading visible={this.state.isOperating}/>
             </View>
         )
     }
@@ -111,9 +124,27 @@ class InfoGroup extends Component {
                 break;
 
             case TO_INFO_GROUP_COLLECTIONS:
-                this.props.actions.getCollections(token);
+                this.setState({isOperating: true});
+                collectService.getCollections(token, rs=>{
+                    if (rs && rs.result === 1){
+                        this.props.actions.updateUserCollectionGeneral(rs.data);
+                        this.setState({isOperating: false});
+                    } else if (rs && rs.result === 401){
+                        this.setState({isOperating: false});
+                        this.goToLogin();
+                    } else {
+                        this.setState({isOperating: false});
+                    }
+                });
                 break;
         }
+    }
+
+    goToLogin(){
+        this.props.navigator.push({
+            name: 'login',
+            component: Login
+        });
     }
 }
 

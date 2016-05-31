@@ -8,6 +8,7 @@
  */
 
 import * as ActionTypes from '../constants/actionTypes';
+import {updateUserCollectionGeneral} from './collect';
 import {getGlobal, setGlobal} from '../store';
 
 export function getUserAllInfoFromNativeCache(){
@@ -30,18 +31,25 @@ export function getUserAllInfoFromNativeCache(){
                             info: info || null
                         });
 
-                        getGlobal('userName', userName=>{
-                            getGlobal('passWord', userPasswd=>{
-                                dispatch({
-                                    type: ActionTypes.UPDATE_USER_LOGIN_INFO,
-                                    userName: userName || null,
-                                    userPasswd: userPasswd || null
-                                });
+                        getGlobal('userCollectionTypes', types=>{
+                            dispatch({
+                                type: ActionTypes.UPDATE_USER_COLLECTION_TYPE,
+                                types: types || null
+                            });
 
-                                //App加载完成，如果还有其他预加载流程可以放到对应流程中
-                                dispatch({
-                                    type: ActionTypes.UPDATE_APP_LOAD_STATUS,
-                                    status: true
+                            getGlobal('userName', userName=>{
+                                getGlobal('passWord', userPasswd=>{
+                                    dispatch({
+                                        type: ActionTypes.UPDATE_USER_LOGIN_INFO,
+                                        userName: userName || null,
+                                        userPasswd: userPasswd || null
+                                    });
+
+                                    //App加载完成，如果还有其他预加载流程可以放到对应流程中
+                                    dispatch({
+                                        type: ActionTypes.UPDATE_APP_LOAD_STATUS,
+                                        status: true
+                                    });
                                 });
                             });
                         });
@@ -53,17 +61,17 @@ export function getUserAllInfoFromNativeCache(){
 
 export function setUserInfoAfterLoginStatusChange(userName, userPasswd, token, status, info){
     return (dispatch, getState)=>{
-        dispatch({
+        token && dispatch({
             type: ActionTypes.UPDATE_USER_TOKEN,
             token
         });
 
-        dispatch({
+        status && dispatch({
             type: ActionTypes.UPDATE_USER_LOGIN_STATUS,
             status
         });
 
-        dispatch({
+        userName && userPasswd && dispatch({
             type: ActionTypes.UPDATE_USER_LOGIN_INFO,
             userName,
             userPasswd
@@ -92,6 +100,13 @@ export function updateUserToken(token){
                     token
                 });
             });
+
+            getGlobal('isLogin', status=>{
+                dispatch({
+                    type: ActionTypes.UPDATE_USER_LOGIN_STATUS,
+                    status: !!status
+                });
+            });
         }
     }
 }
@@ -114,7 +129,89 @@ export function updateUserInfo(info){
     }
 }
 
+//更新全部的收藏夹信息
+export function updateUserCollectionType(types, isCache){
 
+    if (types){
+
+        isCache && setGlobal('userCollectionTypes', types, 1000*60*2);
+        
+        return {
+            type: ActionTypes.UPDATE_USER_COLLECTION_TYPE,
+            types
+        }
+    }
+}
+
+//更新单个收藏夹的名字
+export function updateUserCollectionTypeName(typeId, newName){
+    return (dispatch, getState)=>{
+        let oldUserCollectionTypes = getState().user.userCollectionTypes;
+        let oldUserCollections = getState().collect.userCollections
+        //可能缓存失效，没有userCollectionTypes
+        if (Array.isArray(oldUserCollectionTypes)){
+            oldUserCollectionTypes.forEach(item=>{
+                if (item.id === typeId){
+                    item.name = newName;
+                }
+            });
+
+            dispatch(updateUserCollectionType(oldUserCollectionTypes, true));
+        }
+
+        if (oldUserCollections){
+            let nameFlag = null;
+            Object.keys(oldUserCollections).forEach(typeName=>{
+                if (oldUserCollections[typeName].id === typeId){
+                    nameFlag = typeName;
+                    oldUserCollections[newName] = oldUserCollections[typeName];
+                }
+            });
+            nameFlag && delete oldUserCollections[nameFlag];
+
+            dispatch(updateUserCollectionGeneral(oldUserCollections));
+        }
+    };
+}
+
+export function deleteUserCollectionTypeById(typeId){
+    return (dispatch, getState)=>{
+        let oldUserCollectionTypes = getState().user.userCollectionTypes;
+        let oldUserCollections = getState().collect.userCollections
+        //可能缓存失效，没有userCollectionTypes
+        if (Array.isArray(oldUserCollectionTypes)){
+            let spliceIdx = -1;
+            oldUserCollectionTypes.forEach((item, idx)=>{
+                if (item.id === typeId){
+                    spliceIdx = idx;
+                }   
+            });
+            if (spliceIdx !== -1){
+                oldUserCollectionTypes.splice(spliceIdx, 1);
+                dispatch(updateUserCollectionType(oldUserCollectionTypes, true));
+            }
+        }
+
+        if (oldUserCollections){
+            let nameFlag = null;
+            Object.keys(oldUserCollections).forEach(typeName=>{
+                if (oldUserCollections[typeName].id === typeId){
+                    nameFlag = typeName;
+                }
+            });
+            nameFlag && delete oldUserCollections[nameFlag];
+
+            dispatch(updateUserCollectionGeneral(oldUserCollections));
+        }
+    };
+}
+
+export function updateUserLoginStatus(status){
+    return {
+        types: ActionTypes.UPDATE_USER_LOGIN_STATUS,
+        status
+    }
+}
 
 
 

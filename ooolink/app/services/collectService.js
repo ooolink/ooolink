@@ -8,7 +8,8 @@
  */
 import * as loginService from './loginService';
 import {SERVER_ADDRESS} from '../constants/config';
-import {getGlobal, setGlobal} from '../store'
+import {getGlobal, setGlobal} from '../store';
+import {responseAuth} from './base';
 
 export function collected(contentid, token, type, cb) {
     "use strict";
@@ -318,22 +319,9 @@ export function updateUserCollectionType(token, ntype, otype, cb){
         },
         body: `ntype=${ntype}&otype=${otype}`
     })
-        .then(response=>{
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth(rs=>{
-                    if (rs && rs.result === 401){
-                        cb({result: 401});
-                    } else if (rs && rs.result === 1){
-                        updateUserCollectionType(rs.data, type, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            updateUserCollectionType
+        }, cb))
         .then(rs=>{
             rs && cb(rs);
         });
@@ -346,37 +334,14 @@ export function getUserCollectionType(token, cb) {
             'x-access-token': token
         }
     })
-        .then(response=>{
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth(rs=>{
-                    if (rs && rs.result === 401){
-                        cb({result: 401});
-                    } else if (rs && rs.result === 1){
-                        getUserCollectionType(rs.data, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            getUserCollectionType(token, cb);
+        }, cb))
         .then(rs=>{
-            rs && setGlobal('userCollectionTypes', rs.data, 1000*60*5);
-            rs && cb(rs);
+            rs.result === 1 && setGlobal('userCollectionTypes', rs.data, 1000*60*2);
+            cb(rs);
         });
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
