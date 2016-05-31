@@ -104,7 +104,6 @@ class Home extends Component {
             if (this.state.siteLikeStatus === 'none') {
                 collectService.collectedSite(currentSite, token, (rs)=> {
                     if (rs && rs.result === 1) {
-                        this.props.actions.collectSiteFocus(siteInfo[currentSite]);
                         this.setState({siteLikeStatus: 'ok'});
                     } else {
                         this.setState({siteLikeStatus: 'none'});
@@ -119,7 +118,6 @@ class Home extends Component {
             } else if (this.state.siteLikeStatus === 'ok') {
                 collectService.unCollectedSite(currentSite, token, (rs)=> {
                     if (rs && rs.result === 1) {
-                        this.props.actions.unCollectSiteFocus(currentSite);
                         this.setState({siteLikeStatus: 'none'});
                     } else {
                         //TODO 操作失败提示

@@ -15,6 +15,7 @@ import * as searchController from './controllers/search';
 import * as userController from './controllers/user';
 import * as collectController from './controllers/collect';
 import * as recommendController from './controllers/recommend';
+import * as commentController from './controllers/comment';
 import * as _controller from './controller';
 import * as searchService from './services/search';
 import * as collectService from './services/collect';
@@ -51,29 +52,7 @@ export default (router)=> {
 
     router.get('/site/topic/:id', blankAuth(['site'], null, ['id']), siteController.getSiteContentByContentId);
 
-    router.post('/site/topic', function *(next) {
-        yield _controller.publishTopic.call(this);
-    });
-
-    router.post('/site/topic/:id', methodAuth('delete'), function *(next) {
-
-    });
-
-    router.post('/site/topic/:id', methodAuth('put'), function *(next) {
-
-    });
-
-    router.post('/site/comment', function *(next) {
-        yield _controller.publishComment.call(this);
-    });
-
-    router.post('/site/comment/:id', methodAuth('delete'), function *(next) {
-
-    });
-
-    router.post('/site/comment/:id', methodAuth('put'), function *(next) {
-
-    });
+    //router.post('/comment', headAuth(['x-access-token']), blankAuth(null, ['content', 'contentid', 'replyid']));
 
     router.post('/user/login', userController.login);
 
