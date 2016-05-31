@@ -61,17 +61,17 @@ export function getUserAllInfoFromNativeCache(){
 
 export function setUserInfoAfterLoginStatusChange(userName, userPasswd, token, status, info){
     return (dispatch, getState)=>{
-        token && dispatch({
+        token!='empty' && dispatch({
             type: ActionTypes.UPDATE_USER_TOKEN,
             token
         });
 
-        status && dispatch({
+        status!='empty' && dispatch({
             type: ActionTypes.UPDATE_USER_LOGIN_STATUS,
             status
         });
 
-        userName && userPasswd && dispatch({
+        userName!='empty' && userPasswd!='empty' && dispatch({
             type: ActionTypes.UPDATE_USER_LOGIN_INFO,
             userName,
             userPasswd
