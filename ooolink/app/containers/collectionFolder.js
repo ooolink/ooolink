@@ -95,6 +95,7 @@ class CollectionFolder extends Component{
         null;
 
         return (
+            <View>
             <View style={{flex: 1}}>
                 <View 
                 accessible={true}
@@ -114,6 +115,7 @@ class CollectionFolder extends Component{
                 </View>
                 {moreOperateCom}
                 {updateOperateCom}
+            </View>
                 <OperateLoading visible={this.state.isOperating}/>
             </View>
         );

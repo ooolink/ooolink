@@ -10,5 +10,4 @@ import {SERVER_ADDRESS} from '../constants/config';
 import {getGlobal, setGlobal, removeGlobal} from '../store';
 
 export function getUserInfo(){
-    
 }

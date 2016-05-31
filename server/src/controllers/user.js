@@ -199,6 +199,15 @@ export const updateUserCollectionType = function *(next){
     }    
 }
 
+export const getUserInfo = function *(next){
+    let userId = this._domain.user.id;
+}
+
+export const updateUserInfo = function *(next){
+    let userId = this._domain.user.id;
+}
+
+//用于用户收藏的存在检查
 function typeIdIsExists(types, typeId){
     for (let i = 0, len = types.length; i < len; i++){
         if (types[i].id === typeId){

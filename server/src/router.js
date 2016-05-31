@@ -81,9 +81,9 @@ export default (router)=> {
 
     router.post('/user/sign', userController.sign);
 
-    router.get('/user/profile', headAuth(['x-access-token']), userController.auth);
+    router.get('/user/profile', headAuth(['x-access-token']), userController.auth, userController.getUserInfo);
 
-    router.put('/user/profile', headAuth(['x-access-token']), blankAuth(null, ['infos']), userController.auth);
+    router.put('/user/profile', headAuth(['x-access-token']), blankAuth(null, ['infos']), userController.auth, userController.updateUserInfo);
 
     router.get('/user/collectionsgeneral', headAuth(['x-access-token']), userController.auth, userController.getUserCollectionsGeneral);
 

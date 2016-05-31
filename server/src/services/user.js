@@ -60,6 +60,11 @@ export const createUserInfo = function *(user_id, user_realname){
     return userInfo;
 }
 
+export const getUserInfo = function *(user_id){
+    let userInfo = yield UserInfo.findOne({where: {user_id}});
+    return userInfo;
+}
+
 export const updateUserInfo = function *(value, where){
     let userInfo = yield UserInfo.update(value, where);
     return userInfo;

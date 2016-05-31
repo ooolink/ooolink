@@ -38,7 +38,7 @@ class TopicWithoutBgBlock extends Component{
         if (this.props.idx % 2 === 0){
             bgColor = '#fff';
         }
-        data.image = UriDeal(data.image);
+        data.image = data.image && UriDeal(data.image);
         let imgCom = data.image ? <Image style={styles.image} source={{uri: data.image}}/> : null;
         let line = data.image ? {borderBottomWidth: 0} : {};
         return(
