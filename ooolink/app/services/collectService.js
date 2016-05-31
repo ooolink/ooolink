@@ -320,7 +320,7 @@ export function updateUserCollectionType(token, ntype, otype, cb){
         body: `ntype=${ntype}&otype=${otype}`
     })
         .then(responseAuth(token=>{
-            updateUserCollectionType
+            updateUserCollectionType(token, ntype, otype, cb);
         }, cb))
         .then(rs=>{
             rs && cb(rs);

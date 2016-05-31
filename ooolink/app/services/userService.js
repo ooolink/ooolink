@@ -6,8 +6,23 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
+import * as loginService from './loginService';
 import {SERVER_ADDRESS} from '../constants/config';
 import {getGlobal, setGlobal, removeGlobal} from '../store';
+import {responseAuth} from './base';
 
-export function getUserInfo(){
+export function getUserInfo(token, cb){
+    fetch(`${SERVER_ADDRESS}user/profile`, {
+        method: 'GET',
+        headers: {
+            'x-access-token': token
+        }
+    })
+        .then(responseAuth(token=>{
+            getUserInfo(token, cb);
+        }, cb))
+        .then(rs=>{
+            rs.result === 1 && setGlobal('userInfo', rs.data);
+            cb(rs);
+        });
 }

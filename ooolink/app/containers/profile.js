@@ -21,13 +21,15 @@ import React,{
     Alert
 } from 'react-native';
 import LoadingBlock from '../common/components/loadingBlock'
-import TopBar from '../common/components/topBar';
 import Search from './search';
 import InfoGroup from './infoGroup';
 import Login from './loginContainer';
+import {UriDeal, WordLineDeal, timeDeal} from '../utils';
+import {USER_DEFAULT_HEAD} from '../constants/config';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
 import * as collectService from '../services/collectService';
 import * as loginService from '../services/loginService';
+import * as userService from '../services/userService';
 
 let {height, width} = Dimensions.get('window');
 
@@ -41,7 +43,10 @@ class Profile extends Component {
     }
 
     render() {
-        let {userIsLogon, userName} = this.props.state.user;
+        let {userIsLogon, userName, userInfo} = this.props.state.user;
+
+        let userRealName = userInfo && userInfo.user_realname ? userInfo.user_realname : '...';
+        let userHeadImage = userInfo && userInfo.user_image ? UriDeal(userInfo.user_image) : USER_DEFAULT_HEAD;
 
         let that = this;
         let loginOutCom = userIsLogon ? 
@@ -56,8 +61,12 @@ class Profile extends Component {
                     <Image
                         source={require('../images/user-bg.jpg')}
                         style={styles.userInfoItem}>
+                        <Image
+                            source={{uri: userHeadImage}}
+                            style={styles.userHead}
+                        />
                         <Text style={styles.userInfoText} onPress={this.onClickUserInfo.bind(this)}>
-                            {userIsLogon ? `用户 : ${userName} (子账号数 : 3)` : '登录/注册'}
+                            {userIsLogon ? `用户 : ${userRealName} (子账号数 : 3)` : '登录/注册'}
                         </Text>
                     </Image>
                     <TouchableOpacity
@@ -86,6 +95,18 @@ class Profile extends Component {
                     {loginOutCom}
                 </View>
             );
+    }
+
+    componentDidMount() {
+        let token = this.props.state.user.userToken,
+            isLogin = this.props.state.user.userIsLogon;
+        isLogin && userService.getUserInfo(token, rs=>{
+            if (rs && rs.result === 1){
+                this.props.actions.updateUserInfo(rs.data);
+            } else {
+                //TODO
+            }
+        });
     }
 
     onGetLikeTopic() {
@@ -153,10 +174,16 @@ const styles = StyleSheet.create({
     },
     userInfoItem: {
         width,
-        height: 50,
-        flexDirection: "row",
+        height: 100,
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center"
+    },
+    userHead: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginBottom: 10
     },
     searchItem: {
         flexDirection: "row",

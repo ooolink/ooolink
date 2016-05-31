@@ -71,6 +71,11 @@ class Root extends Component{
 
     constructor(props){
         super(props);
+        let type = this.props.type;
+        let index = ['discover', 'message', 'my'].indexOf(type);
+        this.state = {
+            idx: index
+        }
     }
 
     render(){
@@ -78,8 +83,11 @@ class Root extends Component{
         let index = ['discover', 'message', 'my'].indexOf(type);
         return (
             <View>
-                <IndexTopBar/>
+                <IndexTopBar
+                    idx={this.state.idx}
+                />
                 <ScrollableTabView
+                    onChangeTab={(idx)=>{this.setState({idx: idx.i})}}
                     initialPage={index}
                     scrollWithoutAnimation={true}
                     tabBarPosition = 'bottom'

@@ -16,6 +16,7 @@ import React,{
     Dimensions,
     Navigator,
     PropTypes,
+    TouchableOpacity,
     View
 } from 'react-native';
 
@@ -27,9 +28,28 @@ class IndexTopBar extends Component{
     }
 
     render(){
-        return (
-            <Text style={styles.logoText}>oooLink</Text>
-        )
+        switch (this.props.idx){
+            case 2: 
+            return (
+                <View>
+                    <Text style={styles.logoText}>oooLink</Text>
+                    <TouchableOpacity 
+                        onPress={this.onOpenProfileEdit.bind(this)}
+                        style={styles.edit}>
+                        <Image style={styles.image} source={require('../images/profile-edit.png')}/>
+                    </TouchableOpacity>
+                </View>
+            );
+            
+            default:  
+            return (
+                <Text style={styles.logoText}>oooLink</Text>
+            );
+        }
+    }
+
+    onOpenProfileEdit(){
+        
     }
 }
 
@@ -44,6 +64,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         height: 50,
         lineHeight: 32
+    },
+    image:{
+        width: 26, 
+        height: 26
+    },
+    edit:{
+        width: 26,
+        height: 26,
+        position: 'absolute',
+        left: width - 40,
+        top: 10
     }
 });
 

@@ -201,10 +201,23 @@ export const updateUserCollectionType = function *(next){
 
 export const getUserInfo = function *(next){
     let userId = this._domain.user.id;
+    let userInfo = yield userService.getUserInfo(userId);
+    this.body = {
+        result: 1,
+        data: userInfo
+    }
 }
 
 export const updateUserInfo = function *(next){
     let userId = this._domain.user.id;
+    let infos = this.request.body.infos,
+        values = JSON.parse(infos),
+        where = {where: {user_id: userId}};
+
+    let userinfo = yield userService.updateUserInfo(values, where);
+    this.body = {
+        result: 1
+    }
 }
 
 //用于用户收藏的存在检查
