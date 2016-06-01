@@ -12,6 +12,7 @@ import app from './app';
 import content from './content';
 import user from './user';
 import collect from './collect';
+import comment from './comment';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
@@ -19,6 +20,7 @@ export default combineReducers({
     app,
     content,
     user,
-    collect
+    collect,
+    comment
 });
 

@@ -9,27 +9,36 @@
 
 import * as ActionTypes from '../constants/actionTypes';
 
-export function updateCommentCount(contentid, incNumber){
+export function updateCommentCount(contentid, incNumber, page = -1){
     return {
         type: ActionTypes.UPDATE_COMMENT_COUNT,
         contentid,
-        incNumber
+        incNumber,
+        page
     }
 }
 
-export function setComments(contentid, page, comments){
-    return {
-        type: ActionTypes.SET_COMMENTS,
-        page,
-        contentid,
-        comments
-    }
+export function setComments(contentid, page, comments, incNumber){
+    return (dispatch, getState)=>{
+        dispatch({
+            type: ActionTypes.SET_COMMENTS,
+            page,
+            contentid,
+            comments
+        });
+        if (incNumber){
+            dispatch(updateCommentCount(contentid, incNumber, page));                
+        }
+    };
 }
 
 export function postComment(contentid, comment){
-    return {
-        type: ActionTypes.POST_COMMENT,
-        contentid,
-        comment
+    return (dispatch, getState)=>{
+        dispatch({
+            type: ActionTypes.POST_COMMENT,
+            contentid,
+            comment
+        });
+        dispatch(updateCommentCount(contentid, 1));
     }
 }

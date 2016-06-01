@@ -21,7 +21,7 @@ export default function(state = initialState, action) {
             if (!state.comments[action.contentid]){
                 state.comments[action.contentid] = [];
             }
-            state.comments[action.contentid].push(action.comment);            //comment由上层组合，数据格式和后端的一样
+            state.comments[action.contentid].unshift(action.comment);            //comment由上层组合，数据格式和后端的一样
             return Object.assign({}, state);
 
         case types.SET_COMMENTS:
@@ -32,7 +32,7 @@ export default function(state = initialState, action) {
             }
             return Object.assign({}, state);
         case types.UPDATE_COMMENT_COUNT:
-            if (state.commentCount[action.contentid]){
+            if (state.commentCount[action.contentid] && action.page !== 0){
                 state.commentCount[action.contentid] += action.incNumber;
             } else {
                 state.commentCount[action.contentid] = action.incNumber;

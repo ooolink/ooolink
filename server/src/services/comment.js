@@ -26,7 +26,8 @@
         },
         plain: false,
         limit,
-        offset: page * limit
+        offset: page * limit,
+        order: 'created DESC'
     });
 
     return comments;

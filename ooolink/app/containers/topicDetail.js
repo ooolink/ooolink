@@ -153,11 +153,13 @@ class TopicDetail extends Component {
     }
 
     onPublish(){
+        let contentid = this.props.topicId;
         this.props.navigator.push({
             name: 'Comments',
             index: 5,
             component: Comments,
             props: {
+                contentid,
                 type: TO_PUBLISH_COMMENT
             }
         });

@@ -24,7 +24,7 @@ export function publishComment(token, content, contentid, replyid=-1, cb){
             publishComment(toke, content, contentid, replyid, cb);
         }, cb))
         .then(rs=>{
-
+            cb(rs);
         });
 }
 

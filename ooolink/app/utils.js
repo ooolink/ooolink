@@ -82,7 +82,7 @@ export function timeDeal(time, type) {
         tm[4] = t / (60 * 1000);
         tm[5] = t / 1000;
         for (let i = 0, len = tm.length; i < len; i++) {
-            if (parseInt(tm[i]) != 0) {
+            if (tm[i] >= 1) {
                 return parseInt(tm[i]) + tms[i] + '前';
             }
         }
