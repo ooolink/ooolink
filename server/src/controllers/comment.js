@@ -32,7 +32,7 @@ export const getComments = function *(next){
         rows = comments.rows;
 
     let ids = rows.map(comment=>{
-        return comment.id;
+        return comment.user_id;
     });
 
     let map = {}; 
