@@ -119,7 +119,7 @@ class Comments extends Component{
 
         commentService.getComments(contentid, page, limit, rs=>{
             let rows = rs.data.rows;
-            this.props.actions.setComments(contentid, page, rows, rows.length);
+            this.props.actions.setComments(contentid, page, rows, rs.data.count);
         });
     }
 
