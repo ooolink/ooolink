@@ -188,7 +188,6 @@ export const updateUserCollectionType = function *(next){
     let {otype, ntype} = this.request.body.fields;
     let types = JSON.parse(this._domain.user.user_collection_type),
     idx = typeNameIsExists(types, otype);
-    console.log(types, otype)
     if (idx === -1){
         throw new Error('updateUserCollectionType paramsError 500');
     }
