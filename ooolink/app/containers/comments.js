@@ -27,8 +27,14 @@ class Comments extends Component{
 
     render(){
         return (
-            
+            <View>
+                
+            </View>
         );
+    }
+
+    componentDidMount() {
+             
     }
 }
 

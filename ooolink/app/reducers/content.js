@@ -15,7 +15,7 @@ const initialState = {
     getTopicsLoading: false,
     loadingTopicIdNow: null,
     getTopicLoading: false,
-    topic: null,
+    content: {},
     welcomeContent: null
 };
 
@@ -42,20 +42,10 @@ export default function(state = initialState, action) {
             state.topics[page] = topics;
             state.getTopicsLoading = false;
             return Object.assign({}, state);
-        
-        case types.GET_TOPIC_LOADING:
-            state.getTopicLoading = true;
-            state.topic = null;
-            state.loadingTopicIdNow = action.loadingTopicIdNow;
-            return Object.assign({}, state);
 
-        case types.GET_TOPIC:
-            let {topic, loadingTopicIdNow} = action;
-            if (loadingTopicIdNow !== state.loadingTopicIdNow){
-                return Object.assign({}, state);
-            }            
-            state.topic = topic;
-            state.getTopicLoading = false;
+        case types.SET_CONTENT:
+            let {content, contentid} = action;
+            state.content[contentid] = content;
             return Object.assign({}, state);
         default:
             return state;

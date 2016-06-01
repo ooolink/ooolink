@@ -16,7 +16,6 @@ export const GET_TOPICS_LOADING = 'GET_TOPICS_LOADING';
 export const GET_TOPICS = 'GET_TOPICS';
 export const GET_TOPIC = 'GET_TOPIC';
 export const POST_TOPIC = 'PUT_TOPIC';
-export const GET_TOPIC_LOADING = 'GET_TOPIC_LOADING';
 
 /** COMMENT **/
 export const SET_COMMENTS = 'SET_COMMENTS';
@@ -38,6 +37,7 @@ export const UPDATE_USER_COLLECTION_TYPE = 'UPDATE_USER_COLLECTION_TYPE';
 
 /** Content **/
 export const SET_WELCOME_CONTENT = 'SET_WELCOME_CONTENT';
+export const SET_CONTENT = 'SET_CONTENT';
 
 /** App **/
 export const UPDATE_APP_LOAD_STATUS = 'UPDATE_APP_LOAD_STATUS';

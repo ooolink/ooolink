@@ -215,7 +215,7 @@ const stylesheet = StyleSheet.create({
         width: width - 80 - 20,
         height: width - 80 - 20,
         resizeMode: Image.resizeMode.contain,
-        margin: 10
+        margin: 2
     }
 });
 

@@ -55,23 +55,23 @@ function getTopicFromServer(site, id) {
         getGlobal('topicDetail', saveId, (ret)=>{
             if (ret){
                 dispatch({
-                    type: ActionTypes.GET_TOPIC,
-                    topic: ret,
-                    loadingTopicIdNow: id
+                    type: ActionTypes.SET_CONTENT,
+                    content: ret,
+                    contentid: id
                 })
             } else {
                 fetch(`${SERVER_ADDRESS}site/topic/${id}?site=${site}`)
                 .then(response => response.json())
                 .then(json => {
-                    let topic = json.data;
+                    let content = json.data;
                     setGlobal({
                         key: 'topicDetail',
                         id: saveId
-                    }, topic, 1000 * 3600);
+                    }, content, 1000 * 3600);
                     dispatch({
-                        type: ActionTypes.GET_TOPIC,
-                        topic,
-                        loadingTopicIdNow: id
+                        type: ActionTypes.SET_CONTENT,
+                        content,
+                        contentid: id
                     });
                 });
             }
@@ -93,10 +93,6 @@ export function getTopics(site, theme, page = 0, limit = 20) {
 export function getTopic(id) {
     "use strict";
     return (dispatch, getState) => {
-        dispatch({
-            type: ActionTypes.GET_TOPIC_LOADING,
-            loadingTopicIdNow: id
-        });
         return dispatch(getTopicFromServer(id.split('_')[0], id));                              //content_id = site_id + '_' + flag
     }
 }
