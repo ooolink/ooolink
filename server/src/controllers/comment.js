@@ -28,7 +28,10 @@ export const getComments = function *(next){
     limit = limit > 10 ? 10 : limit;
     
     let comments = yield commentService.getComments(contentid, page, limit);
-    let ids = comments.map(comment=>{
+    let count = comments.count,
+        rows = comments.rows;
+
+    let ids = rows.map(comment=>{
         return comment.id;
     });
 
@@ -38,7 +41,7 @@ export const getComments = function *(next){
         map[userInfo.user_id] = userInfo;
     });
 
-    let commentsRs = comments.map(comment=>{
+    let commentsRs = rows.map(comment=>{
         let commentRs = comment.dataValues;
         commentRs['userInfo'] = map[comment.user_id];
         return commentRs;
@@ -46,6 +49,9 @@ export const getComments = function *(next){
 
     this.body = {
         result: 1,
-        data: commentsRs
+        data: {
+            count,
+            rows: commentsRs
+        }
     }
 }

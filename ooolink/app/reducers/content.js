@@ -16,7 +16,6 @@ const initialState = {
     loadingTopicIdNow: null,
     getTopicLoading: false,
     topic: null,
-    collections: [],
     welcomeContent: null
 };
 
@@ -57,32 +56,6 @@ export default function(state = initialState, action) {
             }            
             state.topic = topic;
             state.getTopicLoading = false;
-            return Object.assign({}, state);
-        
-        case types.GET_COLLECTIONS:
-            state.collections = action.collections;
-            return Object.assign({}, state);
-        case types.ADD_COLLECTION:
-            let flag = false;
-            state.collections.forEach((collection, idx)=>{
-                if (collection.collection_id === action.id){
-                    flag = idx;
-                }
-            });
-            if (flag === false){
-                state.collections.push({
-                    collection_id: action.id,
-                    collection_site: action.site,
-                    collection_site_name: action.sitename,
-                    collection_title: action.title,
-                    collection_created: action.created
-                });
-            } else {
-                state.collections[flag].collection_created = action.created;
-            }
-            return Object.assign({}, state);
-        case types.RM_COLLECTION:
-            state.collections = state.collections.filter(c=>!(c.collection_id === action.id));
             return Object.assign({}, state);
         default:
             return state;

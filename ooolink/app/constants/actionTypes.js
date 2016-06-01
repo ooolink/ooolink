@@ -19,10 +19,9 @@ export const POST_TOPIC = 'PUT_TOPIC';
 export const GET_TOPIC_LOADING = 'GET_TOPIC_LOADING';
 
 /** COMMENT **/
-export const GET_COMMENTS = 'GET_COMMENTS';
-export const POST_COMMENT = 'PUT_COMMENT';
-export const ADD_COLLECTION = 'ADD_COLLECTION';
-export const RM_COLLECTION = 'RM_COLLECTION';
+export const SET_COMMENTS = 'SET_COMMENTS';
+export const POST_COMMENT = 'POST_COMMENT';
+export const UPDATE_COMMENT_COUNT = 'UPDATE_COMMENT_COUNT';
 
 /** SITE **/
 export const SITE_LOADING = 'SITE_LOADING';

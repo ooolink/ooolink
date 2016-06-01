@@ -20,7 +20,7 @@
  }
 
  export const getComments = function *(content_id, page, limit){
-    let comments = yield Comment.findAll({
+    let comments = yield Comment.findAndCountAll({
         where: {
             content_id
         },

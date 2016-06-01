@@ -170,14 +170,15 @@ class TopicDetail extends Component {
         this.state = {
             likeStatus: 'loading',
             isPressLike: false,
-            isOperating: false
+            isOperating: false,
+            isRequested: false
         }
     }
 
     render() {
         let topic = this.props.state.content.topic;
         let com, modalCom = null;
-        if (topic && topic.content_id === this.props.topicId) {
+        if (this.state.isRequested && topic && topic.content_id === this.props.topicId) {
             com = <ContentBlock data={topic}/>
         } else {
             com = <LoadingBlock/>
@@ -216,6 +217,7 @@ class TopicDetail extends Component {
         });
         setTimeout(()=>{
             this.props.actions.getTopic(this.props.topicId);
+            this.setState({isRequested: true});
         }, 500);
     }
 
