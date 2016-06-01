@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
+const consumer = require('fibms-node-client').Consumer();
+const producer = require('fibms-node-client').Producer();
 import crypto from 'crypto';
 import Collection from '../models/collection';
 import SiteFocus from '../models/focus';
@@ -138,5 +140,21 @@ export const getSitefocused = function *(focus_userId, page=0, limit=10) {
     return focuses;
 };
 
+/** 远程调用 **/
+export const incContentCollectionNumber = function (contentid){
+    let message = producer.createMessage('global_content_incCollectionNumber');
+    message.setType(producer.MESSAGE_GROUP);
+    message.setParams('contentid', contentid);
+    producer.sendMessage(message);
+    return true;
+}
+
+export const decContentCollectionNumber = function (contentid){
+    let message = producer.createMessage('global_content_decCollectionNumber');
+    message.setType(producer.MESSAGE_GROUP);
+    message.setParams('contentid', contentid);
+    producer.sendMessage(message);
+    return true;
+}
 
 

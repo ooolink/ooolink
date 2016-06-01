@@ -111,7 +111,9 @@ export function timeDeal(time, type) {
 }
 
 export function numberDeal(number, type) {
-
+    if (!number){
+        return 0;
+    }
     function general(number){
         if (number >= 1000 && number < 10000){
             return (number / 1000).toFixed(0) + 'k+';

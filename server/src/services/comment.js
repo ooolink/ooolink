@@ -6,7 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
- import Comment from '../models/comment';
+const consumer = require('fibms-node-client').Consumer();
+const producer = require('fibms-node-client').Producer();
+import Comment from '../models/comment';
 
  export const addComment = function *(content, reply_id, content_id, user_id){
     let comment = yield Comment.create({
@@ -32,3 +34,20 @@
 
     return comments;
  }
+
+/** 远程调用 **/
+export const incContentCommentNumber = function (contentid){
+    let message = producer.createMessage('global_content_incCommentNumber');
+    message.setType(producer.MESSAGE_GROUP);
+    message.setParams('contentid', contentid);
+    producer.sendMessage(message);
+    return true;
+}
+
+export const decContentCommentNumber = function (contentid){
+    let message = producer.createMessage('global_content_decCommentNumber');
+    message.setType(producer.MESSAGE_GROUP);
+    message.setParams('contentid', contentid);
+    producer.sendMessage(message);
+    return true;
+}

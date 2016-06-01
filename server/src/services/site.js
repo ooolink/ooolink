@@ -83,7 +83,7 @@ export const getSiteContentBySiteId = function *(site, theme, limit, page){
                 resolve(result);
             },
             error: (result)=>{
-                reject(result);			//TODO 错误捕获
+                reject(result.message);			//TODO 错误捕获
             }
         });
         producer.sendMessage(message);
@@ -104,7 +104,7 @@ export const getSiteContentByContentId = function *(site, id){
                 resolve(result);
             },
             error: (result)=>{
-                reject(result);
+                reject(result.message);
             }
         });
         producer.sendMessage(message);

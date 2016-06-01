@@ -119,11 +119,11 @@ class TopicDetail extends Component {
                             <Image
                                 style={styles.icon}
                                 source={require('../images/content-comment.png')}/>
-                            <Text style={styles.countText}>{numberDeal(0)}</Text>
+                            <Text style={styles.countText}>{numberDeal(content ? content.quantity.comment_count : 0)}</Text>
                             <Image
                                 style={styles.icon}
                                 source={require('../images/star-none-white.png')}/>
-                            <Text style={styles.countText}>{numberDeal(0)}</Text>
+                            <Text style={styles.countText}>{numberDeal(content ? content.quantity.collect_count : 0)}</Text>
                         </View>
                         <Text style={styles.publishButton}>
                             评论

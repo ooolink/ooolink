@@ -108,6 +108,58 @@ export default function(consumer){
 			}
 		});
 	});
+
+	consumer.onGroupMessage('global_content_incCommentNumber', params=>{
+		let content_id = params.contentid;
+		let site_id = content_id.split('_')[0],
+			Content = ContentCreate(site_id.substr(0, 2).toLowerCase());
+
+		Content.update({content_id}, {$inc: {"quantity.comment_count": 1}}).
+			exec((err, contents)=>{
+				if (err){
+					_modelLog.error(_log('content', 'incCommentNumber', `comment_count加1-${err.message}`, __filename, 120));
+				}
+			});
+	});
+
+	consumer.onGroupMessage('global_content_decCommentNumber', params=>{
+		let content_id = params.contentid;
+		let site_id = content_id.split('_')[0],
+			Content = ContentCreate(site_id.substr(0, 2).toLowerCase());
+
+		Content.update({content_id}, {$inc: {"quantity.comment_count": -1}}).
+			exec((err, contents)=>{
+				if (err){
+					_modelLog.error(_log('content', 'incCommentNumber', 'comment_count减1', __filename, 120));
+				}
+			});
+	});
+
+	consumer.onGroupMessage('global_content_incCollectionNumber', params=>{
+		let content_id = params.contentid;
+		let site_id = content_id.split('_')[0],
+			Content = ContentCreate(site_id.substr(0, 2).toLowerCase());
+
+		Content.update({content_id}, {$inc: {"quantity.collect_count": 1}}).
+			exec((err, contents)=>{
+				if (err){
+					_modelLog.error(_log('content', 'incCollectionNumber', 'collect_count加1', __filename, 120));
+				}
+			});
+	});
+
+	consumer.onGroupMessage('global_content_decCollectionNumber', params=>{
+		let content_id = params.contentid;
+		let site_id = content_id.split('_')[0],
+			Content = ContentCreate(site_id.substr(0, 2).toLowerCase());
+
+		Content.update({content_id}, {$inc: {"quantity.collect_count": -1}}).
+			exec((err, contents)=>{
+				if (err){
+					_modelLog.error(_log('content', 'incCollectionNumber', 'collect_count减1', __filename, 120));
+				}
+			});
+	});
 }
 
 

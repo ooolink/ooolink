@@ -13,6 +13,7 @@ import * as userService from '../services/user';
 export const publishComment = function *(next){
     let {content, contentid, replyid} = this.request.body.fields;
     let comment = yield commentService.addComment(content, replyid, contentid, this._domain.user.id);
+    commentService.incContentCommentNumber(contentid);
     this.body = {
         result: 1,
         data: comment.id

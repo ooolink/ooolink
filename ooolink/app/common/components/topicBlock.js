@@ -55,11 +55,11 @@ class TopicBlock extends Component {
                     <Image
                         style={styles.commentIcon}
                         source={require('../../images/content-comment.png')}/>
-                    <Text style={styles.countText}>{numberDeal(0)}</Text>
+                    <Text style={styles.countText}>{numberDeal(data.quantity.comment_count)}</Text>
                     <Image
                         style={styles.starIcon}
                         source={require('../../images/star-none-white.png')}/>
-                    <Text style={styles.countText}>{numberDeal(0)}</Text>
+                    <Text style={styles.countText}>{numberDeal(data.quantity.collect_count)}</Text>
                 </View>
             </TouchableOpacity>
             </View>

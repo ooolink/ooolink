@@ -67,7 +67,7 @@ function getTopicFromServer(site, id) {
                     setGlobal({
                         key: 'topicDetail',
                         id: saveId
-                    }, content, 1000 * 3600);
+                    }, content, 1000 * 60);
                     dispatch({
                         type: ActionTypes.SET_CONTENT,
                         content,

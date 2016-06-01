@@ -52,6 +52,8 @@ export const collectContent = function *(next){
         type = this.request.body.fields.type;
 
     let collection = yield collectService.changeCollectionContentStatus(contentid, userid, type, 1);
+    collectService.incContentCollectionNumber(contentid);
+    
     if (collection === true || collection === false){
         this.body = {
             result: 1
@@ -66,6 +68,8 @@ export const unCollectContent = function *(next){
         userid = this._domain.user.id;
 
     let collection = yield collectService.changeCollectionContentStatus(contentid, userid, null, 0);
+    collectService.decContentCollectionNumber(contentid);
+    
     if (collection === true || collection === false){
         this.body = {
             result: 1
