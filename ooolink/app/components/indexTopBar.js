@@ -30,6 +30,18 @@ class IndexTopBar extends Component{
 
     render(){
         switch (this.props.idx){
+            case 0:
+            case 1:
+            return (
+                <View>
+                    <Text style={styles.logoText}>oooLink</Text>
+                    <TouchableOpacity 
+                        onPress={this.onOpenSearch.bind(this)}
+                        style={styles.edit}>
+                        <Image style={styles.image} source={require('../images/index-search.png')}/>
+                    </TouchableOpacity>
+                </View>
+            );
             case 2: 
             return (
                 <View>
@@ -54,6 +66,10 @@ class IndexTopBar extends Component{
             name: 'ProfileEdit',
             component: ProfileEdit
         });
+    }
+
+    onOpenSearch(){
+        
     }
 }
 
