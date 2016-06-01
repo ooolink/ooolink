@@ -10,7 +10,6 @@ import * as types from '../constants/actionTypes'
 
 const initialState = {
     currentSite: '',
-    siteFocus: [],
     siteInfo: {},
     appLoaded: null,
     siteLoaded: true,
@@ -34,9 +33,6 @@ export default function(state = initialState, action) {
                 siteLoaded: true,
                 currentSite: action.site
             });
-        case types.GET_SITE_FOCUS:
-            state.siteFocus = action.sites;
-            return Object.assign({}, state);
         default:
             return state;
     }

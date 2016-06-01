@@ -13,6 +13,7 @@ import content from './content';
 import user from './user';
 import collect from './collect';
 import comment from './comment';
+import site from './site';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
@@ -21,6 +22,7 @@ export default combineReducers({
     content,
     user,
     collect,
-    comment
+    comment,
+    site
 });
 

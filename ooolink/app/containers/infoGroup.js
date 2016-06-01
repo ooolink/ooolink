@@ -25,6 +25,7 @@ import OperateLoading from '../common/components/operateLoading';
 import InfoWithContentBlock from '../common/components/infoWithContentBlock';
 import CollectionFolder from './collectionFolder';
 import Login from './loginContainer';
+import Home from './home';
 import {TO_INFO_GROUP_FOCUS_SITE, TO_INFO_GROUP_COLLECTIONS} from '../constants/passAgreement';
 import * as collectService from '../services/collectService';
 let {height, width} = Dimensions.get('window');
@@ -39,18 +40,19 @@ class InfoGroup extends Component {
     }
 
     render() {
-        let info = [],
-            siteFocus = this.props.state.app.siteFocus;
+        let info = [];
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE:
-                siteFocus.forEach(site=>{
+                let siteFocus = this.props.state.site.userSiteFocus;
+                siteFocus.forEach((site,idx)=>{
                     info.push(
                         <InfoWithImageBlock 
+                            key={idx}
                             onPress={this.onSelectSite.bind(this)}
-                            imageURL={site.collection_site_image}
-                            desc={site.collection_desc}
-                            name={site.collection_site_name}
-                            blockId={site.collection_site}
+                            imageURL={site.site_image}
+                            desc={site.site_desc}
+                            name={site.site_name}
+                            blockId={site.site_id}
                         />
                     );
                 });
@@ -109,32 +111,41 @@ class InfoGroup extends Component {
         this.props.navigator.pop();
     }
 
-    onSelectSite(siteId) {
-        setTimeout(()=> {
-            this.props.actions.getSiteInfo(siteId);
-        }, 200);
-        this.props.navigator.popToTop();
+    onSelectSite(site_id) {
+        this.props.actions.getSiteInfo(site_id);
+        this.props.navigator.push({
+            name: 'Home',
+            component: Home,
+            props: {
+                site_id
+            }
+        });
     }
 
     componentDidMount() {
         let token = this.props.state.user.userToken;
+        this.setState({isOperating: true});
+        
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE :
-                this.props.actions.getFocusSite(token);
+                collectService.getSitefocused(token, 0, 10, rs=>{
+                    if (rs && rs.result === 1){
+                        this.props.actions.updateUserSiteFocused(rs.data);
+                    } else if (rs && rs.result === 401){
+                        this.goToLogin();
+                    } 
+                    this.setState({isOperating: false});
+                });
                 break;
 
             case TO_INFO_GROUP_COLLECTIONS:
-                this.setState({isOperating: true});
                 collectService.getCollections(token, rs=>{
                     if (rs && rs.result === 1){
                         this.props.actions.updateUserCollectionGeneral(rs.data);
-                        this.setState({isOperating: false});
                     } else if (rs && rs.result === 401){
-                        this.setState({isOperating: false});
                         this.goToLogin();
-                    } else {
-                        this.setState({isOperating: false});
-                    }
+                    } 
+                    this.setState({isOperating: false});
                 });
                 break;
         }

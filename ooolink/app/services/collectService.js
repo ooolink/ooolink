@@ -203,9 +203,9 @@ export function unCollectedSite(site, token, cb) {
         });
 }
 
-export function getSitefocused(token, cb) {
+export function getSitefocused(token, page, limit, cb) {
     "use strict";
-    fetch(`${SERVER_ADDRESS}user/focus`, {
+    fetch(`${SERVER_ADDRESS}user/focus?page=${page}&limit=${limit}`, {
         method: "GET",
         headers: {
             "x-access-token": token

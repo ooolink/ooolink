@@ -84,7 +84,7 @@ class InfoWithImageBlock extends Component{
                                 (()=>{
                                     if (this.props.desc){
                                          return <Text
-                                            style={[styles.textBase]}
+                                            style={[styles.textBase, styles.desc]}
                                          >
                                              {this.props.desc || ''}
                                          </Text>;
@@ -135,6 +135,10 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '900',
         textAlign: 'center'
+    },
+    desc: {
+        textAlign: 'center',
+        padding: 8,
     }
 });
 
