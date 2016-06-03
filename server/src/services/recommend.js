@@ -25,7 +25,7 @@ export const getOneRecommend = function *(time){
                 resolve(result);
             },
             error: (result)=>{
-                reject(result);                     //TODO 错误机制
+                reject(result.message);                     //TODO 错误机制
             }
         });
         producer.sendMessage(message);
