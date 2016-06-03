@@ -7,6 +7,11 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-export const SERVER_ADDRESS = "http://localhost:3070/";
-export const USER_DEFAULT_HEAD = 'http://gravatar.com/avatar/a0892cf4b7ff2828c00aa3f91ba51724?size=48';
-export const DEBUG = true;
+import * as ActionTypes from '../constants/actionTypes';
+
+export function updateUserSiteFocused(sites){
+    return {
+        type: ActionTypes.UPDATE_SITE_FOCUS,
+        sites
+    }
+}
