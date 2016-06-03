@@ -14,6 +14,8 @@ import React,{
     Text,
     Dimensions,
     Navigator,
+    BackAndroid,
+    Platform,
     View
 } from 'react-native';
 import Welcome from './welcome';
@@ -56,10 +58,13 @@ class App extends Component {
     }
 
     configureScene(route, routeStack) {
-        return Navigator.SceneConfigs.FadeAndroid;
+        return Navigator.SceneConfigs.FloatFromRight;
     }
 
     renderScene(route, navigator) {
+        if (!this.nav){
+            this.nav = navigator;
+        }
         if (!this.actions){
             this.actions = bindActionCreators(oooLinkActions, this.props.dispatch);
         }
@@ -76,6 +81,16 @@ class App extends Component {
         this.actions.getContentAllInfoFromNativeCache(
             this.actions.getUserAllInfoFromNativeCache
         );
+        Platform.OS === 'android' && BackAndroid.addEventListener('hardwareBackPress', this.onAndroidBack.bind(this));
+    }
+
+    componentWillMount() {
+        Platform.OS === 'android' && BackAndroid.removeEventListener('hardwareBackPress', this.onAndroidBack.bind(this));
+    }
+
+    onAndroidBack(){
+        this.nav && this.nav.pop();
+        return true;
     }
 }
 

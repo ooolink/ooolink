@@ -338,7 +338,7 @@ export function getUserCollectionType(token, cb) {
             getUserCollectionType(token, cb);
         }, cb))
         .then(rs=>{
-            rs.result === 1 && setGlobal('userCollectionTypes', rs.data, 1000*60*2);
+            rs && rs.result === 1 && setGlobal('userCollectionTypes', rs.data, 1000*60*2);
             cb(rs);
         });
 }

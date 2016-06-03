@@ -17,7 +17,8 @@ import React,{
     Navigator,
     PropTypes,
     TouchableOpacity,
-    View
+    View,
+    Alert
 } from 'react-native';
 import ProfileEdit from '../containers/profileEdit';
 
@@ -33,7 +34,7 @@ class IndexTopBar extends Component{
             case 0:
             case 1:
             return (
-                <View>
+                <View style={{backgroundColor: 'rgb(41,44,52)'}}>
                     <Text style={styles.logoText}>oooLink</Text>
                     <TouchableOpacity 
                         onPress={this.onOpenSearch.bind(this)}
@@ -44,7 +45,7 @@ class IndexTopBar extends Component{
             );
             case 2: 
             return (
-                <View>
+                <View style={{backgroundColor: 'rgb(41,44,52)'}}>
                     <Text style={styles.logoText}>oooLink</Text>
                     <TouchableOpacity 
                         onPress={this.onOpenProfileEdit.bind(this)}
@@ -77,13 +78,13 @@ const styles = StyleSheet.create({
     logoText: {
         width,
         textAlign: 'left',
-        paddingLeft: 20,
+        marginLeft: 20,
+        marginTop: 10,
         color:'#fff',
-        backgroundColor: 'rgb(41,44,52)',
+        backgroundColor: null,
         fontWeight: "900",
         fontSize: 18,
-        height: 50,
-        lineHeight: 32
+        height: 50
     },
     image:{
         width: 26, 

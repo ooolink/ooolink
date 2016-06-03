@@ -52,8 +52,8 @@ class ProfileEdit extends Component{
     }
 
     render(){
-        let saveCom = <Text style={styles.savebutton} onPress={this.onSave.bind(this)}>保存</Text>;
-        let sexSelectCom = this.state.isPick ? 
+        let saveCom = this.saveCom || <Text style={styles.savebutton} onPress={this.onSave.bind(this)}>保存</Text>;
+        let sexSelectCom = this.sexSelectCom || this.state.isPick ? 
                         <View style={styles.wrap}>
                             <View style={{backgroundColor: '#fff', width: width - 120, alignSelf: 'center'}}>
                                 <Picker
@@ -71,6 +71,8 @@ class ProfileEdit extends Component{
                         </View>
                         :
                         null;
+        this.saveCom = this.saveCom || saveCom;
+        this.sexSelectCom = this.sexSelectCom || sexSelectCom;
         return (
             <View>
                 <TopBar
@@ -94,7 +96,6 @@ class ProfileEdit extends Component{
                             <Text style={styles.itemText}>自我介绍</Text>
                             <TextInput
                                 underlineColorAndroid={'transparent'}
-                                autoFocus={true}  
                                 style={styles.textInput}
                                 value={this.state.user_desc} onChangeText={(user_desc)=>{
                                     this.setState({user_desc})

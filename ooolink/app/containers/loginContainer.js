@@ -89,6 +89,8 @@ class LoginContainer extends Component{
                         Alert.alert('登陆名或密码错误');
                     }
                 })
+            } else {
+                Alert.alert('登陆名或密码错误');
             }
         })
     }

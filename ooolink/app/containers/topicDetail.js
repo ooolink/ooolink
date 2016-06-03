@@ -11,7 +11,6 @@ import React,{
     Component,
     StyleSheet,
     ScrollView,
-    ListView,
     Text,
     Image,
     Dimensions,
@@ -114,21 +113,10 @@ class TopicDetail extends Component {
                     style={styles.publishBlockWrap}
                     onPress={this.onPublish.bind(this)}
                 >
-                    <View style={styles.publishBlock}>
-                        <View style={styles.countBlock}>
-                            <Image
-                                style={styles.icon}
-                                source={require('../images/content-comment.png')}/>
-                            <Text style={styles.countText}>{numberDeal(content ? content.quantity.comment_count : 0)}</Text>
-                            <Image
-                                style={styles.icon}
-                                source={require('../images/star-none-white.png')}/>
-                            <Text style={styles.countText}>{numberDeal(content ? content.quantity.collect_count : 0)}</Text>
-                        </View>
-                        <Text style={styles.publishButton}>
-                            评论
-                        </Text>
-                    </View>
+                    <Image
+                        style={styles.icon}
+                        source={require('../images/content-comment.png')}/>
+                    <Text style={styles.countText}>{numberDeal(content ? content.quantity.comment_count : 0)}</Text>
                 </TouchableOpacity>
                 {modalCom}
                 <OperateLoading visible={this.state.isOperating}/>
@@ -302,26 +290,15 @@ const styles = StyleSheet.create({
     },
     publishBlockWrap:{
         position: 'absolute',
-        top: height - 40,
-        height: 40,
-        width
-    },
-    publishBlock:{
-        height: 40,
-        width,
+        left: width - 100,
+        top: height - 120,
+        height: 60,
+        width: 60,
         backgroundColor: '#65b278dd',
+        borderRadius: 30,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingLeft: 60,
-        paddingRight: 60
-    },
-    publishButton: {
-        backgroundColor: null,
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: '900',        
-        width: 40
+        justifyContent: 'center'
     },
     icon: {
         height: 15,
@@ -330,9 +307,9 @@ const styles = StyleSheet.create({
     countText: {
         color: '#fff',
         backgroundColor: '#00000000',
-        marginLeft: 2,
         fontSize: 11,
-        width: 30
+        width: 30,
+        textAlign:'center'
     },
     countBlock:{
         flexDirection: 'row'

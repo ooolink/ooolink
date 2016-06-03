@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     content:{
         color: '#555',
-        padding: 10
+        margin: 10
     }
 });
 

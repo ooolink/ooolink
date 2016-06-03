@@ -16,10 +16,12 @@ import React,{
     Dimensions,
     Navigator,
     View,
+    Platform,
     Alert,
     TouchableOpacity
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ScrollableTabs from '../common/components/scrollableTabs'
 import IndexTopBar from '../components/indexTopBar'
 import Discover from './discover'
 import Profile from './profile'
@@ -39,7 +41,6 @@ class ScrollableTabViewBar extends Component{
                 >
                 <View style={styles.stvbarView}>
                     <Image style={styles.stvbarImage} source={require('../images/root-bar-discover.png')}/>
-                    <Text style={styles.stvbarText}>{this.props.tabs[0]}</Text>
                 </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -47,7 +48,6 @@ class ScrollableTabViewBar extends Component{
                 >
                 <View style={styles.stvbarView}>
                     <Image style={styles.stvbarImage} source={require('../images/root-bar-message.png')}/>
-                    <Text style={styles.stvbarText}>{this.props.tabs[1]}</Text>
                 </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -55,7 +55,6 @@ class ScrollableTabViewBar extends Component{
                 >
                 <View style={styles.stvbarView}>
                     <Image style={styles.stvbarImage} source={require('../images/root-bar-my.png')}/>
-                    <Text style={styles.stvbarText}>{this.props.tabs[2]}</Text>
                 </View>
                 </TouchableOpacity>
             </View>
@@ -73,46 +72,100 @@ class Root extends Component{
         super(props);
         let type = this.props.type;
         let index = ['discover', 'message', 'my'].indexOf(type);
-        this.state = {
-            idx: index
-        }
     }
 
     render(){
         let type = this.props.type;
         let index = ['discover', 'message', 'my'].indexOf(type);
+
+        if (Platform.OS === 'android'){
+            return (
+                <View style={{flex:1}}>
+                    <ScrollableTabView
+                        style={{flex: 1}}
+                        initialPage={index}
+                        tabBarPosition = 'bottom'
+                        renderTabBar={()=><ScrollableTabViewBar selected={index}/>}
+                    >
+                        <View style={styles.scrollView}>
+                            <IndexTopBar
+                                navigator={this.props.navigator}
+                                state={this.props.state}
+                                idx={0}
+                            />                           
+                            <Discover
+                                navigator={this.props.navigator}
+                                state={this.props.state}
+                                actions={this.props.actions}
+                            />
+                        </View>
+                        <View style={styles.scrollView}>
+                            <IndexTopBar
+                                navigator={this.props.navigator}
+                                state={this.props.state}
+                                idx={1}
+                            />   
+                        </View>
+                        <View style={styles.scrollView}>
+                            <IndexTopBar
+                                navigator={this.props.navigator}
+                                state={this.props.state}
+                                idx={2}
+                            />   
+                            <Profile
+                                navigator={this.props.navigator}
+                                state={this.props.state}
+                                actions={this.props.actions}
+                            />
+                        </View>
+                    </ScrollableTabView>    
+                </View>
+            );
+        }
         return (
             <View style={{flex:1}}>
-                <IndexTopBar
-                    navigator={this.props.navigator}
-                    state={this.props.state}
-                    idx={this.state.idx}
-                />
-                <ScrollableTabView
+                <ScrollableTabs
+                    tabNavItemWidth={width/3}
+                    navStopScroll={true}
+                    index={index}
                     style={{flex: 1}}
-                    onChangeTab={(idx)=>{this.setState({idx: idx.i})}}
-                    initialPage={index}
-                    scrollWithoutAnimation={true}
-                    tabBarPosition = 'bottom'
-                    renderTabBar={()=><ScrollableTabViewBar selected={index}/>}
+                    tabs={[<Image style={styles.stvbarImage} source={require('../images/root-bar-discover.png')}/>,
+                    <Image style={styles.stvbarImage} source={require('../images/root-bar-message.png')}/>,
+                    <Image style={styles.stvbarImage} source={require('../images/root-bar-my.png')}/>
+                    ]}
                 >
-                    <View tabLabel="发现" style={styles.scrollView}>
+                    {[<View key={'p1'} style={styles.scrollView}>
+                        <IndexTopBar
+                            navigator={this.props.navigator}
+                            state={this.props.state}
+                            idx={0}
+                        />                    
                         <Discover
                             navigator={this.props.navigator}
                             state={this.props.state}
                             actions={this.props.actions}
                         />
-                    </View>
-                    <View tabLabel="消息" style={styles.scrollView}>
-                    </View>
-                    <View tabLabel="我的" style={styles.scrollView}>
+                    </View>,
+                    <View key={'p2'} style={styles.scrollView}>
+                        <IndexTopBar
+                            navigator={this.props.navigator}
+                            state={this.props.state}
+                            idx={1}
+                        />     
+                    </View>,
+                    <View key={'p3'} style={styles.scrollView}>
+                        <IndexTopBar
+                            navigator={this.props.navigator}
+                            state={this.props.state}
+                            idx={2}
+                        />     
                         <Profile
                             navigator={this.props.navigator}
                             state={this.props.state}
                             actions={this.props.actions}
                         />
-                    </View>
-                </ScrollableTabView>    
+                    </View>,]}
+                </ScrollableTabs>    
             </View>
         );   
     }
@@ -135,11 +188,6 @@ const styles=StyleSheet.create({
         width: width/3,
         height: 50,
         flexDirection: 'column'
-    },
-    stvbarText:{
-        fontSize: 11,
-        textAlign: 'center',
-        color: '#fff'
     },
     scrollView:{
         flex: 1,

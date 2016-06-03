@@ -9,16 +9,16 @@
 import React,{
     Component,
     Image,
-    ScrollView,
     Text,
     StyleSheet,
     Dimensions,
-    Navigator,
-    View
+    View,
+    TouchableOpacity
 } from 'react-native';
 import Root from './root'
 import Login from './loginContainer'
 import TopicDetail from './topicDetail'
+import Button from '../common/components/base/button'
 import * as contentService from '../services/contentService'
 const {width, height} = Dimensions.get('window');
 
@@ -40,19 +40,19 @@ class Welcome extends Component{
                     <View style={styles.cover}/>
                     <Text style={styles.logoText}>ooolink</Text>
                     <View style={styles.content}>  
-                        <Text style={styles.inButton} onPress={this.onRead.bind(this)}>Read</Text>
+                        <Button style={styles.inButton} onPress={this.onRead.bind(this)}>Read</Button>
                         <View style={styles.tips}>
                             <Text style={styles.tip}>{welcomeContent.time}</Text>
                             <Text style={styles.tip}>{welcomeContent.readtime}</Text>
                         </View>
                         <Text style={styles.title}>{welcomeContent.title}</Text>
                         <View style={styles.inLinks}>
-                            <Text 
+                            <TouchableOpacity
                                 onPress={this.onUserClick.bind(this)}
-                                style={styles.inLink}>{userText}</Text>
-                            <Text
+                                style={styles.inLink}><Text style={styles.inLinkText}>{userText}</Text></TouchableOpacity>
+                            <TouchableOpacity
                                 onPress={this.onDiscoverClick.bind(this)} 
-                                style={styles.inLink}>{'发现更多  >>'}</Text>
+                                style={styles.inLink}><Text style={styles.inLinkText}>{'发现更多  >>'}</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -64,7 +64,6 @@ class Welcome extends Component{
         contentService.getWelcomeContent();
         this.props.navigator.push({
             name: 'TopicDetail',
-            index: 1,
             component: TopicDetail,
             props: {
                 topicId: welcomeContent.id
@@ -126,10 +125,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#33333366'
     },
     inButton:{
-        fontWeight: "900",
-        color: '#fff',
         padding: 5,
-        textAlign: 'center',
         width: 80,
         height: 30,
         backgroundColor: '#65b278'
@@ -165,7 +161,7 @@ const styles = StyleSheet.create({
     inLinks:{
         justifyContent:'space-between',
         borderTopWidth: 1,
-        borderTopColor: '#777',
+        borderTopColor: '#ddd',
         marginTop: 20,
         flexDirection: 'row',
 
@@ -173,12 +169,16 @@ const styles = StyleSheet.create({
     inLink:{
         paddingTop: 20,
         paddingBottom: 10,
-        height: 50,
-        textAlignVertical: 'center',
-        textAlign: 'left',
+        width: 100,
+        height: 80,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    inLinkText:{
+        textAlign: 'center',
         color: '#eee',
         fontWeight:'900',
-        backgroundColor: '#00000000',
+        backgroundColor: null
     }
 });
 

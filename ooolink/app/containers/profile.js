@@ -20,6 +20,7 @@ import React,{
     TextInput,
     Alert
 } from 'react-native';
+import Button from '../common/components/base/button'
 import LoadingBlock from '../common/components/loadingBlock'
 import Search from './search';
 import InfoGroup from './infoGroup';
@@ -63,11 +64,12 @@ class Profile extends Component {
 
         let that = this;
         let loginOutCom = userIsLogon ? 
-                    <Text 
+                    <Button
+                        textColor={'#f54b72'}
                         onPress={this.onLoginOut.bind(this)}
                         style={styles.loginOutButton}>
                         退出登录
-                    </Text> : null;
+                    </Button> : null;
 
             return (
                 <View style={{backgroundColor:'#fff'}}>
@@ -280,10 +282,6 @@ const styles = StyleSheet.create({
         height: 30,
         borderWidth: 1,
         borderColor: '#f54b72',
-        color: '#f54b72',
-        textAlign: 'center',
-        lineHeight: 21,
-        fontSize: 14,
         borderRadius: 5,
         marginTop: 40,
         marginBottom: 20,

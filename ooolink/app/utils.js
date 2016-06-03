@@ -8,9 +8,7 @@
  */
 
 import React,{
-    Platform,
-    Dimensions,
-    BackAndroid
+    Dimensions
 } from 'react-native';
 
 let {height, width} = Dimensions.get('window');
@@ -140,23 +138,6 @@ export function numberDeal(number, type) {
             return general(number);
     }
 }
-
-export function androidBack(type){
-    function back(that){
-
-        return function(){
-            that.goBack && that.goBack();
-            that.props.navigator.pop();
-            return true;
-        }
-    }
-    if (type === 'add' && Platform.OS === 'android'){
-        BackAndroid.addEventListener('hardwareBackPress', back(this));
-    } else if (type === 'rm' && Platform.OS === 'android'){
-        BackAndroid.removeEventListener('hardwareBackPress', back(this));
-    }
-}
-
 
 
 

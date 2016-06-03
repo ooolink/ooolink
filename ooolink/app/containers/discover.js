@@ -30,7 +30,7 @@ class DiscoverSwiperBlock extends Component{
 
     render(){
         return (
-            <View>
+            <View style={{width, height: 200}}>
                 <Image 
                     style={blockStyles.image}
                     source={{uri: this.props.uri}}/>
@@ -84,16 +84,25 @@ class Discover extends Component{
             'https://s-media-cache-ak0.pinimg.com/474x/90/1d/73/901d735a4456003c672a845d19965046.jpg',
             'https://s-media-cache-ak0.pinimg.com/474x/d0/17/5b/d0175b4a58f1cfa367ac885cadce4e40.jpg'
         ];
+
         let p = [];
-        for (var i = 0; i < 5; i++){
-            p.push(
-                <DiscoverSwiperBlock
-                    key={i}
-                    uri={uris[i]}
-                    text={texts[i]}
-                />
-            )
+        if (this.discoverSwiperBlock) {
+            p = this.discoverSwiperBlock;
+        } else {
+            for (var i = 0; i < 5; i++){
+                p.push(
+                    <DiscoverSwiperBlock
+                        key={i}
+                        uri={uris[i]}
+                        text={texts[i]}
+                    />
+                )
+            }
         }
+        if (!this.discoverSwiperBlock){
+            this.discoverSwiperBlock = p;
+        }
+
         return (
             <ScrollView style={styles.container}>
                 <Swiper
@@ -160,9 +169,13 @@ const styles = StyleSheet.create({
     container: {
         width,
         height,
-        backgroundColor: 'rgb(41,44,52)'
+        backgroundColor: 'rgb(41,44,52)',
+        flex: 1
     },
     swiper:{
+        flex: 1,
+        width,
+        height: 200
     },
     operate:{
         paddingTop: 16,

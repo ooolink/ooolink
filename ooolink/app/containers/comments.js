@@ -103,7 +103,7 @@ class Comments extends Component{
         }
 
         return (
-            <View style={{flex:1}}>
+            <View style={{flex:1, backgroundColor: '#fff'}}>
                 <TopBar
                     backText={`评论 ${commentCount} 条`}
                     onBack={()=>{this.props.navigator.pop()}}
@@ -120,10 +120,12 @@ class Comments extends Component{
             page = 0,
             limit = 10;
 
-        commentService.getComments(contentid, page, limit, rs=>{
-            let rows = rs.data.rows;
-            this.props.actions.setComments(contentid, page, rows, rs.data.count);
-        });
+        setTimeout(()=>{
+            commentService.getComments(contentid, page, limit, rs=>{
+                let rows = rs.data.rows;
+                this.props.actions.setComments(contentid, page, rows, rs.data.count);
+            });
+        }, 500);
     }
 
     onSendComment(){

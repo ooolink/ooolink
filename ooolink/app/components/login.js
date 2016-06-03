@@ -10,15 +10,14 @@
 import React,{
     Component,
     StyleSheet,
-    ScrollView,
     Text,
     Image,
     TextInput,
     Dimensions,
-    Navigator,
     PropTypes,
     View
 } from 'react-native';
+import Button from '../common/components/base/button'
 
 const {width, height} = Dimensions.get('window');
 
@@ -41,26 +40,28 @@ class Login extends Component {
     }
 
     render() {
-        return (
-            <View>
-            <Image 
+        let imgCom = this.props.bgimage ? <Image 
                 source={{uri: this.props.bgimage}} 
                 style={styles.bgImage}>
-            </Image>
+            </Image> : null;
+        return (
+            <View>
+            {imgCom}
             <View style={styles.cover}/>
             <Text style={styles.logoText}>ooolink</Text>
             <View style={styles.container}>
                     <TextInput
+                        underlineColorAndroid={'transparent'}
                         placeholder={"Username"}
                         placeholderTextColor="#fff"
-                        autoFocus={true}
                         autoCorrect={false}
                         value={this.state.name}
                         onChangeText={this._changeName.bind(this)}
                         style={styles.wordInput}
                     />
-                    <View style={{borderWidth:0.5, width: width-70, borderColor:'#eeeeee66'}}/>
+                    <View style={{borderWidth:0.5, width: width-70, borderColor:'#eeeeee'}}/>
                     <TextInput
+                        underlineColorAndroid={'transparent'}
                         placeholder={"Password"}
                         placeholderTextColor="#fff"
                         autoCorrect={false}
@@ -69,11 +70,11 @@ class Login extends Component {
                         style={styles.wordInput}
                     />
             </View>
-                <Text
+                <Button
                     onPress={this._submit.bind(this)}
                     style={styles.button}>
                     Login
-                </Text>
+                </Button>
                 <Text 
                     onPress={this._onGoRegister.bind(this)} 
                     style={styles. buttonText}>
@@ -112,7 +113,7 @@ class Login extends Component {
 const styles = StyleSheet.create({
     container: {
         margin: 20,
-        borderColor: '#eeeeee66',
+        borderColor: '#eeeeee',
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 5
@@ -137,18 +138,14 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         color: '#fff',
-        borderBottomColor: '#333',
+        borderBottomColor: '#eeeeee',
         borderBottomWidth: 1,
         backgroundColor: '#ffffff00',
         width: width - 40,
         height: 40
     },
     button: {
-        fontWeight:'900',
-        lineHeight: 26,
-        textAlign: 'center',
         margin: 20,
-        color: '#fff',
         height: 40,
         backgroundColor: '#65b278'
     },
