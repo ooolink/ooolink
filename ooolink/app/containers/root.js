@@ -78,9 +78,7 @@ class Root extends Component{
         let type = this.props.type;
         let index = ['discover', 'message', 'my'].indexOf(type);
 
-        if (Platform.OS === 'android'){
             return (
-                <View style={{flex:1}}>
                     <ScrollableTabView
                         style={{flex: 1}}
                         initialPage={index}
@@ -119,55 +117,7 @@ class Root extends Component{
                             />
                         </View>
                     </ScrollableTabView>    
-                </View>
             );
-        }
-        return (
-            <View style={{flex:1}}>
-                <ScrollableTabs
-                    tabNavItemWidth={width/3}
-                    navStopScroll={true}
-                    index={index}
-                    style={{flex: 1}}
-                    tabs={[<Image style={styles.stvbarImage} source={require('../images/root-bar-discover.png')}/>,
-                    <Image style={styles.stvbarImage} source={require('../images/root-bar-message.png')}/>,
-                    <Image style={styles.stvbarImage} source={require('../images/root-bar-my.png')}/>
-                    ]}
-                >
-                    {[<View key={'p1'} style={styles.scrollView}>
-                        <IndexTopBar
-                            navigator={this.props.navigator}
-                            state={this.props.state}
-                            idx={0}
-                        />                    
-                        <Discover
-                            navigator={this.props.navigator}
-                            state={this.props.state}
-                            actions={this.props.actions}
-                        />
-                    </View>,
-                    <View key={'p2'} style={styles.scrollView}>
-                        <IndexTopBar
-                            navigator={this.props.navigator}
-                            state={this.props.state}
-                            idx={1}
-                        />     
-                    </View>,
-                    <View key={'p3'} style={styles.scrollView}>
-                        <IndexTopBar
-                            navigator={this.props.navigator}
-                            state={this.props.state}
-                            idx={2}
-                        />     
-                        <Profile
-                            navigator={this.props.navigator}
-                            state={this.props.state}
-                            actions={this.props.actions}
-                        />
-                    </View>,]}
-                </ScrollableTabs>    
-            </View>
-        );   
     }
 }
 
