@@ -69,6 +69,7 @@ class ClassificationDetail extends Component{
                     canChoose={siteChooseCom}
                     height={80}
                     blockId={item}
+                    onPress={this.onVisitSite.bind(this)}
                     imageURL={item.site_image}
                 >
                     <Text style={styles.siteItemText}>{item.site_name}</Text>
@@ -77,7 +78,7 @@ class ClassificationDetail extends Component{
             )
         });
         return (
-            <View>
+            <View style={{flex:1}}>
                 <TopBar
                     onBack={this.onBack.bind(this)}
                     backText={this.props.typeName}

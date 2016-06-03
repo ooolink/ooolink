@@ -54,8 +54,8 @@ class Classification extends Component{
     }
 
     render(){
-        let ca = [], list = this.state.list;
-        list.forEach((item, idx)=>{
+        let ca = this.ca || [], list = this.state.list;
+        this.ca || list.forEach((item, idx)=>{
             if (idx % 2 == 1){
                 return;
             }
@@ -78,6 +78,7 @@ class Classification extends Component{
                 </View>
             );
         });
+        this.ca = this.ca || ca;
         return (
             <View
                 style={{backgroundColor:'rgb(41,44,52)', flex:1}}

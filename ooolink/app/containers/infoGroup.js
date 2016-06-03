@@ -129,23 +129,23 @@ class InfoGroup extends Component {
         switch (this.props.type) {
             case TO_INFO_GROUP_FOCUS_SITE :
                 collectService.getSitefocused(token, 0, 10, rs=>{
+                    this.setState({isOperating: false});
                     if (rs && rs.result === 1){
                         this.props.actions.updateUserSiteFocused(rs.data);
                     } else if (rs && rs.result === 401){
                         this.goToLogin();
                     } 
-                    this.setState({isOperating: false});
                 });
                 break;
 
             case TO_INFO_GROUP_COLLECTIONS:
                 collectService.getCollections(token, rs=>{
+                    this.setState({isOperating: false});
                     if (rs && rs.result === 1){
                         this.props.actions.updateUserCollectionGeneral(rs.data);
                     } else if (rs && rs.result === 401){
                         this.goToLogin();
                     } 
-                    this.setState({isOperating: false});
                 });
                 break;
         }

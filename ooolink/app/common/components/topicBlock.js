@@ -34,6 +34,7 @@ class TopicBlock extends Component {
         return (
             <View style={cs}>
             <TouchableOpacity
+                style={styles.topicBg}
                 onPress={this._onSelectTopic.bind(this)}
             >
                 <Image
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#22222299'
     },
     tag:{
-        backgroundColor: '#00000000',
+        backgroundColor: null,
         color: '#65b278',
         fontWeight: '900',
         position: 'absolute',
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
         top: 14,
         left: width - 105,
         color: '#fff',
-        backgroundColor: '#00000000',
+        backgroundColor: null,
         fontSize: 10
     },
     username: {
@@ -106,13 +107,13 @@ const styles = StyleSheet.create({
         left: 45,
         textAlign: 'left',
         fontSize: 10,
-        backgroundColor: '#00000000'
+        backgroundColor: null
     },
     title: {
         color: '#fff',
         fontWeight: '900',
         position: 'absolute',
-        backgroundColor: '#00000000',
+        backgroundColor: null,
         width: width - 80,
         fontSize: 16,
         top: 40,
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     },
     countText: {
         color: '#fff',
-        backgroundColor: '#00000000',
+        backgroundColor: null,
         marginLeft: 2,
         fontSize: 11,
         width: 30,

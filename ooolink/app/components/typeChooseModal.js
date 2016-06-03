@@ -51,6 +51,7 @@ class TypeChooseModal extends Component {
         let createCom = this.state.isCreating ? 
         <View style={{flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 1}}>
             <TextInput 
+            underlineColorAndroid={'transparent'}
             placeholder={'输入收藏夹名字'}
             style={{fontSize: 12, width: 150, height: 30, padding: 5}}
             onChangeText={(text) => this.setState({createValue: text})}

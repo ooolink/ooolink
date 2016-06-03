@@ -34,7 +34,8 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            siteLikeStatus: 'loading'
+            siteLikeStatus: 'loading',
+            isLoading: true
         }
     }
 
@@ -42,18 +43,23 @@ class Home extends Component {
         if (!this.props.state.app.siteLoaded){
             return <LoadingBlock/>
         }
+
         let {themesBlockHeight,themeSelected, themeSelectedWord} = this.props.state.home;
         let {currentSite, siteInfo} = this.props.state.app;
         let topics = this.props.state.content.topics[0] ?                       //TODO
             this.props.state.content.topics[0] :
             [];                             
-        return (
-            <View style={styles.container}>
+
+        let topiclistCom = this.state.isLoading ? <LoadingBlock/> : 
                 <TopicList
                     isLoading={this.props.state.content.getTopicsLoading}
                     onSelectTopic={this.onSelectTopic.bind(this)}
                     data={topics}
-                    style={styles.content}/>
+                    style={styles.content}/>;
+                    
+        return (
+            <View style={styles.container}>
+                {topiclistCom}
                 <TitleBar
                     siteLikeStatus={this.state.siteLikeStatus}
                     style={styles.titleBar}
@@ -81,6 +87,9 @@ class Home extends Component {
                 this.setState({siteLikeStatus: status});
             });  
         });   
+        setTimeout(()=>{
+            this.setState({isLoading: false});
+        }, 1000);
     }
 
     onBack(){

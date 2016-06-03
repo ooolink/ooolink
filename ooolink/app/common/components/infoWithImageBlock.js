@@ -19,7 +19,8 @@ import React,{
     TextInput,
     Alert,
     PropTypes,
-    Animated
+    Animated,
+    Platform
 } from 'react-native';
 
 let {height, width} = Dimensions.get('window');
@@ -45,7 +46,7 @@ class InfoWithImageBlock extends Component{
     constructor(props) {
         super(props);
         let w = (props.scale || 1) * width;
-        let moveAnim = props.canChoose ? new Animated.Value(0) : new Animated.Value(w);
+        let moveAnim = props.canChoose && Platform.OS !== 'android' ? new Animated.Value(0) : new Animated.Value(w);
         this.state = {
             showChoose: false,
             moveAnim
@@ -100,18 +101,20 @@ class InfoWithImageBlock extends Component{
     }
 
     onSelected(e){
-        if (this.props.canChoose){
+        if (Platform.OS === 'ios' && this.props.canChoose){
             let scale = this.state.showChoose ? this.props.scale : 1-((1-this.props.scale)*width+width/3)/width;
             this.setState({showChoose: !this.state.showChoose});
             Animated.timing(this.state.moveAnim, {toValue: scale * width, duration: 200}).start();
         }
-        if (this.props.onPress){
+        if (this.props.onPress && Platform.OS === 'android'){
             this.props.onPress(this.props.blockId);
         }
     }
 
     componentDidMount() {
-        Animated.timing(this.state.moveAnim, {toValue: this.props.scale * width, duration: 0}).start();
+        if (Platform.OS === 'ios'){
+            Animated.timing(this.state.moveAnim, {toValue: this.props.scale * width, duration: 0}).start();
+        }
     }
 }
 
