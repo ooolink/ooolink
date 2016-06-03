@@ -16,10 +16,10 @@ import React,{
     Navigator,
     PropTypes,
     View,
-    TouchableOpacity,
-    Modal
+    TouchableOpacity
 } from 'react-native';
 import LoadingBlock from './loadingBlock'
+let {height, width} = Dimensions.get('window');
 
 class OperateLoading extends Component{
 
@@ -36,15 +36,17 @@ class OperateLoading extends Component{
     }
 
     render(){
+        if (!this.props.visible){
+            return null;
+        }
         return (
-            <Modal
-                transparent={true}
-                visible={this.props.visible}
+            <View
+                style={{width, height, position: 'absolute', top:0, left: 0}}
             >
                 <LoadingBlock
-                    style={{backgroundColor: '#00000066'}}
+                    style={{backgroundColor: '#00000022'}}
                 />
-            </Modal>
+            </View>
         )
     }
 }

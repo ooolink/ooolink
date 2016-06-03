@@ -57,6 +57,7 @@ class ProfileEdit extends Component{
                         <View style={styles.wrap}>
                             <View style={{backgroundColor: '#fff', width: width - 120, alignSelf: 'center'}}>
                                 <Picker
+                                  mode={'dialog'}
                                   selectedValue={this.state.user_sex}
                                   onValueChange={(user_sex) => this.setState({user_sex})}>
                                   <Picker.Item label="女" value={0} />
@@ -83,6 +84,7 @@ class ProfileEdit extends Component{
                         <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>昵称</Text>
                             <TextInput 
+                                underlineColorAndroid={'transparent'}
                                 style={styles.textInput}
                                 value={this.state.user_realname} onChangeText={(user_realname)=>{
                                     this.setState({user_realname})
@@ -91,6 +93,7 @@ class ProfileEdit extends Component{
                         <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>自我介绍</Text>
                             <TextInput
+                                underlineColorAndroid={'transparent'}
                                 autoFocus={true}  
                                 style={styles.textInput}
                                 value={this.state.user_desc} onChangeText={(user_desc)=>{
@@ -109,6 +112,7 @@ class ProfileEdit extends Component{
                         <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>住址</Text>
                             <TextInput 
+                                underlineColorAndroid={'transparent'}
                                 style={styles.textInput}
                                 value={this.state.user_living} onChangeText={(user_living)=>{
                                     this.setState({user_living})
@@ -117,6 +121,7 @@ class ProfileEdit extends Component{
                        <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>工作情况</Text>
                             <TextInput 
+                                underlineColorAndroid={'transparent'}
                                 style={styles.textInput}
                                 value={this.state.user_work} onChangeText={(user_work)=>{
                                     this.setState({user_work})
@@ -125,6 +130,7 @@ class ProfileEdit extends Component{
                        <View style={[styles.itemView]}>
                             <Text style={styles.itemText}>教育情况</Text>
                             <TextInput 
+                                underlineColorAndroid={'transparent'}
                                 style={styles.textInput}
                                 value={this.state.user_education} onChangeText={(user_education)=>{
                                     this.setState({user_education})

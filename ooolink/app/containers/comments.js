@@ -18,7 +18,9 @@ import React,{
     ListView,
     TouchableOpacity,
     View,
-    Alert
+    Platform,
+    BackAndroid,
+    Alert   
 } from 'react-native';
 import TopBar from '../common/components/topBar';
 import LoadingBlock from '../common/components/loadingBlock';
@@ -26,7 +28,7 @@ import OperateLoading from '../common/components/operateLoading';
 import CommentBlock from '../components/commentBlock';
 import {USER_DEFAULT_HEAD} from '../constants/config';
 import Login from './loginContainer';
-import {UriDeal, WordLineDeal, timeDeal, numberDeal} from '../utils';
+import {UriDeal, WordLineDeal, timeDeal, numberDeal, androidBack} from '../utils';
 import * as commentService from '../services/commentService';
 let {height, width} = Dimensions.get('window');
 
@@ -63,6 +65,7 @@ class Comments extends Component{
                 <View style={styles.commentBlock}>
                     <Image style={styles.userHead} source={{uri: userHead}}/>
                     <TextInput
+                        underlineColorAndroid={'transparent'}
                         autoCorrect={false}
                         style={styles.commentInput}
                         value={this.state.commentValue}
@@ -127,6 +130,10 @@ class Comments extends Component{
         let token = this.props.state.user.userToken,
             content = this.state.commentValue,
             contentid = this.props.contentid;
+
+        if (!content){
+            return;
+        }
 
         this.setState({isOperating: true});
         commentService.publishComment(token, content, contentid, -1, (rs)=>{

@@ -82,13 +82,14 @@ class Root extends Component{
         let type = this.props.type;
         let index = ['discover', 'message', 'my'].indexOf(type);
         return (
-            <View>
+            <View style={{flex:1}}>
                 <IndexTopBar
                     navigator={this.props.navigator}
                     state={this.props.state}
                     idx={this.state.idx}
                 />
                 <ScrollableTabView
+                    style={{flex: 1}}
                     onChangeTab={(idx)=>{this.setState({idx: idx.i})}}
                     initialPage={index}
                     scrollWithoutAnimation={true}
