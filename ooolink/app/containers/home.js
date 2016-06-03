@@ -14,7 +14,8 @@ import React,{
     Text,
     Dimensions,
     Navigator,
-    View
+    View,
+    Alert
 } from 'react-native';
 import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';

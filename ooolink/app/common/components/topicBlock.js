@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#22222299'
     },
     tag:{
-        backgroundColor: null,
+        backgroundColor: '#00000000',
         color: '#65b278',
         fontWeight: '900',
         position: 'absolute',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         top: 14,
         left: width - 105,
         color: '#fff',
-        backgroundColor: null,
+        backgroundColor: '#00000000',
         fontSize: 10
     },
     username: {
@@ -107,13 +107,13 @@ const styles = StyleSheet.create({
         left: 45,
         textAlign: 'left',
         fontSize: 10,
-        backgroundColor: null
+        backgroundColor: '#00000000',
     },
     title: {
         color: '#fff',
         fontWeight: '900',
         position: 'absolute',
-        backgroundColor: null,
+        backgroundColor: '#00000000',
         width: width - 80,
         fontSize: 16,
         top: 40,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         borderRadius: 13
     },
     countContainer: {
-        backgroundColor: 0,
+        backgroundColor: '#00000000',
         position: 'absolute',
         left: width - 100,
         top: 115,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     },
     countText: {
         color: '#fff',
-        backgroundColor: null,
+        backgroundColor: '#00000000',
         marginLeft: 2,
         fontSize: 11,
         width: 30,

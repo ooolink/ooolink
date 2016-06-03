@@ -106,7 +106,7 @@ class InfoWithImageBlock extends Component{
             this.setState({showChoose: !this.state.showChoose});
             Animated.timing(this.state.moveAnim, {toValue: scale * width, duration: 200}).start();
         }
-        if (this.props.onPress && Platform.OS === 'android'){
+        if (this.props.onPress && (Platform.OS === 'android' || !this.props.canChoose)){
             this.props.onPress(this.props.blockId);
         }
     }

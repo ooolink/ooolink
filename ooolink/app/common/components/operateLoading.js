@@ -44,7 +44,6 @@ class OperateLoading extends Component{
                 style={{width, height, position: 'absolute', top:0, left: 0}}
             >
                 <LoadingBlock
-                    style={{backgroundColor: '#00000022'}}
                 />
             </View>
         )
