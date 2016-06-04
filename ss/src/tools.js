@@ -22,15 +22,17 @@ export function getDescFromContent(content){
     try{
         let $ = cheerio.load(content);
         let rs = '',
-            lastDesc = ''
+            lastDesc = '',
+            clen = content.length;
 
         for (let i = 0; i < 10; i++){
             let desc = $($('p').get(i)).text();
+            let html = $($('p').get(i)).html();
             //处理纯文字的情况
-            if (i === 0 && !desc){
+            if (i === 0 && !desc && !html){
                 return {
                     contentType: 'text',
-                    desc: content.substr(0, 200)
+                    desc: content.substr(0, 200) + (clen > 200 ? '...' : '')
                 }
             }
 
@@ -38,12 +40,15 @@ export function getDescFromContent(content){
                 rs+=desc;
             }
 
-            if (rs.length > 200){
-                let spl = rs.length > 300 || rs.length - lastDesc.length < 100 ? 200 : rs.length - lastDesc.length,
+            let rlen = rs.length,
+                llen = lastDesc.length;
+
+            if (rlen > 200){
+                let spl = rlen > 300 || rlen - llen < 100 ? 200 : rlen - llen,
                     rs_desc = rs.substr(0, spl);
                 return {
                     contentType: 'html',
-                    desc: rs_desc
+                    desc: rs_desc + (rlen > 300 || rlen - llen < 100 ? '...' : '' )
                 };
             }
         }
@@ -55,7 +60,7 @@ export function getDescFromContent(content){
         //处理纯文字的情况
         return {
             contentType: 'text',
-            desc: content.substr(0, 200)
+            desc: content.substr(0, 200) + (clen > 200 ? '...' : '')
         }
     }
 }
