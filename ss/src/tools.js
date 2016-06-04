@@ -16,3 +16,17 @@ export function getImageFromContent(content){
         return '';
     }
 }
+
+export function getDescFromContent(content){
+    let $ = cheerio.load(content);
+    let rs = '';
+    for (let i = 0; i < 10; i++){
+        let desc = $($('p').get(i)).text();
+        if (desc){
+            rs+=desc;
+        }
+        if (rs.length > 100){
+            return rs;
+        }
+    }
+}

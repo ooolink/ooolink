@@ -27,6 +27,14 @@ let message;
 // message.setParams('site',{site_id:'5bd4fe16d03f4b7e88f68f8381dce1eb'});
 // producer.sendMessage(message);
 
+// message = producer.createMessage('ss_task_getSiteAllContents_rss');
+// message.setParams('site',{site_id:'96030d6e62c8c9641968a9e1c6216cf8'});
+// producer.sendMessage(message);
+
+message = producer.createMessage('ss_task_getSiteAllContents_rss');
+message.setParams('site',{site_id:'2861ef36d18b0c71c8ba6ffe01980f93'});
+producer.sendMessage(message);
+
 /** services **/
 content(consumer);
 site(consumer);

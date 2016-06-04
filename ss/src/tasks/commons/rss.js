@@ -12,7 +12,7 @@ import md5 from 'md5'
 import request from 'request'
 import FeedParser from 'feedparser'
 import contentModelCreate from '../contentModel'
-import {getImageFromContent} from '../../tools'
+import {getImageFromContent, getDescFromContent} from '../../tools'
 
 consumer.onMessage('ss_task_getSiteActualContents_rss', params=>{
 
@@ -27,7 +27,8 @@ consumer.onMessage('ss_task_getSiteAllContents_rss', params=>{
             model.content_id = `${params.site.site_id}_${md5(d.link)}`;
             model.site_id = params.site.site_id;
             model.title = d.title;
-            model.desc = d.summary || '';
+            model.desc = d.summary.length > 100 || d.summary.length == 0 ?
+                         getDescFromContent(d.description) : d.summary;
             model.content = d.description;
             model.image = getImageFromContent(d.description);
             model.theme = [];

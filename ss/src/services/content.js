@@ -112,7 +112,7 @@ export default function(consumer){
 		sort({updated: -1}).
 		exec((err, contents)=>{
 			if (err || !contents.length){
-				_modelLog.error(_log('content', 'getContentBySiteId', `通过siteId获取content失败,${err.message}`, __filename, 49));
+				err && _modelLog.error(_log('content', 'getContentBySiteId', `通过siteId获取content失败,${err.message}`, __filename, 49));
 				errorFunc('rsNullError');
 			} else {
 				successFunc({result: 1, data: contents});
