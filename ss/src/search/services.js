@@ -7,12 +7,25 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 const SearchIndex = require('../models').SearchIndex;
+import * as chineseFenci from './chineseFenci';
 import {shieldWord} from './shield';
 
 export function setSearchIndex(content_id, title, desc, content=''){
-    SearchIndex.create({content_id, title, desc, content}, function(err){
+
+    let fenciKW_Rs = chineseFenci.getKeyWords(title),
+        fenciCS_Rs = chineseFenci.cutForSearch(title);
+
+    SearchIndex.update(
+        {content_id}, 
+        {
+            content_id, title, desc, content, 
+            keywords: fenciKW_Rs.keys, 
+            keywordsWeight: fenciKW_Rs.values, 
+            forSearch: fenciCS_Rs
+        }, 
+        {upsert : true}, function(err){
         if (err){
-            _modelLog.error(_log('searchIndex', 'setSearchIndex', '添加索引失败', __filename, 14));
+            _modelLog.error(_log('searchIndex', 'setSearchIndex', `添加索引失败, ${err.message}`, __filename, 14));
         }
     });
 }
@@ -29,7 +42,7 @@ export function searchContentByKeyWord(keyWord, successFunc, errorFunc){
         $text: {$search: keyWord}
     }, (err, output)=>{
         if (err){
-            _modelLog.error(_log('searchIndex', 'searchContentByKeyWord', `失败，${err.message}`, __filename, 32));
+            _modelLog.error(_log('searchIndex', 'searchContentByKeyWord', `失败, ${err.message}`, __filename, 32));
         } else {
             successFunc({
                 result: 1,

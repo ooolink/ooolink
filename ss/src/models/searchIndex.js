@@ -14,11 +14,14 @@ let searchIndexScheme = new Schema({
     content_id: {type: String, index: {unique: true}},
     title: {type: String},
     desc: {type: String},
-    content: {type: String}  
+    content: {type: String},
+    keywords: [String],
+    keywordsWeight: [Number],
+    forSearch: [String] 
 });
 
 searchIndexScheme.plugin(textSearch);
-searchIndexScheme.index({title: 'text', desc: 'text'});                 //暂时只支持 title 和 desc 的索引  2016.6.4
+searchIndexScheme.index({title: 'text', desc: 'text', keywords: 'text', forSearch: 'text'});                 //暂时只支持 title 和 desc 的索引  2016.6.4
 
 mongoose.model('searchIndex', searchIndexScheme);
 

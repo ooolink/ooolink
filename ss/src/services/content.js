@@ -97,7 +97,9 @@ export default function(consumer){
 		let as = params.site.site_id.substr(0, 2).toLowerCase(),
 			Content = ContentCreate(as);
 		let limit = params.site.limit || 20,
-			page = params.site.page || 0;
+			page = params.site.page || 0,
+			limit = parseInt(limit);
+			
 		let condition = {site_id: params.site.site_id};
 		if (params.site.theme != '_all_'){
 			condition = {site_id: params.site.site_id, theme: {$in:[params.site.theme]}};
@@ -108,7 +110,7 @@ export default function(consumer){
 		sort({updated: -1}).
 		exec((err, contents)=>{
 			if (err || !contents.length){
-				_modelLog.error(_log('content', 'getContentBySiteId', '通过siteId获取content失败', __filename, 49));
+				_modelLog.error(_log('content', 'getContentBySiteId', `通过siteId获取content失败,${err.message}`, __filename, 49));
 				errorFunc('rsNullError');
 			} else {
 				successFunc({result: 1, data: contents});
