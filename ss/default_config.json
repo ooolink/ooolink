@@ -1,3 +1,4 @@
 {
-	"db": "mongodb://127.0.0.1/ooolink_ss"
+	"db": "mongodb://127.0.0.1/ooolink_ss",
+    "debug": "true"
 }

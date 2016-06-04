@@ -18,15 +18,44 @@ export function getImageFromContent(content){
 }
 
 export function getDescFromContent(content){
-    let $ = cheerio.load(content);
-    let rs = '';
-    for (let i = 0; i < 10; i++){
-        let desc = $($('p').get(i)).text();
-        if (desc){
-            rs+=desc;
+
+    try{
+        let $ = cheerio.load(content);
+        let rs = '',
+            lastDesc = ''
+
+        for (let i = 0; i < 10; i++){
+            let desc = $($('p').get(i)).text();
+            //处理纯文字的情况
+            if (i === 0 && !desc){
+                return {
+                    contentType: 'text',
+                    desc: content.substr(0, 200)
+                }
+            }
+
+            if (desc){
+                rs+=desc;
+            }
+
+            if (rs.length > 200){
+                let spl = rs.length > 300 || rs.length - lastDesc.length < 100 ? 200 : rs.length - lastDesc.length,
+                    rs_desc = rs.substr(0, spl);
+                return {
+                    contentType: 'html',
+                    desc: rs_desc
+                };
+            }
         }
-        if (rs.length > 100){
-            return rs;
+        return {
+            contentType: 'html',
+            desc: rs
+        };
+    } catch (e){
+        //处理纯文字的情况
+        return {
+            contentType: 'text',
+            desc: content.substr(0, 200)
         }
     }
 }
