@@ -1,3 +1,0 @@
-[2016-05-27 15:41:32.715] [ERROR] cache - indexes-getSeaContents0-获取海淘第0页内容失败-/Users/Rube/WorkSpace/Items/ooolink/ss/dist/indexes/sea.js-34
-[2016-05-27 15:42:20.824] [ERROR] cache - indexes-getSeaContents0-获取海淘第0页内容失败-/Users/Rube/WorkSpace/Items/ooolink/ss/dist/indexes/sea.js-34
-[2016-05-27 15:43:51.368] [ERROR] cache - indexes-getSeaContents0-获取海淘第0页内容失败,ReplyError: ERR wrong number of arguments for 'hget' command-/Users/Rube/WorkSpace/Items/ooolink/ss/dist/indexes/sea.js-34
