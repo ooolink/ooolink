@@ -97,9 +97,11 @@ export default function(consumer){
 		let as = params.site.site_id.substr(0, 2).toLowerCase(),
 			Content = ContentCreate(as);
 		let limit = params.site.limit || 20,
-			page = params.site.page || 0,
-			limit = parseInt(limit);
-			
+			page = params.site.page || 0;
+		
+		limit = parseInt(limit);
+		page = parseInt(page);
+
 		let condition = {site_id: params.site.site_id};
 		if (params.site.theme != '_all_'){
 			condition = {site_id: params.site.site_id, theme: {$in:[params.site.theme]}};
