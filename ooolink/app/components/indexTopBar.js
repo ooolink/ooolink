@@ -21,6 +21,7 @@ import React,{
     Alert
 } from 'react-native';
 import ProfileEdit from '../containers/profileEdit';
+import Login from '../containers/loginContainer';
 
 const {width, height} = Dimensions.get('window');
 
@@ -63,6 +64,10 @@ class IndexTopBar extends Component{
     }
 
     onOpenProfileEdit(){
+        let {userIsLogon} = this.props.state.user;
+        if (!userIsLogon){
+            return this.gotoLogin();
+        }
         this.props.navigator.push({
             name: 'ProfileEdit',
             component: ProfileEdit
@@ -71,6 +76,13 @@ class IndexTopBar extends Component{
 
     onOpenSearch(){
         
+    }
+
+    gotoLogin(){
+        this.props.navigator.push({
+            name: 'Login',
+            component: Login
+        });
     }
 }
 

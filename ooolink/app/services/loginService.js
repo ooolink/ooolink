@@ -103,6 +103,7 @@ export function loginOut(){
     removeGlobal('oooLinkToken');
     removeGlobal('userName');
     removeGlobal('passWord');
+    removeGlobal('userInfo');
     setGlobal('isLogin', false);
 }
 
