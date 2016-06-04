@@ -23,7 +23,12 @@ const recommend = function *(){
 }
 
 const keyword = function *(){
-
+	let word = this.request.body.fields.content;
+	let contents = yield searchService.searchKeyword(word);
+	this.body = {
+		result: 1,
+		data: contents
+	}
 }
 
 const site = function *(){
@@ -38,9 +43,10 @@ const funcMap = {hot, near, recommend, keyword, site};
 
 export const searchEntrance = function *(next){
 
-	if (!funcMap[this.query.type]){
+	let type = this.request.body.fields.type;
+	if (!funcMap[type]){
 		throw new Error('search paramsError 500');
 	}
 
-	yield funcMap[this.query.type].call(this);
+	yield funcMap[type].call(this);
 }

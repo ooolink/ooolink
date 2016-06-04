@@ -8,14 +8,16 @@
  */
 const ContentCreate = require('../models').Content;
 const producer = require('fibms-node-client').Producer();
+import {setSearchIndex} from '../search/services';
 
 export default function(consumer){
 	consumer.onMessage('ss_content_setContent', params=>{
 		let as = params.content.site_id.substr(0, 2).toLowerCase(),
-			Content = ContentCreate(as);
+			Content = ContentCreate(as),
+			content_id = params.content.content_id;
 
 		let conditions = {
-			content_id: params.content.content_id
+			content_id
 		};
 		let doc = params.content;
 		Content.update(conditions, doc ,{upsert : true}, function(err, raw){
@@ -24,6 +26,11 @@ export default function(consumer){
 			}
 		});
 
+		//暂时不支持内容 content 搜索
+		setSearchIndex(content_id, doc.title, doc.desc);
+
+		//内容更新
+		//TODO 需要表明时新内容还是更新内容 2016.6.4
 		let message = producer.createMessage('ss_content_new');
 		message.setType(producer.MESSAGE_GROUP);
 		message.setParams('content', params.content);

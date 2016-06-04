@@ -1,1 +1,1 @@
-[2016-06-02 02:47:28.245] [ERROR] model - content-incCommentNumber-comment_count加1-Cannot increment with non-numeric argument: {quantity: { comment_count: 1 }}-/Users/Rube/WorkSpace/Items/ooolink/ss/dist/services/content.js-120
+[2016-06-04 21:06:16.399] [ERROR] model - searchIndex-setSearchIndex-添加索引失败-/Users/Rube/WorkSpace/Items/ooolink/ss/dist/search/services.js-14

@@ -13,22 +13,25 @@ import content from './services/content'
 import site from './services/site'
 import recommend from './services/recommend'
 import sea from './indexes/sea'
+import search from './services/search'
+
 require('./tasks/sites/cnode');
 require('./tasks/commons/rss');
 
 let message;
-// message = producer.createMessage('ss_task_getSiteAllContents_cnode');
-// message.setParams('site',{site_id:'04be9c7c2e7f7eda6febba12aa579a8d'});
-// producer.sendMessage(message);
+message = producer.createMessage('ss_task_getSiteAllContents_cnode');
+message.setParams('site',{site_id:'04be9c7c2e7f7eda6febba12aa579a8d'});
+producer.sendMessage(message);
 
-// message = producer.createMessage('ss_task_getSiteAllContents_rss');
-// message.setParams('site',{site_id:'5bd4fe16d03f4b7e88f68f8381dce1eb'});
-// producer.sendMessage(message);
+message = producer.createMessage('ss_task_getSiteAllContents_rss');
+message.setParams('site',{site_id:'5bd4fe16d03f4b7e88f68f8381dce1eb'});
+producer.sendMessage(message);
 
 /** services **/
 content(consumer);
 site(consumer);
 recommend(consumer);
+search(consumer);
 
 /** indexes **/
 sea(consumer);

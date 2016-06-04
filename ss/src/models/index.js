@@ -9,6 +9,7 @@
 import mongoose from 'mongoose'
 require('./site');
 require('./content');
+require('./searchIndex');
 const config = require('../../config.json');
 
 mongoose.connect(config.db, {
@@ -24,4 +25,5 @@ mongoose.connect(config.db, {
 exports.Site = mongoose.model('Site');
 exports.Content = (as)=>{
 	return mongoose.model(`${as}_content`);
-}
+};
+exports.SearchIndex = mongoose.model('searchIndex');

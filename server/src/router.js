@@ -28,7 +28,7 @@ export default (router)=> {
 
     router.use('/', log);
 
-    router.post('/search', blankAuth(null, ['type']), searchController.searchEntrance);
+    router.post('/search', blankAuth(null, ['type', 'content']), searchController.searchEntrance);
 
     router.post('/collect/site', headAuth(['x-access-token']), blankAuth(null, ['site']), userController.auth, collectController.collectSite);
 

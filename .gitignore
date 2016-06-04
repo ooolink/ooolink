@@ -40,4 +40,5 @@ bower_components
 #sites
 config.json
 dist
+logs
 resource
