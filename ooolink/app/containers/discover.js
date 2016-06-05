@@ -36,7 +36,7 @@ class DiscoverSwiperBlock extends Component{
         let s = {height: 200},
             ts = {};
         if (Platform.OS === 'android'){
-            s = {height: 60};
+            s = {height: 80};
             ts = {top: 26, lineHeight: 26};
         }
         return (
