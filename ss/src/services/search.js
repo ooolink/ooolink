@@ -12,7 +12,10 @@ import {searchContentByKeyWord} from '../search/services';
 export default function (consumer){
     consumer.onRequestService('ss_search_searchKeyword', (params, successFunc, errorFunc)=>{
         
-        let word = params.keyword;
-        searchContentByKeyWord(word, successFunc, errorFunc);
+        let {keyword, page, limit} = params;
+        
+        limit = limit > 10 ? 10 : limit;
+
+        searchContentByKeyWord(keyword, page, limit, successFunc, errorFunc);
     });
 };

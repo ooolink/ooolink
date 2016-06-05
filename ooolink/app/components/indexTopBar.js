@@ -22,6 +22,7 @@ import React,{
 } from 'react-native';
 import ProfileEdit from '../containers/profileEdit';
 import Login from '../containers/loginContainer';
+import Search from '../containers/search';
 
 const {width, height} = Dimensions.get('window');
 
@@ -75,7 +76,10 @@ class IndexTopBar extends Component{
     }
 
     onOpenSearch(){
-        
+        this.props.navigator.push({
+            name: 'Search',
+            component: Search
+        });
     }
 
     gotoLogin(){

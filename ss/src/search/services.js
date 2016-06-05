@@ -30,7 +30,7 @@ export function setSearchIndex(content_id, title, desc, content=''){
     });
 }
 
-export function searchContentByKeyWord(keyWord, successFunc, errorFunc){
+export function searchContentByKeyWord(keyWord, page, limit, successFunc, errorFunc){
     
     //词语是否被屏蔽
     let isShielded = shieldWord(keyWord);
@@ -40,7 +40,10 @@ export function searchContentByKeyWord(keyWord, successFunc, errorFunc){
 
     SearchIndex.find({
         $text: {$search: keyWord}
-    }, (err, output)=>{
+    }, {content_id: 1, title: 1, desc: 1})
+    .skip(page * limit)
+    .limit(limit)
+    .exec((err, output)=>{
         if (err){
             _modelLog.error(_log('searchIndex', 'searchContentByKeyWord', `失败, ${err.message}`, __filename, 32));
         } else {

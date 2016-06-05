@@ -19,7 +19,7 @@ import React,{
     TouchableOpacity,
     PropTypes
 } from 'react-native';
-import SearchResult from '../components/searchResult';
+import SearchResult from './searchResult';
 import TopBar from '../common/components/topBar';
 import {searchSite} from '../services/searchService';
 import {connect} from 'react-redux';
@@ -56,7 +56,7 @@ class SearchBlock extends Component {
                 <View style={styles.container}>
                     <TextInput
                         style={styles.searchInput}
-                        placeholder={"找找站点"}
+                        placeholder={"请输入要搜索的关键字"}
                         onChangeText={(text) => this.setState({text})}
                         value={this.state.text}
                     />
@@ -75,9 +75,7 @@ class SearchBlock extends Component {
     }
 
     componentDidMount() {
-        searchSite('','',(sites)=>{
-            this.setState({famous: sites});
-        });
+
     }
 }
 
@@ -117,16 +115,12 @@ class Search extends Component {
 
     }
 
-    static propTypes = {
-        backText: PropTypes.string.isRequired
-    };
-
     render() {
         return (
             <View>
                 <TopBar
                     onBack={this.onBack.bind(this)}
-                    backText={this.props.backText}
+                    backText={'搜索'}
                 />
                 <SearchBlock
                     onSelectSite={this.onSelectSite.bind(this)}
@@ -141,13 +135,15 @@ class Search extends Component {
     }
 
     onSearch(value) {
+        if (!value){
+            return;
+        }
+
         this.props.navigator.push({
             name: 'searchResult',
             index: 3,
             props: {
-                value,
-                navigator: this.props.navigator,
-                onSelectSite: this.onSelectSite.bind(this)
+                value
             },
             component: SearchResult
         });
