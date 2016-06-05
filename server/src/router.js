@@ -84,5 +84,7 @@ export default (router)=> {
 
     router.get('/recommend/seaglobal', blankAuth(['page']), recommendController.getSeaGlobalContents);
 
+    router.get('/recommend/artificial', blankAuth(['limit', 'type']), recommendController.getRecommendArtificial);
+
     return router;
 }

@@ -8,6 +8,7 @@
  */
 const consumer = require('fibms-node-client').Consumer();
 const producer = require('fibms-node-client').Producer();
+import Recommend from '../models/recommend';
 
 export const getOneRecommend = function *(time){
     let rs = yield new Promise((resolve, reject)=>{
@@ -60,6 +61,22 @@ export const getSeaGlobalContents = function *(page){
         data: result
     }
 }
+
+export const getContentIdFromArtificial = function *(limit=5){
+    let contentids = yield Recommend.findAll({
+        limit,
+        where:{
+            recommend_type: 'content'
+        },
+        order: 'recommend_created DESC'
+    });
+    return contentids;
+}
+
+
+
+
+
 
 
 

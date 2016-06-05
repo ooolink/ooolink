@@ -8,6 +8,8 @@
  */
 import md5 from 'md5';
 import * as siteService from './services/site';
+import * as recommendService from './services/recommend';
+import * as contentService from './services/content';
 const consumer = require('fibms-node-client').Consumer();
 const producer = require('fibms-node-client').Producer();
 
@@ -69,6 +71,78 @@ export const siteAdd = function *(next){
     message.setParams('site', siteModel);
     producer.sendMessage(message);
 }
+
+export const siteGet = function *(next){
+    this.body = {
+        result: 1,
+        data: yield siteService.siteFindAll()
+    }
+}
+
+export const setRecommend = function *(next){
+
+    let {id, type, title} = this.request.body.fields;
+    let rs = yield recommendService.setContentArtificial(id, type, title);
+    this.body = {
+        result: 1
+    }
+}
+
+export const contentGet = function *(next){
+
+    let {page, limit, site} = this.query;
+
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    let contents = yield contentService.getSiteContentBySiteId(site, '_all_', limit, page);
+    this.body = {
+        result: 1,
+        data: contents.data
+    }
+}
+
+export const recommendGet = function *(next){
+    let contents = yield recommendService.getContentArtificial();
+    let ids = [],
+        data = [];
+
+    let map = {};
+    contents.forEach(item=>{
+        map[item.mixed_id] = item.dataValues;
+        ids.push(item.mixed_id);
+    });
+
+    if (ids.length){
+        let cnts = yield contentService.getContentByIds(ids, {content: 0});
+        cnts.forEach(cnt=>{
+            map[cnt.content_id].content = cnt;
+            data.push(map[cnt.content_id]);
+        });
+    }
+
+    this.body = {
+        result: 1,
+        data
+    }
+}
+
+export const recommendDel = function *(next){
+    let {mixed_id} = this.request.body.fields;
+    let rs = yield recommendService.delContentArtificial(mixed_id);
+    this.body = {
+        result: 1
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 

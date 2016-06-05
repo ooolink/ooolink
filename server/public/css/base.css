@@ -1,4 +1,4 @@
-body{
+body,ul{
     margin: 0;
     padding: 0;
     border: 0;
@@ -31,6 +31,12 @@ body{
     font-size: 18px;
     font-family: 'cursive';
     background: #222;
+}
+
+.mod-content-select-list{
+    li{
+        list-style: none;
+    }
 }
 
 .mod-select-list{

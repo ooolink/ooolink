@@ -12,4 +12,14 @@ export default (router)=> {
     router.get('/manager/index', controller.indexRender);
 
     router.post('/manager/site', controller.siteAdd);
+
+    router.get('/manager/site', controller.siteGet);
+
+    router.get('/manager/content', controller.contentGet);
+
+    router.post('/manager/recommend', controller.setRecommend);
+
+    router.get('/manager/recommend', controller.recommendGet);
+
+    router.delete('/manager/recommend', controller.recommendDel);
 }

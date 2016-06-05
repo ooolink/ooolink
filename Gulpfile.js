@@ -11,6 +11,7 @@ const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
 const babel = require('gulp-babel');
 const changed = require('gulp-changed');
+const less = require('gulp-less');
 const minifycss = require('gulp-minify-css');
 const concat = require('gulp-concat');
 const webpack = require('gulp-webpack');
@@ -29,6 +30,7 @@ gulp.task('babel', ()=> {
 gulp.task('css', ()=> {
     "use strict";
     return gulp.src('server/public/css/**/*.css')
+        .pipe(less())
         .pipe(concat('main.css'))
         .pipe(minifycss())
         .pipe(gulp.dest('server/public/dist'));

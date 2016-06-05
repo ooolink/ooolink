@@ -24,11 +24,11 @@ export const siteAdd = function *(name, desc, image, themes, fn, type, site_id, 
 		return sites;
 };
 
+//TODO 分页 2016.6.5
 export const siteFindAll = function *(){
 		let sites = Sites.findAll();
 		return sites;
 }
-
 
 
 

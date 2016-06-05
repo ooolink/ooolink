@@ -8,6 +8,8 @@
  */
  "use strict";
 import * as recommendService from '../services/recommend';
+import * as contentService from '../services/content';
+import {headAuth} from '../tools/auth';
 
  export const recommendImageToWelcome = function *(next){
     
@@ -28,3 +30,62 @@ import * as recommendService from '../services/recommend';
     let rs = yield recommendService.getSeaGlobalContents(page);
     this.body = rs;
  }
+
+ export const getRecommendContents = function *(next){
+    let limit = parseInt(this.query.limit);
+    let rs = false;
+    try{
+        rs = yield headAuth('x-access-token');
+    } catch (e){
+        rs = false;
+    }
+    if (rs){
+        //用户推荐
+
+    } else {
+        //非用户推荐
+    }
+ }
+
+ export const getRecommendArtificial = function *(next){
+    let limit = parseInt(this.query.limit);
+    limit = limit > 5 ? 5 : limit;
+    let contentids = yield recommendService.getContentIdFromArtificial(limit);
+
+    let map = {},
+        data = [],
+        ids = [];
+    contentids.forEach(item=>{
+        map[item.mixed_id] = item.dataValues;
+        ids.push(item.mixed_id);
+    });
+
+    if (ids.length){
+        let cnts = yield contentService.getContentByIds(ids, {content: 0});
+        cnts.forEach(cnt=>{
+            map[cnt.content_id].content = cnt;
+            data.push(map[cnt.content_id]);
+        });
+    }
+
+    this.body = {
+        result: 1,
+        data
+    }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

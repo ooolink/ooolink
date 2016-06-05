@@ -33,3 +33,7 @@ export function getWelcome(time, location, user, successFunc, errorFunc) {
         }
     });
 }
+
+export function getRecommandByType(){
+    
+}

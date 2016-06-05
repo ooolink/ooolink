@@ -6,4 +6,6 @@
 
 #container{
     margin-left: 150px;
+    position: relative;
+    height: 100%;
 }
