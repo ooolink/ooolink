@@ -22,7 +22,7 @@ export function getUserInfo(token, cb){
             getUserInfo(token, cb);
         }, cb))
         .then(rs=>{
-            rs.result === 1 && setGlobal('userInfo', rs.data);
+            rs && rs.result === 1 && setGlobal('userInfo', rs.data);
             cb(rs);
         });
 }
@@ -41,7 +41,7 @@ export function updateUserInfo(token, infos, cb){
             updateUserInfo(token, infos, cb);
         }, cb))
         .then(rs=>{
-            rs.result === 1 && setGlobal('userInfo', infos);
+            rs && rs.result === 1 && setGlobal('userInfo', infos);
             cb(rs);
         })
 }

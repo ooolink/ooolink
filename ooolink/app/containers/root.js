@@ -21,7 +21,6 @@ import React,{
     TouchableOpacity
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import ScrollableTabs from '../common/components/scrollableTabs'
 import IndexTopBar from '../components/indexTopBar'
 import Discover from './discover'
 import Profile from './profile'

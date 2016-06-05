@@ -50,3 +50,21 @@ export function getSeaGlobalContents(page, cb){
             cb(rs);
         });
 }
+
+export function getArtificialRecommend(cb){
+    fetch(`${SERVER_ADDRESS}recommend/artificial?limit=5&type=content`)
+    .then(response=>{
+        if (response.status === 200){
+            return response.json();
+        } else {
+            return null;
+        }
+    })
+    .then(rs=>{
+        cb(rs);
+    })
+}
+
+
+
+

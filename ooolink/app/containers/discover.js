@@ -15,11 +15,15 @@ import React,{
     Dimensions,
     Navigator,
     TouchableOpacity,
+    Platform,
     View
 } from 'react-native';
+import Swiper from 'react-native-swiper';
 import Classification from './classification';
+import TopicDetail from './topicDetail';
 import Sea from './sea';
-const Swiper = require('react-native-swiper');
+import * as contentService from '../services/contentService';
+import {UriDeal, WordLineDeal, timeDeal, numberDeal} from '../utils';
 
 let {height, width} = Dimensions.get('window');
 
@@ -29,39 +33,48 @@ class DiscoverSwiperBlock extends Component{
     }
 
     render(){
+        let s = {height: 200},
+            ts = {};
+        if (Platform.OS === 'android'){
+            s = {height: 60};
+            ts = {top: 26, lineHeight: 26};
+        }
         return (
-            <View style={{width, height: 200}}>
+            <TouchableOpacity
+                onPress={this.props.onPress.bind(this, this.props.blockId)}
+            >
+            <View>
                 <Image 
-                    style={blockStyles.image}
-                    source={{uri: this.props.uri}}/>
-                <View style={blockStyles.cover}/>
+                    style={[blockStyles.image, s]}
+                    source={{uri: UriDeal(this.props.uri)}}/>
+                <View style={[blockStyles.cover, s]}></View>
                 <Text
-                    style={blockStyles.text}
+                    style={[blockStyles.text, ts]}
                     >{this.props.text}</Text>
             </View>
+            </TouchableOpacity>
         );
     }
 }
 
 const blockStyles = StyleSheet.create({
     image:{
-        width,
-        height:200
+        width
     },
     cover:{
         position:'absolute',
         top:0,
         width,
-        height,
         backgroundColor: '#33333366'
     },
     text:{
         position: 'absolute',
         top:60,
+        backgroundColor: '#00000000',
         letterSpacing:1,
         lineHeight: 30,
         left: 20,
-        width: width/2,
+        width: width/1.5,
         color:'#fff',
         fontWeight: '900',
         fontSize: 16
@@ -73,46 +86,51 @@ class Discover extends Component{
 
     constructor(props){
         super(props);
+        this.state = {
+            titleRecommend: []
+        }
     }
 
     render(){
-        let texts = ['啊！！！我在家门口看海有意思','爬山有意', '你好，我的世界你的爱！！！', '校园的爱情风雨1996-12-30', '呵呵哒~么什么大不了的世界晚安拜拜']
-        let uris = [
-            'https://s-media-cache-ak0.pinimg.com/474x/ab/cf/68/abcf682f7ebbf2ca831312bfa5c1b5d9.jpg',
-            'https://s-media-cache-ak0.pinimg.com/474x/ee/e6/f9/eee6f90abe0231417aa7c9863b498702.jpg',
-            'https://s-media-cache-ak0.pinimg.com/474x/37/a7/6e/37a76e6f1eb1a567f1b95ec41b9ad28b.jpg',
-            'https://s-media-cache-ak0.pinimg.com/474x/90/1d/73/901d735a4456003c672a845d19965046.jpg',
-            'https://s-media-cache-ak0.pinimg.com/474x/d0/17/5b/d0175b4a58f1cfa367ac885cadce4e40.jpg'
-        ];
+        let coms = null;
+        coms = this.state.titleRecommend.map((item, idx)=>{
+            return (
+                <DiscoverSwiperBlock
+                    blockId={item.mixed_id}
+                    onPress={(topicId)=>{
+                        this.props.navigator.push({
+                            name: 'TopicDetail',
+                            component: TopicDetail,
+                            props: {
+                                topicId
+                            }
+                        })
+                    }}
+                    key={idx}
+                    uri={item.content.image}
+                    text={item.recommend_title}
+                />
+            );
+        });
 
-        let p = [];
-        if (this.discoverSwiperBlock) {
-            p = this.discoverSwiperBlock;
-        } else {
-            for (var i = 0; i < 5; i++){
-                p.push(
-                    <DiscoverSwiperBlock
-                        key={i}
-                        uri={uris[i]}
-                        text={texts[i]}
-                    />
-                )
-            }
-        }
-        if (!this.discoverSwiperBlock){
-            this.discoverSwiperBlock = p;
-        }
-
-        return (
-            <ScrollView style={styles.container}>
+        let com = null;
+        if (Platform.OS === 'ios'){
+            com = 
                 <Swiper
                     activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
                     style={styles.swiper}
                     height={200}
-                    autoplay={false}                //TODO
+                    autoplay={true}           
                     >
-                    {p}
+                    {coms}
                 </Swiper>
+        } else {
+            com = coms;
+        }
+
+        return (
+            <ScrollView style={styles.container}>
+                {com}
                 <View style={styles.operate}>
                     <TouchableOpacity
                         activeOpacity={1}
@@ -161,6 +179,12 @@ class Discover extends Component{
         this.props.navigator.push({
             name: 'sea',
             component: Sea
+        });
+    }
+
+    componentDidMount() {
+        contentService.getArtificialRecommend((rs)=>{
+            this.setState({titleRecommend: rs.data});
         });
     }
 }

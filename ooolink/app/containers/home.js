@@ -19,7 +19,7 @@ import React,{
 } from 'react-native';
 import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
-import TopicDetail from '../containers/topicDetail';
+import TopicDetail from './topicDetail';
 import Profile from './profile';
 import Login from './loginContainer'
 import Publish from './publish';

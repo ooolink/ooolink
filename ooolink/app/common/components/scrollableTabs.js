@@ -1,11 +1,3 @@
- /**
- * Copyright (c) 2015-present, Rube Dong
- * All rights reserved.
- *
- * This source code is licensed under the GPL-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
 import React, {
     View,
     Component,
@@ -21,11 +13,12 @@ import React, {
 } from 'react-native';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
+
 const {height, width} = Dimensions.get('window');
+
 
 class ScrollableTabs extends Component {
     static propTypes = {
-        navStopScroll: PropTypes.bool,
         tabs: PropTypes.array,
         tabNavItemWidth: PropTypes.number,
         index: PropTypes.number,
@@ -44,9 +37,8 @@ class ScrollableTabs extends Component {
         const {tabNavItemWidth, tabs} = props;
         this.space = (width - tabNavItemWidth * 3) / 2;
         this.navContentWidth = (tabs.length + 2) * tabNavItemWidth + this.space * (tabs.length + 1);
-        this.index = props.index || 0;
-        const offset = this.props.navStopScroll ? this.space + tabNavItemWidth : this.index * (this.space + tabNavItemWidth);
-        this.offset = -offset;
+        this.index = props.index || Math.floor(tabs.length / 2);
+        const offset = this.index * (this.space + tabNavItemWidth);
         this.state = {
             x: new Animated.Value(-offset)
         };
@@ -144,7 +136,6 @@ class ScrollableTabs extends Component {
             });
         }
         else {
-            typeof this.props.onPageChanged === 'function' && this.props.onPageChanged(index);
             this.viewPager.setPage(index);
         }
     }
@@ -169,7 +160,9 @@ class ScrollableTabs extends Component {
                     <View ref={ view => this._navs[index]=view} key={index}
                           style={[styles.navItem, { width: this.props.tabNavItemWidth }, activeStyle]}>
 
-                        {item}
+                        <Text style={styles.itemText}>
+                            { item }
+                        </Text>
 
                     </View>
                 </TouchableOpacity>
@@ -243,12 +236,11 @@ class ScrollableTabs extends Component {
     render() {
         return (
             <View style={[ styles.container, this.props.style ]}>
-                { this._renderPageScroll() }
                 <View style={[styles.navWrapper, { width: this.navContentWidth }]}>
                     <View key="statusBarSpace" style={styles.statusBarSpace}/>
                     <Animated.View key="nav" style={[styles.nav, {
                         width: this.navContentWidth,
-                        transform: [{translateX: this.props.navStopScroll ? this.offset : this.state.x}]
+                        transform: [{translateX: this.state.x}]
                     }]}>
                         <View key='start' style={[styles.navItem, { width: this.props.tabNavItemWidth }]}/>
 
@@ -257,6 +249,9 @@ class ScrollableTabs extends Component {
                         <View key='end' style={[styles.navItem, { width: this.props.tabNavItemWidth }]}/>
                     </Animated.View>
                 </View>
+
+                { this._renderPageScroll() }
+
             </View>
         )
     }
@@ -269,7 +264,7 @@ const statusBarSpace = Platform.OS === 'ios' ? 20 : 0;
 const styles = StyleSheet.create({
     navWrapper: {
         height: 40 + statusBarSpace,
-        backgroundColor: '#65b278'
+        backgroundColor: 'rgba(0,0,0,0.8)'
     },
     statusBarSpace: {
         height: statusBarSpace
@@ -287,6 +282,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    itemText: {
+        textAlign: 'center',
+        color: 'rgba(255,255,255,0.7)',
+        flex: 1
     },
     page: {
         width
