@@ -50,6 +50,14 @@ export default function(consumer){
 				successFunc({result: 1, data: content});
 			}
 		});
+
+		//浏览数+1
+		Content.update({content_id},{$inc:{"quantity.view_count": 1}}).
+			exec((err, content)=>{
+				if (err){
+					_modelLog.error(_log('content', 'getContentByContentId', `获取内容后，更新浏览数失败, ${err.message}`, __filename, 58));
+				}
+			});
 	});
 
 	consumer.onRequestService('ss_content_getContentByContentIds', (params, successFunc, errorFunc)=>{
