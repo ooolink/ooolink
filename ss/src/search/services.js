@@ -39,8 +39,9 @@ export function searchContentByKeyWord(keyWord, page, limit, successFunc, errorF
     }
 
     SearchIndex.find({
-        $text: {$search: keyWord}
-    }, {content_id: 1, title: 1, desc: 1})
+        $text: {$search: keyWord},
+    }, {score: { $meta: "textScore" }, content_id: 1, title: 1, desc: 1})
+    .sort({ score: { $meta: "textScore" } })
     .skip(page * limit)
     .limit(limit)
     .exec((err, output)=>{
