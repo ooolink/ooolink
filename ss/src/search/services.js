@@ -38,6 +38,8 @@ export function searchContentByKeyWord(keyWord, page, limit, successFunc, errorF
         return errorFunc('checkError');
     }
 
+    keyWord = chineseFenci.getKeyWords(keyWord).keys.join(' ');
+
     SearchIndex.find({
         $text: {$search: keyWord},
     }, {score: { $meta: "textScore" }, content_id: 1, title: 1, desc: 1})
