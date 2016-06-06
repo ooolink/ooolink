@@ -22,4 +22,8 @@ export default (router)=> {
     router.get('/manager/recommend', controller.recommendGet);
 
     router.delete('/manager/recommend', controller.recommendDel);
+
+    router.get('/message', controller.messageGet);
+
+    router.post('/message', controller.messageSet);
 }

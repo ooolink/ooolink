@@ -1,0 +1,48 @@
+.biz-message{
+    margin-left: 550px;
+    height: 100%;
+    border-top: 0.1px #272636 solid;
+}
+
+.biz-message-left{
+    float: left;
+    margin-left: -520px;
+    margin-top: 50px;
+    height: 90%;
+    overflow-y: scroll;
+
+    .biz-message-title{
+        color:#fff;
+        font-weight: 900;
+        font-size: 18;
+        border-bottom: 1px #fff solid;
+        padding-bottom: 10px;
+    }
+
+    .biz-message-item {
+        p {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 900;
+        }
+    
+        p:first-child{
+            color: #65b278;
+        }
+
+        p:last-child{
+            font-size: 12px;
+        }
+    }
+
+}
+
+.biz-message-right{
+    overflow: hidden;
+    margin-top: 70px;
+    height: 90%;
+}
+
+.biz-message-submit{
+    width: 200px;
+}

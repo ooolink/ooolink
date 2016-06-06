@@ -10,6 +10,7 @@ import md5 from 'md5';
 import * as siteService from './services/site';
 import * as recommendService from './services/recommend';
 import * as contentService from './services/content';
+import * as messageService from './services/message';
 const consumer = require('fibms-node-client').Consumer();
 const producer = require('fibms-node-client').Producer();
 
@@ -136,7 +137,21 @@ export const recommendDel = function *(next){
 }
 
 
+export const messageGet = function *(next){
+    let messages = yield messageService.getMessage({where: {message_origin: 'platform'}});
+    this.body = {
+        result: 1,
+        data: messages
+    }
+}
 
+export const messageSet = function *(next){
+    let {content, title} = this.request.body.fields;
+    let rs = yield messageService.setMessage('notice', 'platform', 'platform', 'all', title, content);
+    this.body = {
+        result: 1
+    }
+}
 
 
 
