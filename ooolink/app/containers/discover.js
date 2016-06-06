@@ -21,8 +21,10 @@ import React,{
 import Swiper from 'react-native-swiper';
 import Classification from './classification';
 import TopicDetail from './topicDetail';
+import Home from './home';
 import Sea from './sea';
 import Hot from './hot';
+import InfoWithImageBlock from '../common/components/infoWithImageBlock'
 import * as contentService from '../services/contentService';
 import {UriDeal, WordLineDeal, timeDeal, numberDeal} from '../utils';
 
@@ -130,7 +132,9 @@ class Discover extends Component{
         }
 
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView 
+            showsVerticalScrollIndicator={false}
+            style={styles.container}>
                 {com}
                 <View style={styles.operate}>
                     <TouchableOpacity
@@ -170,6 +174,25 @@ class Discover extends Component{
                     </View>
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.recommendTitle}>推荐站点</Text>
+                <InfoWithImageBlock
+                    height={80}
+                    blockId={'04be9c7c2e7f7eda6febba12aa579a8d'}
+                    onPress={this.onOpenSite.bind(this)}
+                    imageURL={'http://www.admin10000.com/UploadFiles/Document/201412/01/20141201195326478573.JPG'}
+                >
+                    <Text style={styles.siteItemText}>{'CNode'}</Text>
+                    <Text style={[styles.siteItemText,{fontWeight:'100', fontSize:14}]}>{'最大的nodejs中文社区'}</Text>
+                </InfoWithImageBlock>
+                <InfoWithImageBlock
+                    height={80}
+                    blockId={'96030d6e62c8c9641968a9e1c6216cf8'}
+                    onPress={this.onOpenSite.bind(this)}
+                    imageURL={'http://tpl3.kuailiyu.com/templates/cyzonev3/images/logo_orange@2x.png'}
+                >
+                    <Text style={styles.siteItemText}>{'创业邦'}</Text>
+                    <Text style={[styles.siteItemText,{fontWeight:'100', fontSize:14}]}>{'创投库，融资，起步，成长，技术，生活'}</Text>
+                </InfoWithImageBlock>
             </ScrollView>
         )
     }
@@ -192,6 +215,17 @@ class Discover extends Component{
         this.props.navigator.push({
             name: 'Hot',
             component: Hot
+        });
+    }
+
+    onOpenSite(site_id){
+        this.props.actions.getSiteInfo(site_id);
+        this.props.navigator.push({
+            name: 'Home',
+            component: Home,
+            props: {
+                site_id
+            }
         });
     }
 
@@ -236,7 +270,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 12,
         fontWeight: '600'
-    }
+    },
+    recommendTitle:{
+        color:'#fff',
+        margin: 10,
+        fontWeight: '900'
+    },
+    siteItemText:{
+        marginLeft: 20,
+        fontSize: 16,
+        fontWeight: '900',
+        color:'#fff'
+    },
 });
 
 export default Discover;
