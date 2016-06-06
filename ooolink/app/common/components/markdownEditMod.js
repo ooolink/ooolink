@@ -18,10 +18,12 @@ import React,{
     View,
     Dimensions,
     TouchableOpacity,
+    Platform,
     Animated
 } from 'react-native';
 import HtmlComponent from '../htmlRender/htmlComponent';
 import TopBar from './topBar';
+import MultiTextInput from './base/multiTextInput';
 import {markdown} from 'markdown';
 
 let {height, width} = Dimensions.get('window');
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
 		margin: 10,
 	},
 	textInput: {
-		height: height - 81,
+		flex:1,
 		width,
 		padding: 10,
 		fontSize: 16
@@ -201,6 +203,32 @@ class EditBlock extends Component{
 			/> : 
 			null;
 
+		let inputCom = <TextInput
+					underlineColorAndroid={'transparent'}
+					autoFocus={true}
+					placeholder={'来说点什么吧...'}
+					placeholderTextColor={'#666'}
+					autoCorrect={false}
+					multiline={true}
+					style={[styles.textInput,{height: height - 81}]}
+					onChangeText={this.onChangeText.bind(this)}
+					value={this.state.content}
+				/>
+
+		if (Platform.OS === 'android'){
+			inputCom = <MultiTextInput 
+						underlineColorAndroid={'transparent'}
+						autoFocus={true}
+						placeholder={'来说点什么吧...'}
+						placeholderTextColor={'#666'}
+						autoCorrect={false}
+						multiline={true}
+						style={[styles.textInput]}
+						onChangeText={this.onChangeText.bind(this)}
+						value={this.state.content}		
+						underlineColorAndroid={'transparent'}
+						defaultHeight={50}/>
+		}	
 		return(
 			<View>
 				<ScrollView 
@@ -210,16 +238,7 @@ class EditBlock extends Component{
 				>
 					{this.state.com}
 				</ScrollView>
-				<TextInput
-					autoFocus={true}
-					placeholder={'来说点什么吧...'}
-					placeholderTextColor={'#666'}
-					autoCorrect={false}
-					multiline={true}
-					style={styles.textInput}
-					onChangeText={this.onChangeText.bind(this)}
-					value={this.state.content}
-				/>
+				{inputCom}
 				{modalCom}
 			</View>
 		);

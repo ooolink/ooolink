@@ -39,7 +39,7 @@ class Publish extends Component{
             backText = '跟帖';
         }
         return (
-            <View>
+            <View style={{flex:1}}>
                 <TopBar
                     backText = {backText}
                     onBack = {this.onBack.bind(this)}

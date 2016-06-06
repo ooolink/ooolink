@@ -15,7 +15,8 @@ import React,{
     Dimensions,
     Navigator,
     View,
-    Alert
+    Alert,
+    TouchableOpacity
 } from 'react-native';
 import TopicList from '../components/topicslist';
 import TitleBar from '../components/titlebar';
@@ -60,6 +61,16 @@ class Home extends Component {
                     onShouldRefresh={this.onRefreshList.bind(this)}
                     onShouldChangePage={this.onChangPage.bind(this)}
                     style={styles.content}/>;
+
+        let publishCom = siteInfo[siteid].site_fn.split(',').indexOf('publish') === -1 ? null :     
+                <TouchableOpacity
+                style={styles.publishButton}
+                onPress={this.onPublish.bind(this)}
+                >
+                    <Text style={styles.publishButtonText}>
+                        发布主题
+                    </Text>
+                </TouchableOpacity>
                     
         return (
             <View style={styles.container}>
@@ -74,9 +85,7 @@ class Home extends Component {
                     backText={siteInfo[currentSite].site_name}
                     themeSelected={themeSelectedWord}
                     themeBlockHeight={themesBlockHeight} />   
-                <Text style={styles.publishButton} onPress={this.onPublish.bind(this)}>
-                    发布主题
-                </Text>
+                    {publishCom}
             </View>
         );
     }
@@ -194,21 +203,21 @@ const styles = StyleSheet.create({
         top: 0
     },
     content: {
-        position: 'absolute',
         top: 50,
         width,
         height: height - 40,
         backgroundColor: 'rgb(41,44,52)'
     },
     publishButton: {
-        position: 'absolute',
-        top: height - 40,
+        alignSelf: 'flex-end',
         height: 40,
         width,
+        justifyContent: 'center',
         backgroundColor: '#65b278dd',
+    },
+    publishButtonText:{
         color: '#fff',
         textAlign: 'center',
-        lineHeight: 28,
         fontWeight: '900'
     }
 });
