@@ -22,7 +22,7 @@ export default function configureStore(initialState) {
 }
 
 let storage = new Storage({
-    size: 6666,
+    size: 66666,
     defaultExpires: 1000*3600*24*30*6,
     enableCache: true,
     sync: {
