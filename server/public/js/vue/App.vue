@@ -11,12 +11,14 @@
 import panel from './panel.vue';
 import sitepanel from './sitePanel.vue';
 import recommendpanel from './recommendPanel.vue';
+import messagepanel from './messagePanel.vue';
 
 module.exports = {
 	components: {
 		panel,
 		sitepanel,
-        recommendpanel
+        recommendpanel,
+        messagepanel
 	},
     data(){
         return {
