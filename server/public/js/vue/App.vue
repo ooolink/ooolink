@@ -9,7 +9,7 @@
 
 <script>
 import panel from './panel.vue';
-import sitepanel from './sitePanel.vue';
+import sitepanel from './sitepanel.vue';
 import recommendpanel from './recommendPanel.vue';
 import messagepanel from './messagePanel.vue';
 
