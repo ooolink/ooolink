@@ -52,27 +52,28 @@ class ProfileEdit extends Component{
     }
 
     render(){
-        let saveCom = this.saveCom || <Text style={styles.savebutton} onPress={this.onSave.bind(this)}>保存</Text>;
-        let sexSelectCom = this.sexSelectCom || this.state.isPick ? 
+        let saveCom = <Text style={styles.savebutton} onPress={this.onSave.bind(this)}>保存</Text>;
+        let sexSelectCom = this.state.isPick ? 
                         <View style={styles.wrap}>
                             <View style={{backgroundColor: '#fff', width: width - 120, alignSelf: 'center'}}>
                                 <Picker
-                                  mode={'dialog'}
                                   selectedValue={this.state.user_sex}
                                   onValueChange={(user_sex) => this.setState({user_sex})}>
                                   <Picker.Item label="女" value={0} />
                                   <Picker.Item label="男" value={1} />
                                   <Picker.Item label="未知" value={-1} />
                                 </Picker> 
-                                <Text 
-                                style={styles.typePickerButton}
-                                onPress={()=>{this.setState({isPick: false})}}>确定</Text>
+                                <TouchableOpacity
+                                    onPress={()=>{this.setState({isPick: false})}}
+                                >
+                                    <Text 
+                                    style={styles.typePickerButton}
+                                    >确定</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         :
                         null;
-        this.saveCom = this.saveCom || saveCom;
-        this.sexSelectCom = this.sexSelectCom || sexSelectCom;
         return (
             <View>
                 <TopBar
@@ -105,7 +106,7 @@ class ProfileEdit extends Component{
                             <Text style={styles.itemText}>性别</Text>
                             <Text 
                             onPress={()=>{this.setState({isPick: true})}}
-                            style={{lineHeight: 30, paddingLeft: 5, width: 200}}>{sexs[this.state.user_sex+1]}</Text>
+                            style={{paddingLeft: 5, width: 200}}>{sexs[this.state.user_sex+1]}</Text>
                         </View>                        
 
                         <View style={styles.line}></View>
@@ -205,16 +206,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width,
         height: 50,
+        alignItems: 'center',
         borderTopColor: '#eee',
         borderTopWidth: 1
     },
     itemText:{
         color: '#666',
-        textAlignVertical:'center',
-        alignSelf: 'center',
-        lineHeight: 20,
-        padding: 10,
-        width: 100
+        width: 100,
+        marginLeft: 10
     },
     textInput: {
         flex: 1,
@@ -233,7 +232,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     typePickerButton:{
-        width: 200,
+        flex: 1,
         height: 30,
         textAlign: 'center',
         color: '#fff',
