@@ -30,6 +30,8 @@ export default (router)=> {
 
     router.post('/search', blankAuth(null, ['type', 'content', 'page', 'limit']), searchController.searchEntrance);
 
+    router.get('/search/hot', searchController.getSearchHot);
+
     router.post('/collect/site', headAuth(['x-access-token']), blankAuth(null, ['site']), userController.auth, collectController.collectSite);
 
     router.delete('/collect/site', headAuth(['x-access-token']), blankAuth(null, ['site']), userController.auth, collectController.unCollectSite);

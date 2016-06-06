@@ -21,7 +21,7 @@ import React,{
 } from 'react-native';
 import SearchResult from './searchResult';
 import TopBar from '../common/components/topBar';
-import {searchSite} from '../services/searchService';
+import {getSearchHot} from '../services/searchService';
 import {connect} from 'react-redux';
 
 const {width, height} = Dimensions.get('window');
@@ -43,11 +43,10 @@ class SearchBlock extends Component {
 
     render() {
         let com = [];
-        this.state.famous.forEach((site, idx)=>{
+        this.state.famous.forEach((item, idx)=>{
             com.push(
-                <TouchableOpacity key={idx} style={styles.famousItem} onPress={this.props.onSelectSite.bind(this, site.site_id)}>
-                    <Text style={styles.famoutItemName}>{site.site_name}</Text>
-                    <Text style={styles.famoutItemDesc}>{site.site_desc}</Text>
+                <TouchableOpacity key={idx} style={styles.famousItem} onPress={this.onSelectHot.bind(this, item)}>
+                    <Text style={styles.famoutItemName}>{item}</Text>
                 </TouchableOpacity>
             );
         });
@@ -74,8 +73,16 @@ class SearchBlock extends Component {
         this.props.onSearch(this.state.text);
     }
 
-    componentDidMount() {
+    onSelectHot(item){
+        this.props.onSearch(item);
+    }
 
+    componentDidMount() {
+        getSearchHot((rs)=>{
+            if (rs && rs.result === 1){
+                this.setState({famous: rs.data});
+            }
+        });   
     }
 }
 
@@ -94,7 +101,7 @@ const styles = StyleSheet.create({
         width: 30
     },
     itemTitle:{
-        color: '#2F85A7',
+        color: '#65b278',
         marginLeft: 10,
         fontWeight: '900'
     },
@@ -102,10 +109,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     famoutItemName: {
-        fontWeight: '900'
-    },
-    famoutItemDesc: {
-        fontSize: 10
+        fontWeight: '900',
+        color: '#333'
     }
 });
 

@@ -54,3 +54,24 @@ export const searchEntrance = function *(next){
 
 	yield funcMap[type].call(this);
 }
+
+export const getSearchHot = function *(next){
+
+	let hots = ['前端工程师招聘', '创新创业', '网红', '阿里巴巴集团', 'nodejs living' ,
+				'Uber融资', '嘀嘀打车', '百度云', 'nodeclub', '蚂蚁金服', 
+				'中文线上社区', 'github开源', '七牛', 'NBA', '阿里巴巴实习生招聘'];
+	let start = Math.round(Math.random() * 10);
+	this.body = {
+		result: 1,
+		data: hots.slice(start, start + 5)
+	}
+}
+
+
+
+
+
+
+
+
+

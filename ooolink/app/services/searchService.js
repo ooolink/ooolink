@@ -52,4 +52,16 @@ export function searchContentByKeyword(value, page, limit, cb) {
         });
 }
 
+export function getSearchHot(cb){
+    fetch(`${SERVER_ADDRESS}search/hot`)
+    .then(response=>response.json())
+    .then(rs=>{
+        if (rs && rs.result === 1){
+            cb && cb(rs);
+        } else {
+            cb(null);
+        }
+    })
+}
+
 
