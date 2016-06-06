@@ -14,6 +14,7 @@ import user from './user';
 import collect from './collect';
 import comment from './comment';
 import site from './site';
+import message from './message';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
@@ -23,6 +24,7 @@ export default combineReducers({
     user,
     collect,
     comment,
-    site
+    site,
+    message
 });
 

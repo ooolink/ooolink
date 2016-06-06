@@ -17,6 +17,7 @@ import * as collectController from './controllers/collect';
 import * as recommendController from './controllers/recommend';
 import * as commentController from './controllers/comment';
 import * as contentController from './controllers/content';
+import * as messageController from './controllers/message';
 import log from './services/log';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
@@ -89,6 +90,8 @@ export default (router)=> {
     router.get('/recommend/artificial', blankAuth(['limit', 'type']), recommendController.getRecommendArtificial);
 
     router.get('/recommend/hot', recommendController.getRecommendHot);
+
+    router.get('/message/platform', headAuth(['x-access-token']), userController.auth, messageController.getPlatformMessage);
 
     return router;
 }

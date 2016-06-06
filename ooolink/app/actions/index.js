@@ -14,8 +14,9 @@ import * as collect from './collect';
 import * as user from './user';
 import * as comment from './comment';
 import * as site from './site';
+import * as message from './message';
 
 let actions = {};
-Object.assign(actions, app, content, home, collect, user, comment, site);
+Object.assign(actions, app, content, home, collect, user, comment, site, message);
 
 export default actions;

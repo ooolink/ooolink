@@ -24,6 +24,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import IndexTopBar from '../components/indexTopBar'
 import Discover from './discover'
 import Profile from './profile'
+import Message from './message'
 
 const {width, height} = Dimensions.get('window');
 
@@ -82,6 +83,11 @@ class Root extends Component{
                         style={{flex: 1}}
                         initialPage={index}
                         tabBarPosition = 'bottom'
+                        onChangeTab={(obj)=>{
+                            if (obj.i === 1){
+                                this.getPlatfromMessage();    
+                            }
+                        }}
                         renderTabBar={()=><ScrollableTabViewBar selected={index}/>}
                     >
                         <View style={styles.scrollView}>
@@ -102,6 +108,11 @@ class Root extends Component{
                                 state={this.props.state}
                                 idx={1}
                             />   
+                            <Message
+                                navigator={this.props.navigator}
+                                state={this.props.state}
+                                actions={this.props.actions}
+                            />
                         </View>
                         <View style={styles.scrollView}>
                             <IndexTopBar
@@ -117,6 +128,15 @@ class Root extends Component{
                         </View>
                     </ScrollableTabView>    
             );
+    }
+
+    getPlatfromMessage(){
+        let token = this.props.state.user.userToken;
+        this.props.actions.getPlatfromMessage(token);    
+    }
+
+    componentDidMount() {
+        this.getPlatfromMessage();   
     }
 }
 

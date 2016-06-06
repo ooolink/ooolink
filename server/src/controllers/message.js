@@ -6,7 +6,12 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
+import * as messageService from '../services/message';
 
-export const SERVER_ADDRESS = "http://192.168.43.172:3070/";
-export const USER_DEFAULT_HEAD = 'http://gravatar.com/avatar/a0892cf4b7ff2828c00aa3f91ba51724?size=48';
-export const DEBUG = true;
+ export const getPlatformMessage = function *(next){
+    let messages = yield messageService.getMessages({where: {message_origin: 'platform'}});
+    this.body = {
+        result: 1,
+        data: messages
+    }
+ }
