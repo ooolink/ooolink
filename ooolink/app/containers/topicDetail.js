@@ -22,6 +22,7 @@ import React,{
     Alert
 } from 'react-native';
 import LoadingBlock from '../common/components/loadingBlock';
+import WebView from '../common/components/webview';
 import TopicBar from '../components/topicbar';
 import TypeChooseModal from '../components/typeChooseModal';
 import HtmlComponent from '../common/htmlRender/htmlComponent';
@@ -59,6 +60,11 @@ class ContentBlock extends Component {
                     <HtmlComponent
                         content={data.content}
                     />
+                    <TouchableOpacity 
+                    onPress={this.props.openOrigin.bind(this, data.url)}
+                    style={{width: 100, height: 50}}>
+                    <Text style={styles.watchOrigin}>查看原文</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         );
@@ -88,7 +94,9 @@ class TopicDetail extends Component {
 
         let com, modalCom = null;
         if (this.state.isRequested && content) {
-            com = <ContentBlock data={content}/>
+            com = <ContentBlock 
+            openOrigin={this.openOrigin.bind(this)}
+            data={content}/>
         } else {
             com = <LoadingBlock/>
         }
@@ -144,13 +152,24 @@ class TopicDetail extends Component {
         let contentid = this.props.topicId;
         this.props.navigator.push({
             name: 'Comments',
-            index: 5,
             component: Comments,
             props: {
                 contentid,
                 type: TO_PUBLISH_COMMENT
             }
         });
+    }
+
+    openOrigin(url){
+        let contentid = this.props.topicId;
+        this.props.navigator.push({
+            name: 'WebView',
+            component: WebView,
+            props: {
+                contentid,
+                url
+            }
+        })
     }
 
     onBack() {
@@ -313,6 +332,13 @@ const styles = StyleSheet.create({
     },
     countBlock:{
         flexDirection: 'row'
+    },
+    watchOrigin:{
+        margin: 10,
+        marginBottom: 0,
+        fontWeight: '900',
+        color: '#333',
+        fontSize: 16
     }
 });
 
