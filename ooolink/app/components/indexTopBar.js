@@ -92,15 +92,14 @@ class IndexTopBar extends Component{
 
 const styles = StyleSheet.create({
     logoText: {
-        width,
-        textAlign: 'left',
-        marginLeft: 20,
         marginTop: 10,
+        marginLeft: 10,
+        textAlign: 'left',
         color:'#fff',
         backgroundColor: null,
         fontWeight: "900",
         fontSize: 18,
-        height: 50
+        height: 40
     },
     image:{
         width: 26, 

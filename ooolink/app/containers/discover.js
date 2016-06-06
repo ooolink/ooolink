@@ -22,6 +22,7 @@ import Swiper from 'react-native-swiper';
 import Classification from './classification';
 import TopicDetail from './topicDetail';
 import Sea from './sea';
+import Hot from './hot';
 import * as contentService from '../services/contentService';
 import {UriDeal, WordLineDeal, timeDeal, numberDeal} from '../utils';
 
@@ -133,7 +134,7 @@ class Discover extends Component{
                 {com}
                 <View style={styles.operate}>
                     <TouchableOpacity
-                        activeOpacity={1}
+                        activeOpacity={0.6}
                         onPress={this.onOpenSea.bind(this)}
                     >
                     <View style={styles.o}>
@@ -141,9 +142,13 @@ class Discover extends Component{
                             source={require('../images/discover-find.png')}
                             style={styles.oimage}
                         />
-                        <Text style={styles.otext}>海淘</Text>
+                        <Text style={styles.otext}>淘文</Text>
                     </View>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={this.onOpenHot.bind(this)}
+                    >
                     <View style={styles.o}>
                         <Image 
                             source={require('../images/discover-hot.png')}
@@ -151,8 +156,9 @@ class Discover extends Component{
                         />
                         <Text style={styles.otext}>热门</Text>
                     </View>
+                    </TouchableOpacity>
                     <TouchableOpacity
-                        activeOpacity={1}
+                        activeOpacity={0.6}
                         onPress={this.onOpenClass.bind(this)}
                     >
                     <View style={styles.o}>
@@ -179,6 +185,13 @@ class Discover extends Component{
         this.props.navigator.push({
             name: 'sea',
             component: Sea
+        });
+    }
+
+    onOpenHot(){
+        this.props.navigator.push({
+            name: 'Hot',
+            component: Hot
         });
     }
 

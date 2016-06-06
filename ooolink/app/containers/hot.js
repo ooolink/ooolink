@@ -37,8 +37,8 @@ class Sea extends Component {
         let com = !this.state.data ? <LoadingBlock/> :
          <TopicsList 
             onSelectTopic={this.onSelectTopic.bind(this)}
-            onShouldRefresh={this.onRefreshList.bind(this)}
-            onShouldChangePage={this.onChangPage.bind(this)}
+            onShouldRefresh={()=>{}}
+            onShouldChangePage={()=>{}}
             data={this.state.data}/>;
         return (
             <View 
@@ -46,7 +46,7 @@ class Sea extends Component {
             >
                 <TopBar
                     onBack={()=>{this.props.navigator.pop()}}
-                    backText={'淘文'}
+                    backText={'热门'}
                 />
                 {com}
             </View>
@@ -80,7 +80,7 @@ class Sea extends Component {
     }
 
     doGet(page, cb){
-        contentService.getSeaGlobalContents(page, (rs)=>{
+        contentService.getHotContents(page, (rs)=>{
             if (rs && rs.result === 1){
                 cb ? cb(rs) : this.setState({data: rs.data, page});
             } else {

@@ -47,8 +47,8 @@ consumer.onMessage('ss_task_getSiteAllContents_rss', params=>{
             }
             model.image = getImageFromContent(d.description);
             model.theme = [];
-            model.created = d.pubdate;
-            model.updated = d.pubdate;
+            model.created = d.pubdate || new Date();
+            model.updated = d.pubdate || model.created;
             model.url = d.link;
             model.author.author_id = d.author ? `${params.site.site_id}_${md5(d.author)}` : params.site.site_id;
             model.author_loginname = d.author || nativeSite.site_name;

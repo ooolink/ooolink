@@ -65,6 +65,26 @@ export function getArtificialRecommend(cb){
     })
 }
 
+export function getHotContents(page, cb){
+    fetch(`${SERVER_ADDRESS}recommend/hot`)
+    .then(response=>{
+        if (response.status === 200){
+            return response.json();
+        } else {
+            return null; 
+        }
+    })
+    .then(rs=>{
+        cb(rs);
+    })
+}
+
+
+
+
+
+
+
 
 
 
