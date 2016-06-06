@@ -36,7 +36,8 @@ class Home extends Component {
         super(props);
         this.state = {
             siteLikeStatus: 'loading',
-            isLoading: true
+            isLoading: true,
+            page: 0
         }
     }
 
@@ -47,15 +48,17 @@ class Home extends Component {
 
         let {themesBlockHeight,themeSelected, themeSelectedWord} = this.props.state.home;
         let {currentSite, siteInfo} = this.props.state.app;
-        let topics = this.props.state.content.topics[0] ?                       //TODO
-            this.props.state.content.topics[0] :
-            [];                             
+        let page = this.state.page,
+            siteid = this.props.site_id;
 
+        let topics = this.props.state.content.topics[siteid] || [];                       //TODO
         let topiclistCom = this.state.isLoading ? <LoadingBlock/> : 
                 <TopicList
                     isLoading={this.props.state.content.getTopicsLoading}
                     onSelectTopic={this.onSelectTopic.bind(this)}
                     data={topics}
+                    onShouldRefresh={this.onRefreshList.bind(this)}
+                    onShouldChangePage={this.onChangPage.bind(this)}
                     style={styles.content}/>;
                     
         return (
@@ -106,6 +109,22 @@ class Home extends Component {
                 type: TO_PUBLISH_TOPIC
             }
         });
+    }
+
+    onChangPage(){
+        let page = this.state.page + 1,
+            theme = this.props.state.home.themeSelected;
+
+        this.props.actions.getTopics(this.props.site_id, theme, page);
+        this.setState({page});
+    }
+
+    onRefreshList(){
+        let page = 0,
+        theme = this.props.state.home.themeSelected;
+
+        this.props.actions.getTopics(this.props.site_id, theme, page);
+        this.setState({page});
     }
 
     onSiteFocus() {

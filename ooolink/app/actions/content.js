@@ -22,8 +22,8 @@ function getTopicsFromServer(site, theme, page, limit) {
                 dispatch({
                     type: ActionTypes.GET_TOPICS,
                     topics: ret,
-                    page,
-                    loadingTopicsIdNow: `${site}-${theme}-${page}-${limit}`
+                    site,
+                    page
                 });
             } else {
                 fetch(`${SERVER_ADDRESS}site/theme?site=${site}&theme=${theme}&limit=${limit}&page=${page}`)
@@ -38,9 +38,9 @@ function getTopicsFromServer(site, theme, page, limit) {
                     }, topics, 1000*60);
                     dispatch({
                         type: ActionTypes.GET_TOPICS,
+                        site,
                         topics,
-                        page,
-                        loadingTopicsIdNow: `${site}-${theme}-${page}-${limit}`
+                        page
                     });
                 });
             }
@@ -82,10 +82,6 @@ function getTopicFromServer(site, id) {
 export function getTopics(site, theme, page = 0, limit = 20) {
     "use strict";
     return (dispatch, getState) => {
-        dispatch({
-            type: ActionTypes.GET_TOPICS_LOADING,
-            loadingTopicsIdNow: `${site}-${theme}-${page}-${limit}`
-        });
         return dispatch(getTopicsFromServer(site, theme, page, limit));
     }
 }

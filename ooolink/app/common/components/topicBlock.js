@@ -28,7 +28,7 @@ class TopicBlock extends Component {
     render() {
         let data = this.props.data, 
             bgImage = UriDeal(data.image),
-            avatar = UriDeal(data.author.author_avatar);
+            avatar = data.author ? UriDeal(data.author.author_avatar) : USER_DEFAULT_HEAD;
         let cs = bgImage ? [styles.topicBg] : [styles.topicBg, {borderBottomColor: '#000',borderBottomWidth: 2}];
         let tag = data.theme[0] ? data.theme[0] : data.classes.specific_class[0];
         return (

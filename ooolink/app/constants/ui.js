@@ -7,6 +7,10 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-export const SERVER_ADDRESS = "http://192.168.1.100:3070/";
-export const USER_DEFAULT_HEAD = 'http://gravatar.com/avatar/a0892cf4b7ff2828c00aa3f91ba51724?size=48';
-export const DEBUG = true;
+export const refreshControl = {
+    tintColor: "rgba(241,196,15, 1)",
+    title: "正在加载...",
+    enabled: true,
+    colors: ["rgba(241,196,15, 1)", "rgba(241,196,15, 0.9)", "rgba(241,196,15, 0.8)"],
+    progressBackgroundColor: "#292829",
+};

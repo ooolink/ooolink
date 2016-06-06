@@ -27,20 +27,13 @@ export default function(state = initialState, action) {
                 welcomeContent: action.content
             });
 
-        case types.GET_TOPICS_LOADING:
-            state.getTopicsLoading = true;
-            state.topics = {};
-            state.loadingTopicsIdNow = action.loadingTopicsIdNow;
-            return Object.assign({}, state);
-
         case types.GET_TOPICS:
-            let {page, topics, loadingTopicsIdNow} = action;
-            if (loadingTopicsIdNow !== state.loadingTopicsIdNow){
-                return Object.assign({}, state);
+            let {page, topics, site} = action;
+            if (page === 0){
+                state.topics[site] = topics;
+            } else {
+                state.topics[site] = [...state.topics[site], ...topics];
             }
-            state.topics = state.topics || {};
-            state.topics[page] = topics;
-            state.getTopicsLoading = false;
             return Object.assign({}, state);
 
         case types.SET_CONTENT:
