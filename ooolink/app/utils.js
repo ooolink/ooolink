@@ -86,6 +86,9 @@ export function timeDeal(time, type) {
                 return parseInt(tm[i]) + tms[i] + '前';
             }
         }
+        if (t <= 0){
+            return '刚刚';
+        }
         return t + '毫秒前';
     }
 
