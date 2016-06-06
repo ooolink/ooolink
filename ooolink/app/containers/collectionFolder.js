@@ -58,6 +58,8 @@ class CollectionFolder extends Component{
 
         if (userCollectionsDetail[typeId]){
             cfCom = <TopicsList
+                onShouldChangePage={()=>{}}
+                onShouldRefresh={()=>{}}
                 data={userCollectionsDetail[typeId].collections}
                 onSelectTopic={this.onSelectTopic.bind(this)}
             />
