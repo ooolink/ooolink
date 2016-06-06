@@ -72,7 +72,7 @@ class Sea extends Component {
         let page = this.state.page + 1;
         this.doGet(page, (rs)=>{
             this.setState({data: [...this.state.data, ...rs.data], page});
-        })；
+        });
     }
 
     componentDidMount() {
