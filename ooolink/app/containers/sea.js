@@ -28,7 +28,8 @@ class Sea extends Component {
     constructor(props){
         super(props);
         this.state = {
-            data: null
+            data: null,
+            page: 0
         }
     }
 
@@ -36,6 +37,8 @@ class Sea extends Component {
         let com = !this.state.data ? <LoadingBlock/> :
          <TopicsList 
             onSelectTopic={this.onSelectTopic.bind(this)}
+            onShouldRefresh={this.onRefreshList.bind(this)}
+            onShouldChangePage={this.onChangPage.bind(this)}
             data={this.state.data}/>;
         return (
             <View 
@@ -61,10 +64,25 @@ class Sea extends Component {
         });    
     }
 
+    onRefreshList(){
+        this.doGet(0);
+    }
+
+    onChangPage(){
+        let page = this.state.page + 1;
+        this.doGet(page, (rs)=>{
+            this.setState({data: [...this.state.data, ...rs.data], page});
+        })；
+    }
+
     componentDidMount() {
-        contentService.getSeaGlobalContents(0, (rs)=>{
+        this.doGet(0);
+    }
+
+    doGet(page, cb){
+        contentService.getSeaGlobalContents(page, (rs)=>{
             if (rs && rs.result === 1){
-                this.setState({data: rs.data});
+                cb ? cb(rs) : this.setState({data: rs.data, page});
             } else {
                 //TODO 网络错误处理
             }
@@ -73,3 +91,9 @@ class Sea extends Component {
 }
 
 export default Sea;
+
+
+
+
+
+

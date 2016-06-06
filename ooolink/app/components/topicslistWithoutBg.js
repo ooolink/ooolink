@@ -18,16 +18,20 @@ import React,{
     Navigator,
     PropTypes,
     View,
-    ListView
+    ListView,
+    RefreshControl
 } from 'react-native';
 import TopicWithoutBgBlock from '../common/components/topicWithoutBgBlock'
+import * as uiConfig from '../constants/ui'
 const {width, height} = Dimensions.get('window');
 
 class TopicsListWithoutBg extends Component{
 
     static propTypes = {
         onSelectTopic: PropTypes.func.isRequired,
-        data: PropTypes.array.isRequired
+        data: PropTypes.array.isRequired,
+        onShouldRefresh: PropTypes.func.isRequired,
+        onShouldChangePage: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -35,14 +39,17 @@ class TopicsListWithoutBg extends Component{
         let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithRows(this.props.data),
-            visibleRows: {}
+            visibleRows: {},
+            refreshing: false
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.data)
-        })
+        if (nextProps !== this.props.data){
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(nextProps.data)
+            });
+        }
     }
 
     render(){
@@ -50,6 +57,22 @@ class TopicsListWithoutBg extends Component{
             pageSize={5}
             dataSource={this.state.dataSource}
             renderRow={this._renderRow.bind(this)}
+            onEndReachedThreshold={30}
+            onEndReached={this.props.onShouldChangePage.bind(this)}
+            refreshControl={
+                    <RefreshControl
+                            ref={(view)=> this.refreshControl=view}
+                            refreshing={this.state.refreshing}
+                            onRefresh={()=>{
+                                this.setState({refreshing: true});
+                                setTimeout(()=>{
+                                    this.setState({refreshing: false});
+                                }, 1000);
+                                this.props.onShouldRefresh();
+                            }}
+                            {...uiConfig.refreshControl}
+                          />
+                    }
         /> 
     }
 
