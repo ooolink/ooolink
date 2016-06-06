@@ -86,13 +86,10 @@ class ClassificationDetail extends Component{
                 <ScrollableTabView
                     onChangeTab={this.onChangeTab.bind(this)}
                 >
-                    <ScrollView tabLabel="站点" style={styles.scrollView}>
+                    <ScrollView tabLabel="社区" style={styles.scrollView}>
                         {coms}
                     </ScrollView>
-                    <ScrollView tabLabel="关键字" style={styles.scrollView}>
-                        {coms}
-                    </ScrollView>
-                    <ScrollView tabLabel="主题" style={styles.scrollView}>
+                    <ScrollView tabLabel="内容" style={styles.scrollView}>
                         {coms}
                     </ScrollView>
                 </ScrollableTabView>

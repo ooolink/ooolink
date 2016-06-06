@@ -86,5 +86,7 @@ export default (router)=> {
 
     router.get('/recommend/artificial', blankAuth(['limit', 'type']), recommendController.getRecommendArtificial);
 
+    router.get('/recommend/hot', recommendController.getRecommendHot);
+
     return router;
 }

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 const ContentCreate = require('../models').Content;
+const Site = require('../models').Site;
 const producer = require('fibms-node-client').Producer();
 import {setSearchIndex} from '../search/services';
 
@@ -178,6 +179,29 @@ export default function(consumer){
 					_modelLog.error(_log('content', 'incCollectionNumber', 'collect_count减1', __filename, 120));
 				}
 			});
+	});
+
+	//TODO 需要重写
+	consumer.onRequestService('ss_content_getContentsByViewCount', (params, successFunc, errorFunc)=>{
+		Site.find({}, {site_id: 1}, {lean: true}).exec((err, sites)=>{			//TODO Error
+			let data = [], number = 0;
+			sites.forEach(site=>{
+				let Content = ContentCreate(site.site_id.substr(0, 2).toLowerCase());
+				Content.find({}, {content: 0}, {lean: true})
+				.limit(6)
+				.sort({"quantity.view_count": -1})
+				.exec((err, contents)=>{
+					data = [...data, ...contents];
+					number ++;
+					if (number === sites.length){
+						successFunc({
+							result: 1,
+							data
+						});
+					}
+				});
+			});
+		});
 	});
 }
 

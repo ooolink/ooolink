@@ -33,3 +33,4 @@ export const delContentArtificial = function *(mixed_id){
 
     return rs;
 }
+

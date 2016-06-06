@@ -44,7 +44,7 @@ export const getSeaGlobalContents = function *(page){
                 resolve(result);
             },
             error: (result)=>{
-                reject(result);
+                reject(result.message);
             }
         });
         producer.sendMessage(message);
@@ -73,6 +73,22 @@ export const getContentIdFromArtificial = function *(limit=5){
     return contentids;
 }
 
+export const getContentsByViewCount = function *(){
+    let rs = yield new Promise((resolve, reject)=>{
+        let message = producer.createMessage('ss_content_getContentsByViewCount');
+        message.setType(producer.MESSAGE_REQUEST);
+        message.addCallBack({
+            success: (result)=>{
+                resolve(result);
+            },
+            error: (result)=>{
+                reject(result.message);
+            }
+        });
+        producer.sendMessage(message);
+    });
+    return rs;
+}
 
 
 

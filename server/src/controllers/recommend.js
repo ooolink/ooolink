@@ -74,9 +74,16 @@ import {headAuth} from '../tools/auth';
     }
  }
 
-
-
-
+export const getRecommendHot = function *(next){
+    let rs = yield recommendService.getContentsByViewCount();
+    rs.data.sort((b, a)=>{
+        return a.quantity.view_count - b.quantity.view_count;
+    });
+    this.body = {
+        result: 1,
+        data: rs.data
+    }
+}
 
 
 
