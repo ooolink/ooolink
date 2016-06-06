@@ -21,23 +21,9 @@ export function collected(contentid, token, type, cb) {
         },
         body: `contentid=${contentid}&type=${type}`
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth((rs)=>{
-                    if (rs && rs.result === 401){
-                        setGlobal('isLogin', false);
-                        cb({result: 401});
-                    } else {
-                        collected(contentid, rs.data, type, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            collected(contentid, token, type, cb);
+        }, cb))
         .then(rs=> {
             cb(rs);
         });
@@ -53,23 +39,9 @@ export function uncollected(contentid, token, cb) {
         },
         body: `contentid=${contentid}`
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth((rs)=>{
-                    if (rs && rs.result === 401){
-                        setGlobal('isLogin', false);
-                        cb({result: 401});
-                    } else {
-                        collected(contentid, rs.data, type, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            uncollected(contentid, token, cb);
+        }, cb))
         .then(rs=> {
             cb(rs);
         });
@@ -114,22 +86,9 @@ export function judgeCollected(token, contentId, cb) {
             "x-access-token": token
         }
     })
-        .then(response=>{
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth(rs=>{
-                    if (rs && rs.result === 401){
-                        cb({result: 401});
-                    } else if (rs && rs.result === 1){
-                        judgeCollected(rs.data, contentId, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            judgeCollected(token, contentId, cb);
+        }, cb))
         .then(rs=> {
             cb(rs);
         })
@@ -145,23 +104,9 @@ export function collectedSite(site, token, cb) {
         },
         body: `site=${site}`
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth((rs)=>{
-                    if (rs && rs.result === 401){
-                        setGlobal('isLogin', false);
-                        cb({result: 401});
-                    } else {
-                        collectedSite(site, rs.data, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            collectedSite(site, token, cb);
+        }, cb))
         .then(rs=> {
             rs && cb(rs);
         });
@@ -177,23 +122,9 @@ export function unCollectedSite(site, token, cb) {
         },
         body: `site=${site}`
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth((rs)=>{
-                    if (rs && rs.result === 401){
-                        setGlobal('isLogin', false);
-                        cb({result: 401});
-                    } else {
-                        unCollectedSite(site, rs.data, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            unCollectedSite(site, token, cb);
+        }, cb))
         .then(rs=> {
             rs && cb(rs);
         });
@@ -223,22 +154,9 @@ export function judgeSiteFocused(token, site, cb) {
             'x-access-token': token
         }
     })
-        .then(response=>{
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth(rs=>{
-                    if (rs && rs.result === 401){
-                        cb({result: 401});
-                    } else if (rs && rs.result === 1){
-                        judgeSiteFocused(rs.data, site, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            judgeSiteFocused(token, site, cb);
+        }, cb))
         .then(rs=>{
             cb(rs);
         })
@@ -253,22 +171,9 @@ export function createUserCollectionType(token, type, cb) {
         },
         body: `type=${type}`
     })
-        .then(response=>{
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth(rs=>{
-                    if (rs && rs.result === 401){
-                        cb({result: 401});
-                    } else if (rs && rs.result === 1){
-                        createUserCollectionType(rs.data, type, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            createUserCollectionType(token, type, cb);
+        }, cb))
         .then(rs=>{
             rs && cb(rs);
         });
@@ -283,22 +188,9 @@ export function deleteUserCollectionType(token, type, cb){
         },
         body: `type=${type}`
     })
-        .then(response=>{
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 401){
-                loginService.reAuth(rs=>{
-                    if (rs && rs.result === 401){
-                        cb({result: 401});
-                    } else if (rs && rs.result === 1){
-                        deleteUserCollectionType(rs.data, type, cb);
-                    }
-                });
-            } else {
-                cb({result: 0});
-            }
-            return;
-        })
+        .then(responseAuth(token=>{
+            deleteUserCollectionType(token, type, cb);
+        }, cb))
         .then(rs=>{
             rs && cb(rs);
         });
