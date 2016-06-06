@@ -21,7 +21,7 @@ export function publishComment(token, content, contentid, replyid=-1, cb){
         body: `content=${content}&contentid=${contentid}&replyid=${replyid}`
     })
         .then(responseAuth(token=>{
-            publishComment(toke, content, contentid, replyid, cb);
+            publishComment(token, content, contentid, replyid, cb);
         }, cb))
         .then(rs=>{
             cb(rs);

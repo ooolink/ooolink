@@ -28,3 +28,7 @@ export const getContentByIds = function *(ids, query){
     });
     return rs;
 }
+
+export const getContentsByType = function *(ids, query){
+    
+}

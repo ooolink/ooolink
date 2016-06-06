@@ -16,9 +16,7 @@ import * as userController from './controllers/user';
 import * as collectController from './controllers/collect';
 import * as recommendController from './controllers/recommend';
 import * as commentController from './controllers/comment';
-import * as _controller from './controller';
-import * as searchService from './services/search';
-import * as collectService from './services/collect';
+import * as contentController from './controllers/content';
 import log from './services/log';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
@@ -43,6 +41,8 @@ export default (router)=> {
     router.delete('/collect/content', headAuth(['x-access-token']), blankAuth(null, ['contentid']), userController.auth, collectController.unCollectContent);
 
     router.get('/collect/content', headAuth(['x-access-token']), blankAuth(['contentid']), userController.auth, collectController.isCollectedContent);
+
+    router.get('/contents', blankAuth(['type', 'limit', 'page']), contentController.getContentsByType);
 
     router.get('/sites', blankAuth(['type', 'limit', 'page']), siteController.getSiteByType);
 

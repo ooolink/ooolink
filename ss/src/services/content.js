@@ -203,6 +203,11 @@ export default function(consumer){
 			});
 		});
 	});
+
+	//TODO 需要重写
+	consumer.onRequestService('ss_content_getContentsByType', (params, successFunc, errorFunc)=>{
+		let {type, page, limit} = params;
+	});
 }
 
 
