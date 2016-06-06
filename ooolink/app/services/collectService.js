@@ -83,11 +83,9 @@ export function getCollections(token, cb) {
             "x-access-token": token
         }
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            }
-        })
+        .then(responseAuth(token=>{
+            getCollections(token, cb);
+        }, cb))
         .then(rs=> {
             cb(rs);
         });
@@ -100,11 +98,9 @@ export function getCollectionsDetail(token, type, cb){
             "x-access-token": token
         }
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            }
-        })
+        .then(responseAuth(token=>{
+            getCollectionsDetail(token, type, cb);
+        }, cb))
         .then(rs=> {
             cb(rs);
         });
@@ -211,11 +207,9 @@ export function getSitefocused(token, page, limit, cb) {
             "x-access-token": token
         }
     })
-        .then(response=> {
-            if (response.status === 200) {
-                return response.json();
-            }
-        })
+        .then(responseAuth(token=>{
+            getSitefocused(token, page, limit, cb);
+        }, cb))
         .then(rs=> {
             cb(rs);
         });
