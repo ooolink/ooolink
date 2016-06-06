@@ -79,6 +79,30 @@ export function getHotContents(page, cb){
     })
 }
 
+export function getContentsByType(page, limit, type, cb){
+    fetch(`${SERVER_ADDRESS}contents?page=${page}&limit=${limit}&type=${type}`)
+    .then(response=>{
+        if (response.status === 200){
+            return response.json();
+        } else {
+            return null;
+        }
+    })
+    .then(rs=>{
+        cb(rs);
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

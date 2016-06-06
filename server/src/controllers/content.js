@@ -7,6 +7,8 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 "use strict";
+import * as siteServices from '../services/site';
+import * as contentServices from '../services/content';
 
 export const getContentsByType = function *(next){
     let {type, limit, page} = this.query;
@@ -14,5 +16,17 @@ export const getContentsByType = function *(next){
     limit = parseInt(limit);
     page = parseInt(page);
 
-    
+    //0 和 10 是暂时写法
+    let sites = yield siteServices.getSiteByType(type, 0, 10);
+    let ids = [];
+    sites.forEach(site=>{
+        ids.push(site.site_id);
+    });
+
+    let contents = yield contentServices.getContentsBySiteids(ids, page, limit);
+
+    this.body = {
+        result: 1,
+        data: contents
+    }
 }

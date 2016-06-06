@@ -129,6 +129,36 @@ export default function(consumer){
 		});
 	});
 
+	//TODO 需要重写
+	consumer.onRequestService('ss_content_getContentBySiteIds', (params, successFunc, errorFunc)=>{
+		let {ids, page, limit, query} = params;
+		let aveLimit = Math.round(limit / ids.length);
+		let data = [], num = 0, errorFlag = false;
+		if (ids.length === 0){
+			return errorFunc('rsNullError');
+		}
+		ids.forEach(id=>{
+			let Content = ContentCreate(id.substr(0, 2).toLowerCase());
+			Content.find({site_id: id}, query, {lean: true})
+			.limit(aveLimit)
+			.exec((err, contents)=>{
+				if (errorFlag){return;}
+				if (err){
+					errorFlag = true;
+					return errorFunc('rsNullError');
+				}
+				data = [...data, ...contents];
+				num++;
+				if (num === ids.length){
+					successFunc({
+						result: 1,
+						data
+					});
+				}
+			});
+		})
+	});
+
 	consumer.onGroupMessage('global_content_incCommentNumber', params=>{
 		let content_id = params.contentid;
 		let site_id = content_id.split('_')[0],
@@ -202,11 +232,6 @@ export default function(consumer){
 				});
 			});
 		});
-	});
-
-	//TODO 需要重写
-	consumer.onRequestService('ss_content_getContentsByType', (params, successFunc, errorFunc)=>{
-		let {type, page, limit} = params;
 	});
 }
 

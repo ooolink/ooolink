@@ -19,6 +19,8 @@ import React,{
     TouchableOpacity
 } from 'react-native';
 import Home from '../containers/home'
+import TopicList from '../components/topicslist';
+import TopicDetail from './topicDetail';
 import TopBar from '../common/components/topBar'
 import LoadingBlock from '../common/components/loadingBlock'
 import InfoWithImageBlock from '../common/components/infoWithImageBlock'
@@ -27,6 +29,7 @@ import Login from './loginContainer'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import * as siteService from '../services/siteService'
 import * as collectService from '../services/collectService'
+import * as contentService from '../services/contentService'
 import {getGlobal, setGlobal} from '../store'
 
 let {height, width} = Dimensions.get('window');
@@ -41,42 +44,52 @@ class ClassificationDetail extends Component{
             themes: [],
             isLoading: true,
             nowSelect: 'site',                             //site, keyword, themes
-            isOperating: false
+            isOperating: false,
+            data:[]
         }
     }
 
     render(){
+        let coms = [], ccoms = null;
         if (this.state.isLoading){
-            return (
-                <LoadingBlock/>
-            )
-        }
-        let coms = [];
-        this.state.sites.forEach((item, idx)=>{
-            let  siteChooseCom = 
-            <View style={styles.siteChooseCom}>
-                <Text 
-                    onPress={this.onVisitSite.bind(this, item)}
-                    style={[styles.siteChooseComItem, {backgroundColor:'#65b278'}]}>访问</Text>
-                <Text 
-                    onPress={this.onFocusSite.bind(this, item)}
-                    style={[styles.siteChooseComItem, {backgroundColor:'#f54b72'}]}>关注</Text>
-            </View>
+            coms = <LoadingBlock/>
+            ccoms = <LoadingBlock/>
+        } else {
+                this.state.sites.forEach((item, idx)=>{
+                    let  siteChooseCom = 
+                    <View style={styles.siteChooseCom}>
+                        <Text 
+                            onPress={this.onVisitSite.bind(this, item)}
+                            style={[styles.siteChooseComItem, {backgroundColor:'#65b278'}]}>访问</Text>
+                        <Text 
+                            onPress={this.onFocusSite.bind(this, item)}
+                            style={[styles.siteChooseComItem, {backgroundColor:'#f54b72'}]}>关注</Text>
+                    </View>
 
-            coms.push(
-                <InfoWithImageBlock
-                    key={idx}
-                    canChoose={siteChooseCom}
-                    height={80}
-                    blockId={item}
-                    onPress={this.onVisitSite.bind(this)}
-                    imageURL={item.site_image}
-                >
-                    <Text style={styles.siteItemText}>{item.site_name}</Text>
-                    <Text style={[styles.siteItemText,{fontWeight:'100', fontSize:14}]}>{item.site_desc}</Text>
-                </InfoWithImageBlock>
-            )
-        });
+                    coms.push(
+                        <InfoWithImageBlock
+                            key={idx}
+                            canChoose={siteChooseCom}
+                            height={80}
+                            blockId={item}
+                            onPress={this.onVisitSite.bind(this)}
+                            imageURL={item.site_image}
+                        >
+                            <Text style={styles.siteItemText}>{item.site_name}</Text>
+                            <Text style={[styles.siteItemText,{fontWeight:'100', fontSize:14}]}>{item.site_desc}</Text>
+                        </InfoWithImageBlock>
+                    )
+                });
+                 ccoms = <TopicList
+                        isLoading={false}
+                        onSelectTopic={this.onSelectTopic.bind(this)}
+                        data={this.state.data}
+                        onShouldRefresh={()=>{}}
+                        onShouldChangePage={()=>{}}
+                        />;
+        }
+
+        let loadingStyle=this.state.isLoading ? {justifyContent: 'center'} : {}
         return (
             <View style={{flex:1}}>
                 <TopBar
@@ -84,27 +97,21 @@ class ClassificationDetail extends Component{
                     backText={this.props.typeName}
                 />
                 <ScrollableTabView
-                    onChangeTab={this.onChangeTab.bind(this)}
+                    tabBarInactiveTextColor={'rgb(41,44,52)'}
+                    tabBarActiveTextColor={'#65b278'}
+                    tabBarUnderlineColor={'#65b278'}
+                    style={{flex: 1}}
                 >
-                    <ScrollView tabLabel="社区" style={styles.scrollView}>
+                    <ScrollView tabLabel="社区" contentContainerStyle={[styles.scrollView, loadingStyle]}>
                         {coms}
                     </ScrollView>
-                    <ScrollView tabLabel="内容" style={styles.scrollView}>
-                        {coms}
+                    <ScrollView tabLabel="内容" contentContainerStyle={[styles.scrollView, loadingStyle]}>
+                        {ccoms}
                     </ScrollView>
                 </ScrollableTabView>
                 <OperateLoading visible={this.state.isOperating}/>
             </View>
         )
-    }
-
-    onChangeTab(tabObj){
-        let {i} = tabObj;
-        switch (i){
-            case 0:break;
-            case 1:break;
-            case 2:break;
-        }
     }
 
     onFocusSite(item){
@@ -137,18 +144,39 @@ class ClassificationDetail extends Component{
         });
     }
 
+    onSelectTopic(topicId){
+        this.props.navigator.push({
+            name: 'TopicDetail',
+            component: TopicDetail,
+            props: {
+                topicId
+            }
+        })
+    }
+
     onBack(){
         this.props.navigator.pop();
     }
 
     componentDidMount() {
-        siteService.getSiteByType(this.props.type, 1, 0, (rs)=>{
-            if (rs && rs.result){
-                this.setState({sites: rs.data, isLoading: false});
-            } else {
-                this.setState({sites: [], isLoading: false});
-            }
-        });  
+        setTimeout(()=>{
+            siteService.getSiteByType(this.props.type, 0, 10, (rs)=>{
+                if (rs && rs.result){
+                    this.setState({sites: rs.data});
+                } else {
+                    this.setState({sites: [], isLoading: false});
+                }
+                contentService.getContentsByType(0, 20, this.props.type, (rs)=>{
+                    if (rs && rs.result === 1){
+                        let data = rs.data.filter(d=>{
+                            return !!d.classes;
+                        });
+                        this.setState({data});
+                    }
+                    this.setState({isLoading: false});
+                });
+            });  
+        }, 500);
     }
 }
 

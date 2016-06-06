@@ -29,6 +29,23 @@ export const getContentByIds = function *(ids, query){
     return rs;
 }
 
-export const getContentsByType = function *(ids, query){
-    
+export const getContentsBySiteids = function *(ids, page, limit, query){
+    let rs = yield new Promise((resolve, reject)=>{
+        let message = producer.createMessage('ss_content_getContentBySiteIds');
+        message.setType(producer.MESSAGE_REQUEST);
+        message.setParams('ids', ids);
+        message.setParams('page', page);
+        message.setParams('limit', limit);
+        message.setParams('query', {content: 0});
+        message.addCallBack({
+            success: (result)=>{
+                resolve(result.data);
+            },
+            error: (result)=>{
+                reject(result.message);
+            }
+        });
+        producer.sendMessage(message);
+    });
+    return rs;
 }
