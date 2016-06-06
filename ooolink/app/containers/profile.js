@@ -127,6 +127,17 @@ class Profile extends Component {
                             <Image style={styles.icon} source={require('../images/profile-up.png')}/>
                         </View>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={this.onAbout.bind(this)}
+                    >
+                        <View style={styles.item}>
+                            <Image style={styles.icon} source={require('../images/profile-about.png')}/>
+                            <Text style={styles.itemText}>
+                                关于
+                            </Text>
+                            <Image style={styles.icon} source={require('../images/profile-up.png')}/>
+                        </View>
+                    </TouchableOpacity>
                     {loginOutCom}
                 </View>
             );
@@ -187,6 +198,10 @@ class Profile extends Component {
         loginService.loginOut();
         this.props.actions.setUserInfoAfterLoginStatusChange(null, null, null, false, 'infoClear');
         Alert.alert('退出成功');
+    }
+
+    onAbout(){
+        Alert.alert('About', '作者:董一炜\n项目源码:https://github.com/ooolink/ooolink');
     }
 
     goToLogin(){
@@ -283,7 +298,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#f54b72',
         borderRadius: 5,
-        marginTop: 40,
+        marginTop: 50,
         marginBottom: 20,
         alignSelf: 'center'
     }
