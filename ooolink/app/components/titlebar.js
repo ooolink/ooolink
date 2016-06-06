@@ -98,7 +98,8 @@ class TitleBar extends Component {
                     <TouchableOpacity
                         onPress={this.siteFocus.bind(this)}
                         style={[styles.itemIcon,{
-                            left:width-30
+                            left:width-30,
+                            top: 15
                         }]}
                     >
                         <Image
@@ -170,10 +171,9 @@ const styles = StyleSheet.create({
         height: 10
     },
     itemIcon: {
-        top: 8,
         position: 'absolute',
-        width: 16,
-        height: 16
+        width: 20,
+        height: 20
     },
     backArrow: {
         marginLeft: 6,
