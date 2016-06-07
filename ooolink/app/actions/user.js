@@ -46,10 +46,10 @@ export function getUserAllInfoFromNativeCache(){
                                     });
 
                                     //App加载完成，如果还有其他预加载流程可以放到对应流程中
-                                    dispatch({
-                                        type: ActionTypes.UPDATE_APP_LOAD_STATUS,
-                                        status: true
-                                    });
+                                        dispatch({
+                                            type: ActionTypes.UPDATE_APP_LOAD_STATUS,
+                                            status: true
+                                        });
                                 });
                             });
                         });

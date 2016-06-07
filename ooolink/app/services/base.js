@@ -21,6 +21,7 @@ export function responseAuth(reAuthCb, cb){
                         updateUserLoginStatus(false);                   //更新 redux
                         return {result: 401};
                     } else if (rs && rs.result === 1){
+                        setGlobal('isLogin', true);
                         updateUserToken(rs.data);                       //更新 redux
                         reAuthCb(rs.data);
                     } else {

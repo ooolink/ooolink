@@ -18,11 +18,13 @@ import React,{
     View,
     TextInput,
     TouchableOpacity,
-    PropTypes
+    PropTypes,
+    Alert
 } from 'react-native';
 import TopBar from '../common/components/topBar';
 import MarkDownEditMod from '../common/components/markdownEditMod';
 import OperateLoading from '../common/components/operateLoading';
+import Login from './loginContainer';
 import {TO_PUBLISH_TOPIC, TO_PUBLISH_COMMENT} from '../constants/passAgreement';
 import * as publishService from '../services/publishService';
 
@@ -58,7 +60,7 @@ class Publish extends Component{
                     key={idx}
                     onPress={()=>{this.setState({typeSelected: t.theme})}}
                 >
-                    <Text style={[{fontWeight:'900', width: width / this.state.type.length}, style]}>{t.name}</Text>
+                    <Text style={[{textAlign:'center', fontWeight:'900', width: width / this.state.type.length}, style]}>{t.name}</Text>
                 </TouchableOpacity>
             )
         });
@@ -86,7 +88,7 @@ class Publish extends Component{
                     onChangeText={(text)=>{this.setState({title: text})}}
                     value={this.state.title}
                 />
-                <View style={{flexDirection: 'row', margin: 10, justifyContent: 'space-between'}}>
+                <View style={styles.typeChoose}>
                 {typeCom}
                 </View>
                 <MarkDownEditMod
@@ -112,13 +114,25 @@ class Publish extends Component{
         let token = this.props.state.user.userToken;
         let {title, content} = this.state;
         publishService.publishContent(token, title, content, this.state.typeSelected, this.props.site, '38900518-bb01-4924-822e-2cbfdc188aa5',(rs=>{
-
+            if (rs && rs.result === 401){
+                goToLogin();
+            } else {
+                Alert.alert('发布成功');
+                this.props.navigator.pop();
+            }
         }));
     }
 
     componentDidMount() {
         publishService.getPublishType(this.props.site, rs=>{
             this.setState({type: rs.data});
+        });
+    }
+
+    goToLogin(){
+        this.props.navigator.push({
+            name: 'login',
+            component: Login
         });
     }
 }
@@ -135,6 +149,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: width - 40,
         top: 16
+    },
+    typeChoose:{
+        paddingBottom: 10,
+        paddingTop: 10,
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        borderTopColor: '#eee',
+        borderTopWidth: 1,
+        borderBottomColor: '#eee',
+        borderBottomWidth: 1
     }
 })
 
