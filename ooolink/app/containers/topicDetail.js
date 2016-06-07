@@ -181,7 +181,7 @@ class TopicDetail extends Component {
             userIsLogon = this.props.state.user.userIsLogon;
         //未登陆直接跳出
         if (!token || !userIsLogon){    
-            this.goToLogin();
+            return this.goToLogin();
         }
 
         let types = this.props.state.user.userCollectionTypes;

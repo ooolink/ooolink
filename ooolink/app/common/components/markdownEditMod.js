@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
 		height: 20,
 		width: 160,
 		fontSize: 13,
+		color:'#333',
 		marginTop: 10
 	},	
 	modalButton: {
@@ -217,7 +218,6 @@ class EditBlock extends Component{
 		if (Platform.OS === 'android'){
 			inputCom = <MultiTextInput 
 						underlineColorAndroid={'transparent'}
-						autoFocus={true}
 						placeholder={'来说点什么吧...'}
 						placeholderTextColor={'#666'}
 						autoCorrect={false}

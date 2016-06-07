@@ -114,7 +114,7 @@ class Root extends Component{
                                 actions={this.props.actions}
                             />
                         </View>
-                        <View style={styles.scrollView}>
+                        <View style={[styles.scrollView, {backgroundColor:'#fff'}]}>
                             <IndexTopBar
                                 navigator={this.props.navigator}
                                 state={this.props.state}

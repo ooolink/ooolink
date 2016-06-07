@@ -28,6 +28,7 @@ export const auth = function *(next){
 
 export const sign = function *(next){
     let {password, name} = this.request.body.fields;
+    console.log(password, name);
     if (!(/^[0-9a-z]+$/).exec(name) || !(/^[0-9a-z]+$/).exec(password)
         || name.length < 6 || password.length < 6) {
         throw new Error('sign paramsError 500');     
