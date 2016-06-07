@@ -37,7 +37,8 @@ class SearchBlock extends Component {
         super(props);
         this.state = {
             text: '',
-            famous: []
+            famous: [],
+            time: 2,
         }
     }
 
@@ -47,6 +48,20 @@ class SearchBlock extends Component {
             com.push(
                 <TouchableOpacity key={idx} style={styles.famousItem} onPress={this.onSelectHot.bind(this, item)}>
                     <Text style={styles.famoutItemName}>{item}</Text>
+                </TouchableOpacity>
+            );
+        });
+
+        let timeCom = [];
+        ['1个月内', '1年内', '全部'].forEach((t, idx)=>{
+            let style = (idx === this.state.time) ? {color:'#65b278'} : {color: '#333'};
+            timeCom.push(
+                <TouchableOpacity
+                    style={{marginRight: 10}}
+                    key={idx}
+                    onPress={()=>{this.setState({time: idx})}}
+                >
+                    <Text style={style}>{t}</Text>
                 </TouchableOpacity>
             );
         });
@@ -63,6 +78,10 @@ class SearchBlock extends Component {
                         style={styles.searchButton}
                         onPress={this._onSearch.bind(this)}>搜索</Text>
                 </View>
+                <View style={{flexDirection: 'row', marginBottom: 5}}>
+                <Text style={styles.itemTitle}>更新时间  </Text>
+                {timeCom}
+                </View>
                 <Text style={styles.itemTitle}>推荐</Text>
                 {com}
             </View>
@@ -70,7 +89,7 @@ class SearchBlock extends Component {
     }
 
     _onSearch() {
-        this.props.onSearch(this.state.text);
+        this.props.onSearch(this.state.text, this.state.time);
     }
 
     onSelectHot(item){
@@ -139,7 +158,7 @@ class Search extends Component {
         this.props.navigator.pop();
     }
 
-    onSearch(value) {
+    onSearch(value, time) {
         if (!value){
             return;
         }
@@ -148,7 +167,8 @@ class Search extends Component {
             name: 'searchResult',
             index: 3,
             props: {
-                value
+                value,
+                time
             },
             component: SearchResult
         });

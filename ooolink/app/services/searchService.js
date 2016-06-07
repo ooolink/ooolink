@@ -30,7 +30,7 @@ export function searchSite(value, page, limit, cb) {
         });
 }
 
-export function searchContentByKeyword(value, page, limit, cb) {
+export function searchContentByKeyword(value, page, limit, time, cb) {
     "use strict";
     if (!value){
         return cb(null);
@@ -40,7 +40,7 @@ export function searchContentByKeyword(value, page, limit, cb) {
         headers:{
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body:`type=keyword&content=${value}&page=${page}&limit=${limit}`
+        body:`type=keyword&content=${value}&page=${page}&limit=${limit}&time=${time}`
     })
         .then(response => response.json())
         .then(rs => {

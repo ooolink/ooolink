@@ -64,7 +64,7 @@ class SearchResult extends Component {
 
     componentDidMount() {
         setTimeout(()=>{
-            searchContentByKeyword(this.props.value, 0, 10, (data)=>{
+            searchContentByKeyword(this.props.value, 0, 10, this.props.time, (data)=>{
                 this.setState({isOperating: false, dataSource: this.dataSource.cloneWithRows(data)})
             });
         }, 500);

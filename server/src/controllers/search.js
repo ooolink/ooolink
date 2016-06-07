@@ -23,12 +23,12 @@ const recommend = function *(){
 }
 
 const keyword = function *(){
-	let {content, page, limit} = this.request.body.fields;
+	let {content, page, limit, time} = this.request.body.fields;
 
 	page = parseInt(page);
 	limit = parseInt(limit);
 
-	let contents = yield searchService.searchKeyword(content, page, limit);
+	let contents = yield searchService.searchKeyword(content, page, limit, time);
 	this.body = {
 		result: 1,
 		data: contents

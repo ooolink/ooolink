@@ -30,7 +30,7 @@ export function setSearchIndex(content_id, title, desc, content=''){
     });
 }
 
-export function searchContentByKeyWord(keyWord, page, limit, successFunc, errorFunc){
+export function searchContentByKeyWord(keyWord, page, limit, time, successFunc, errorFunc){
     
     //词语是否被屏蔽
     let isShielded = shieldWord(keyWord);

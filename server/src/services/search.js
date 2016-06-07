@@ -44,7 +44,7 @@ export const searchSites = function*(searchValue) {
     return sites;
 };
 
-export const searchKeyword = function *(keyword, page, limit){
+export const searchKeyword = function *(keyword, page, limit, time){
     let rs = yield new Promise((resolve, reject)=>{
 
         let message = producer.createMessage('ss_search_searchKeyword');
@@ -52,6 +52,7 @@ export const searchKeyword = function *(keyword, page, limit){
         message.setParams('keyword', keyword);
         message.setParams('page', page);
         message.setParams('limit', limit);
+        message.setParams('time', time);
         message.addCallBack({
             success: (result)=>{
                 resolve(result.data);
