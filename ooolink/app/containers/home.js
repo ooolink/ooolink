@@ -115,6 +115,7 @@ class Home extends Component {
             index: 5,
             component: Publish,
             props: {
+                site: this.props.site_id,
                 type: TO_PUBLISH_TOPIC
             }
         });

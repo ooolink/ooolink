@@ -205,7 +205,6 @@ class EditBlock extends Component{
 
 		let inputCom = <TextInput
 					underlineColorAndroid={'transparent'}
-					autoFocus={true}
 					placeholder={'来说点什么吧...'}
 					placeholderTextColor={'#666'}
 					autoCorrect={false}
@@ -251,7 +250,7 @@ class EditBlock extends Component{
 		} else if (this.state.modaltitle = '添加图片'){
 			content+=`\n\n![${desc}](${link})\n\n`;
 		}
-
+		this.props.onChangeText(content);
 		this.setState({content, modaltitle: '', modalvisiable: false});
 	}
 
@@ -261,31 +260,38 @@ class EditBlock extends Component{
 			n = 1;
 			last = 0;
 		}	
+		this.props.onChangeText(text);
 		this.setState({content: text, listnumber: {n, last}});
 	}
 
 	onInputb(){
+		this.props.onChangeText(this.state.content+'**string**');
 		this.setState({content: this.state.content+'**string**'});
 	}
 
 	onInputi(){
+		this.props.onChangeText(this.state.content+'*string*');
 		this.setState({content: this.state.content+'*string*'});
 	}
 
 	onInputyin(){
+		this.props.onChangeText(this.state.content+'\n>');
 		this.setState({content: this.state.content+'\n>'});
 	}
 
 	onInputlist(){
+		this.props.onChangeText(this.state.content+'\n* ');
 		this.setState({content: this.state.content+'\n* '});
 	}
 
 	onInputlistn(){
 		let n = this.state.listnumber.n;
+		this.props.onChangeText(this.state.content+`\n${n}. `);
 		this.setState({content: this.state.content+`\n${n}. `, listnumber: {n: n+1, last: this.state.content.length + 4}});
 	}
 
 	onInputcode(){
+		this.props.onChangeText(this.state.content+`\n\`\`\`\n\n\`\`\``);
 		this.setState({content: this.state.content+`\n\`\`\`\n\n\`\`\``});
 	}
 
@@ -330,6 +336,7 @@ class MarkDownEditMod extends Component{
     render(){
     	return (
     		<EditBlock
+    			onChangeText={this.props.onChangeText.bind(this)}
     			navigator={this.props.navigator}
     		/>
     	);

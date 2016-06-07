@@ -11,14 +11,18 @@ import crypto from 'crypto';
 import co from 'co';
 import User from '../models/user';
 import UserInfo from '../models/userInfo';
+const consumer = require('fibms-node-client').Consumer();
+const producer = require('fibms-node-client').Producer();
 
-export const addUser = function *(name, password, salt, token) {
+export const addUser = function *(name, password, salt, token, site_id = '', site_user_belong = null) {
     "use strict";
     let user = yield User.create({
         user_name: name,
         user_password: password,
         user_salt: salt,
-        user_token: token
+        user_token: token,
+        site_id,
+        site_user_belong
     });
     return user;
 };
@@ -94,6 +98,24 @@ export const getUserInfo = function *(user_id){
 export const updateUserInfo = function *(value, where){
     let userInfo = yield UserInfo.update(value, where);
     return userInfo;
+}
+
+export const checkExtToken = function *(site, token){
+    let rs = yield new Promise((resolve, reject)=>{
+        let message = producer.createMessage(`ext_user_checkToken_${site}`);
+        message.setType(producer.MESSAGE_REQUEST);
+        message.setParams('token', token);
+        message.addCallBack({
+            success: (result)=>{
+                resolve(result.result);
+            },  
+            error: (result)=>{
+                reject(result.message);
+            }
+        })
+        producer.sendMessage(message);
+    });
+    return rs;
 }
 
 

@@ -18,6 +18,7 @@ import * as recommendController from './controllers/recommend';
 import * as commentController from './controllers/comment';
 import * as contentController from './controllers/content';
 import * as messageController from './controllers/message';
+import * as publishController from './controllers/publish';
 import log from './services/log';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
@@ -59,11 +60,17 @@ export default (router)=> {
 
     router.get('/comments/:contentid', blankAuth(['page', 'limit'], null, ['contentid']), commentController.getComments);
 
+    router.get('/publish/type', blankAuth(['site']), publishController.getPublishType);
+
+    router.post('/publish', headAuth(['x-access-token']), blankAuth(null, ['title', 'content', 'theme', 'site', 'extToken']), publishController.publishContent);
+
     router.post('/user/login', userController.login);
 
     router.post('/user/session', userController.session);
 
     router.post('/user/sign', userController.sign);
+
+    router.post('/user/addexttoken', headAuth(['x-access-token']), blankAuth(null, ['site', 'token']), userController.auth, userController.addExtUserToken);
 
     router.get('/user/profile', headAuth(['x-access-token']), userController.auth, userController.getUserInfo);
 

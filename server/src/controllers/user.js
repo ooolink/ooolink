@@ -220,6 +220,21 @@ export const updateUserInfo = function *(next){
     }
 }
 
+export const addExtUserToken = function *(next){
+    let {site, token} = this.request.body.fields;
+    let rs = yield userService.checkExtToken(site, token);
+    if (rs === 1){
+        yield userService.addUser('', '', '', token, site, this._domain.user.id);
+        this.body = {
+            result: 1
+        }
+    } else {
+        this.body = {
+            result: 0
+        }
+    }
+}
+
 //用于用户收藏的存在检查
 function typeIdIsExists(types, typeId){
     for (let i = 0, len = types.length; i < len; i++){
