@@ -139,6 +139,13 @@ class Home extends Component {
 
     onSiteFocus() {
         const {currentSite, siteInfo} = this.props.state.app;
+        let token = this.props.state.user.userToken,
+            userIsLogon = this.props.state.user.userIsLogon;
+        //未登陆直接跳出
+        if (!token || !userIsLogon){    
+            return this.goToLogin();
+        }
+
         getGlobal('oooLinkToken', token=>{
             if (this.state.siteLikeStatus === 'none') {
                 collectService.collectedSite(currentSite, token, (rs)=> {
@@ -190,6 +197,13 @@ class Home extends Component {
                 topicId
             }
         });    
+    }
+
+    goToLogin(){
+        this.props.navigator.push({
+            name: 'Login',
+            component: Login
+        });  
     }
 }
 
