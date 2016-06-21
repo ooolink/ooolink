@@ -7,3 +7,4 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 require('./sites/cnode');
+require('./communication/email');

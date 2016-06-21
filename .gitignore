@@ -35,11 +35,18 @@ npm-debug.log
 
 
 #product
+#
 monitor
 bower_components
+
 #sites
+#
 config.json
+managerConfig.json
 dist
 resource
-
 logs
+
+#mobile
+#
+AndroidManifest.xml
