@@ -31,7 +31,7 @@ consumer.onMessage('ss_task_getSiteAllContents_rss', params=>{
                 return;
             }
 
-            model.content_id = `${params.site.site_id}_${md5(d.link)}`;
+            model.content_id = `${params.site.site_id}_${md5(d.link||d.title)}`;
             model.site_id = params.site.site_id;
             model.title = d.title;
             model.content = d.description.substr(0, 1) !== '<' ? `<p>${d.description}</p>` : d.description;
