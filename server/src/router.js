@@ -19,6 +19,7 @@ import * as commentController from './controllers/comment';
 import * as contentController from './controllers/content';
 import * as messageController from './controllers/message';
 import * as publishController from './controllers/publish';
+import * as mailController from './controllers/mail';
 import log from './services/log';
 
 const SITES = fs.readdirSync(`${__dirname}/sites/`);
@@ -99,6 +100,8 @@ export default (router)=> {
     router.get('/recommend/hot', recommendController.getRecommendHot);
 
     router.get('/message/platform', headAuth(['x-access-token']), userController.auth, messageController.getPlatformMessage);
+
+    router.post('/mail', mailController.sendMail);
 
     return router;
 }
