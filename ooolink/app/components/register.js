@@ -15,10 +15,13 @@ import React,{
     TextInput,
     Dimensions,
     PropTypes,
-    View
+    View,
+    Alert
 } from 'react-native';
 import Button from '../common/components/base/button';
+import SmsAndroid from '../common/nativeServices/smsAndroid';
 import Loading from '../common/components/loadingBlock';
+var validator = require('validator');
 
 const {width, height} = Dimensions.get('window');
 
@@ -34,42 +37,71 @@ class Register extends Component {
         this.state = {
             name: '',
             pwd: '',
-            pwdOver: ''
+            code: '',
+            pwdOver: '',
+            isSending: false,
+            getCodeText: '发送验证码'
         }
     }
 
     render() {
         return (
-            <View>
-            <Image source={{uri: this.props.bgimage}} style={styles.bgImage}>
-            </Image>
-            <View style={styles.cover}/>
+            <View style={{width, height, backgroundColor: '#272a33'}}>
+            <Image source={require('../images/ooolink_logo.png')} style={styles.logoImage}/>
             <Text style={styles.logoText}>ooolink</Text>
             <View style={styles.container}>
-                <TextInput
-                    underlineColorAndroid={'transparent'}
-                    placeholder={"Username"}
-                    placeholderTextColor="#fff"
-                    autoCorrect={false}
-                    value={this.state.name}
-                    onChangeText={this._changeName.bind(this)}
-                    style={styles.wordInput}
-                />
+                <View style={styles.rowItem}>
+                    <Image source={require('../images/login-account.png')} style={styles.icon}/>
+                    <TextInput
+                        underlineColorAndroid={'transparent'}
+                        placeholder={"手机号或邮箱"}
+                        selectionColor="#fff"
+                        placeholderTextColor="#fff"
+                        autoCorrect={false}
+                        value={this.state.name}
+                        onChangeText={this._changeName.bind(this)}
+                        style={styles.wordInput}
+                    />
+                </View>
+                <Button
+                    textSize={12}
+                    onPress={this._getCode.bind(this)}
+                    style={[styles.getCodeButton, {backgroundColor: this.state.isSending ? null : '#65b278'}]}>
+                    {this.state.getCodeText}
+                </Button>
                 <View style={{borderWidth:0.5, width: width-70, borderColor:'#eeeeee'}}/>
-                <TextInput
-                    underlineColorAndroid={'transparent'}
-                    placeholder={"Password"}
-                    placeholderTextColor="#fff"
-                    autoCorrect={false}
-                    value={this.state.pwd}
-                    onChangeText={this._changePwd.bind(this)}
-                    style={styles.wordInput}
-                />
+                <View style={styles.rowItem}>
+                    <Image source={require('../images/login-code.png')} style={styles.icon}/>
+                    <TextInput
+                        underlineColorAndroid={'transparent'}
+                        placeholder={"验证码"}
+                        selectionColor="#fff"
+                        placeholderTextColor="#fff"
+                        autoCorrect={false}
+                        value={this.state.code}
+                        onChangeText={(text)=>{this.setState({code: text})}}
+                        style={styles.wordInput}
+                    />
+                </View>
+                <View style={{borderWidth:0.5, width: width-70, borderColor:'#eeeeee'}}/>
+                <View style={styles.rowItem}>
+                    <Image source={require('../images/login-password.png')} style={styles.icon}/>
+                    <TextInput
+                        underlineColorAndroid={'transparent'}
+                        placeholder={"登陆密码"}
+                        selectionColor="#fff"
+                        placeholderTextColor="#fff"
+                        autoCorrect={false}
+                        value={this.state.pwd}
+                        onChangeText={this._changePwd.bind(this)}
+                        style={styles.wordInput}
+                    />
+                </View>
             </View>
             <Button
                 onPress={this._submit.bind(this)}
                 style={styles.button}>
-                Sign up
+                注册
             </Button>
             <Text 
                 onPress={this.props.onGoLogin.bind(this)} 
@@ -78,6 +110,32 @@ class Register extends Component {
             </Text>
             </View>
         )
+    }
+
+    _getCode(){
+        if (this.state.isSending){
+            return;
+        }
+        if (this.state.getCodeText === '发送验证码' || this.state.getCodeText === '再发送一次'){
+            if (validator.isEmail(this.state.name)){
+
+            } else if (validator.isMobilePhone(this.state.name, 'zh-CN')){
+                SmsAndroid.getVerificationCode('86', this.state.name);                                              //目前只支持中国的手机号码
+            } else {
+                Alert.alert('WARN', '手机或邮箱格式错误');
+                return;                                 //错误提示
+            }
+            this.setState({getCodeText: `等待(60)s`, isSending: true});
+        } 
+        let t = setInterval(()=>{
+            if (this.state.getCodeText === '等待(0)s'){
+                this.setState({getCodeText: '再发送一次', isSending: false});
+                clearInterval(t);
+            } else {
+                let time = parseInt(/\((.*)s/.exec(this.state.getCodeText)[1]);
+                this.setState({getCodeText: `等待(${time-1})s`});
+            }
+        }, 1000);
     }
 
     _submit() {
@@ -96,10 +154,18 @@ class Register extends Component {
 const styles = StyleSheet.create({
     container: {
         margin: 20,
+        marginTop: 40,
         borderColor: '#eeeeee',
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 5
+    },
+    logoImage: {
+        width: 60,
+        height: 60,
+        position: 'absolute',
+        top: 40 + (height - 40)/2 - 240,
+        left: width / 2 - 30
     },
     logoText:{
         width,
@@ -108,7 +174,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#00000000',
         fontWeight: "900",
         fontSize: 20,
-        marginTop: 40 + (height - 40)/2 - 200
+        marginTop: 40 + (height - 40)/2 - 150
     },
     bgImage: {
         position: 'absolute',
@@ -117,15 +183,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    rowItem:{
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     wordInput: {
-        paddingLeft: 20,
-        paddingRight: 20,
+        fontSize: 12,
         color: '#fff',
         borderBottomColor: '#eee',
         borderBottomWidth: 1,
         backgroundColor: '#ffffff00',
-        width: width - 40,
-        height: 40
+        height: 40,
+        width: width - 95,
+        marginLeft: 10
+    },
+    getCodeButton: {
+        backgroundColor: '#65b278',
+        padding: 5,
+        position: 'absolute',
+        top: 8,
+        left: width - 125
     },
     button: {
         margin: 20,
@@ -146,6 +223,10 @@ const styles = StyleSheet.create({
         width,
         height,
         backgroundColor: '#00000066'
+    },
+    icon: {
+        width: 15,
+        height: 15
     }
 });
 export default Register;

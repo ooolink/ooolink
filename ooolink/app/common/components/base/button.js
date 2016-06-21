@@ -27,7 +27,7 @@ class Button extends Component{
                 activeOpacity={0.5}
                 style={[this.props.style, {alignItems: 'center', justifyContent: 'center'}]}
                 onPress={this.props.onPress.bind(this)}>
-                <Text style={[styles.text,{color: this.props.textColor}]}>{this.props.children}</Text>
+                <Text style={[styles.text,{color: this.props.textColor, fontSize: this.props.textSize}]}>{this.props.children}</Text>
             </TouchableOpacity>
         )
     }    
