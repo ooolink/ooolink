@@ -46,7 +46,7 @@ public class SmsModule extends ReactContextBaseJavaModule implements LifecycleEv
 
     @Override
     public String getName() {
-        return "SmsAndroid";
+        return "Sms";
     }
 
     @Override
@@ -128,12 +128,28 @@ public class SmsModule extends ReactContextBaseJavaModule implements LifecycleEv
             @Override
             public void afterEvent(int event, int result, Object data) {
 
+                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                    HashMap<String, String> rs = new HashMap<String, String>(1);
+                    if (result == SMSSDK.RESULT_COMPLETE){
+                        //提交验证码成功
+                        HashMap<String, Object> d = (HashMap<String, Object>) data;
+                        rs.put("result", d.get("phone").toString());
+                    } else {
+                        rs.put("result", "false");
+                    }
+                    Log.v("rs",rs.get("result"));
+                    sendEvent(DidSubmitVerificationCode, convertToWriteMap(rs));
+                    return;
+                }
+
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     //回调完成
-                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        //提交验证码成功
-                    }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                   if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
                         //获取验证码成功
+                        int isSmartOK = ((Boolean) data) ? 1 : 0;
+                        HashMap<String, String> rs = new HashMap<String, String>(1);
+                        rs.put("passSmartOK", isSmartOK + "");
+                        sendEvent(DidGetVerificationCode, convertToWriteMap(rs));
                     }else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
                         //返回支持发送验证码的国家列表
                         ArrayList<HashMap<String,Object>> rs = (ArrayList<HashMap<String,Object>>) data;

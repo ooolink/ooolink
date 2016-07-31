@@ -25,8 +25,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-      <meta-data android:name="MOB_ID" android:value=""></meta-data>
-      <meta-data android:name="MOB_KEY" android:value=""></meta-data>
+      <meta-data android:name="MOB_ID" android:value="13cddbcf0519e"></meta-data>
+      <meta-data android:name="MOB_KEY" android:value="8a1bcaa609a707162771e544bb2b8c88"></meta-data>
 
     </application>
     <uses-permission android:name="android.permission.READ_CONTACTS" />

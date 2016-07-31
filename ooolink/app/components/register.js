@@ -19,7 +19,7 @@ import React,{
     Alert
 } from 'react-native';
 import Button from '../common/components/base/button';
-import SmsAndroid from '../common/nativeServices/smsAndroid';
+import Sms from '../common/nativeServices/sms';
 import Loading from '../common/components/loadingBlock';
 var validator = require('validator');
 
@@ -120,7 +120,7 @@ class Register extends Component {
             if (validator.isEmail(this.state.name)){
 
             } else if (validator.isMobilePhone(this.state.name, 'zh-CN')){
-                SmsAndroid.getVerificationCode('86', this.state.name);                                              //目前只支持中国的手机号码
+                Sms.getVerificationCode('86', this.state.name);                                              //目前只支持中国的手机号码
             } else {
                 Alert.alert('WARN', '手机或邮箱格式错误');
                 return;                                 //错误提示
@@ -139,7 +139,17 @@ class Register extends Component {
     }
 
     _submit() {
-        this.props.onSubmit(this.state.name, this.state.pwd);
+        this._checkVerificationCode((obj)=>{
+            if (obj.result === this.state.name){
+                this.props.onSubmit(this.state.name, this.state.pwd);
+            } else {
+                Alert.alert('验证码错误');
+            }
+        });
+    }
+
+    _checkVerificationCode(cb) {
+        Sms.submitVerificationCode('86', this.state.name, this.state.code, cb);
     }
 
     _changeName(name) {

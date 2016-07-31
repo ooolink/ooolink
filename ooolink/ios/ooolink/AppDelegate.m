@@ -11,12 +11,20 @@
 
 #import "RCTRootView.h"
 
+#import "Sms.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
   NSURL *jsCodeLocation;
-
+  
+  /**
+   Sms模块注册
+   */
+  [Sms setRegisterAppKey: @"13cddbcf0519e" WidthScret:@"8a1bcaa609a707162771e544bb2b8c88"];
+  
   /**
    * Loading JavaScript code - uncomment the one you want.
    *
