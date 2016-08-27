@@ -15,6 +15,12 @@ import recommend from './services/recommend'
 import sea from './indexes/sea'
 import search from './services/search'
 
+//启动后台管理
+import adminApp from './adminApp'
+if (process.env.SS_ADMIN_RUN && process.env.SS_ADMIN_RUN === 'CALL'){
+	adminApp();
+}
+
 require('./tasks/sites/cnode');
 require('./tasks/commons/rss');
 

@@ -59,7 +59,7 @@ gulp.task('ss', ['babel-ss'], ()=> {
         script: 'ss/dist/app.js',
         ignore: ['dist/**/*.js', 'server/dist/**/*.js', '.git', '.idea', '.DS_Store', 'server/src/default/nodeclub'],
         ext: '.js,.ejs',
-        env: {'NODE_ENV': 'dev'},
+        env: {'NODE_ENV': 'dev', 'SS_ADMIN_RUN': 'CALL'},
         tasks: ['babel-ss'],
         cwd: __dirname
     });

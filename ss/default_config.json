@@ -1,4 +1,7 @@
 {
 	"db": "mongodb://127.0.0.1/ooolink_ss",
-    "debug": "true"
+    "debug": "true",
+    "admin": {
+    	"port": "8890"
+    }
 }
