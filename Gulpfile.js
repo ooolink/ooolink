@@ -44,6 +44,11 @@ gulp.task('js', ()=> {
 });
 
 //ss
+gulp.task('move-ss', ()=>{
+    return gulp.src('ss/src/views/pages/**/*.*', {base: './ss/src'})
+        .pipe(gulp.dest('./ss/dist'));
+});
+
 gulp.task('babel-ss', ()=>{
     return gulp.src(['ss/src/**/*.js'], {base: './ss/src'})
         .pipe(changed('./ss/dist'))
@@ -53,7 +58,7 @@ gulp.task('babel-ss', ()=>{
         .pipe(gulp.dest('./ss/dist'));
 });
 
-gulp.task('ss', ['babel-ss'], ()=> {
+gulp.task('ss', ['babel-ss', 'move-ss'], ()=> {
     nodemon({
         watch: ['./ss'],
         script: 'ss/dist/app.js',

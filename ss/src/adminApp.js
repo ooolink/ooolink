@@ -34,6 +34,10 @@ function run(){
         debug: true
     });
 
+    router.get('/', function *(){
+        yield this.render('index');
+    });
+
     app
     .use(koaBody({
         extendTypes: {
