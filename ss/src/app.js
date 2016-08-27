@@ -14,10 +14,11 @@ import site from './services/site'
 import recommend from './services/recommend'
 import sea from './indexes/sea'
 import search from './services/search'
+import config from '../config.json'
 
 //启动后台管理
 import adminApp from './adminApp'
-if (process.env.SS_ADMIN_RUN && process.env.SS_ADMIN_RUN === 'CALL'){
+if (config.env.SS_ADMIN_RUN && config.env.SS_ADMIN_RUN === 'CALL'){
 	adminApp();
 }
 

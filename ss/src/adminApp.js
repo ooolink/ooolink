@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-import process from 'process';
 import path from 'path';
 import koa from 'koa';
 import koaRouter from 'koa-router';
@@ -15,7 +14,7 @@ import koaEjs from 'koa-ejs';
 import koaStatic from 'koa-static';
 import config from '../config.json';
 
-if (process.env.SS_ADMIN_RUN && process.env.SS_ADMIN_RUN === 'MAIN'){
+if (config.env.SS_ADMIN_RUN && config.env.SS_ADMIN_RUN === 'MAIN'){
 	run();
 } else {	//CALL
 	module.exports = run;

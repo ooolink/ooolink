@@ -3,5 +3,8 @@
     "debug": "true",
     "admin": {
     	"port": "8890"
+    },
+    "env": {
+    	"SS_ADMIN_RUN": "CALL"
     }
 }
